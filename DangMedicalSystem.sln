@@ -1,0 +1,63 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36401.2 d17.14
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DangMedicalSystem", "DangMedicalSystem\DangMedicalSystem.csproj", "{326CBDC1-4F16-404D-8507-0DAE2030CEDD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Src", "Src", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "EndPoint", "EndPoint", "{1ED6C8E3-8DD9-4755-8565-C7C80337F174}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{3A1D0224-9F6C-4A6E-AF64-6DAE035ED305}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Domain", "Common\Common.Domain\Common.Domain.csproj", "{7B2B9B0E-F981-4D04-91FE-AD3A99A71132}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Src\Domain\Domain.csproj", "{F333C8C3-72D3-4184-926D-D432A4D06637}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Src\Application\Application.csproj", "{C451B8E8-6864-43B0-99BF-FF6D6B84A346}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Src\Infrastructure\Infrastructure.csproj", "{700C2707-6321-469A-81C3-7CBF42D650D9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{326CBDC1-4F16-404D-8507-0DAE2030CEDD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{326CBDC1-4F16-404D-8507-0DAE2030CEDD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{326CBDC1-4F16-404D-8507-0DAE2030CEDD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{326CBDC1-4F16-404D-8507-0DAE2030CEDD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7B2B9B0E-F981-4D04-91FE-AD3A99A71132}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7B2B9B0E-F981-4D04-91FE-AD3A99A71132}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7B2B9B0E-F981-4D04-91FE-AD3A99A71132}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7B2B9B0E-F981-4D04-91FE-AD3A99A71132}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F333C8C3-72D3-4184-926D-D432A4D06637}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F333C8C3-72D3-4184-926D-D432A4D06637}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F333C8C3-72D3-4184-926D-D432A4D06637}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F333C8C3-72D3-4184-926D-D432A4D06637}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C451B8E8-6864-43B0-99BF-FF6D6B84A346}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C451B8E8-6864-43B0-99BF-FF6D6B84A346}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C451B8E8-6864-43B0-99BF-FF6D6B84A346}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C451B8E8-6864-43B0-99BF-FF6D6B84A346}.Release|Any CPU.Build.0 = Release|Any CPU
+		{700C2707-6321-469A-81C3-7CBF42D650D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{700C2707-6321-469A-81C3-7CBF42D650D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{700C2707-6321-469A-81C3-7CBF42D650D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{700C2707-6321-469A-81C3-7CBF42D650D9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{326CBDC1-4F16-404D-8507-0DAE2030CEDD} = {1ED6C8E3-8DD9-4755-8565-C7C80337F174}
+		{1ED6C8E3-8DD9-4755-8565-C7C80337F174} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{7B2B9B0E-F981-4D04-91FE-AD3A99A71132} = {3A1D0224-9F6C-4A6E-AF64-6DAE035ED305}
+		{F333C8C3-72D3-4184-926D-D432A4D06637} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{C451B8E8-6864-43B0-99BF-FF6D6B84A346} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{700C2707-6321-469A-81C3-7CBF42D650D9} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {DFA8E250-6899-48E4-9310-90A44015DBE2}
+	EndGlobalSection
+EndGlobal
