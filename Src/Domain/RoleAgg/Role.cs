@@ -3,7 +3,7 @@ using System.Security;
 
 namespace Domain.RoleAgg
 {
-    public class Role : BaseEntity
+    public class Role : AggregateRoot
     {
         public string Title { get; set; }
         public List<RolePermission> RolePermissions { get; set; }

@@ -7,13 +7,28 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Folder Include="PurchaseReport\" />
-    <Folder Include="NotificationAgg\" />
-    <Folder Include="StockAgg\" />
+    <ProjectReference Include="..\..\Common\Common.Domain\Common.Domain.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Common\Common.Domain\Common.Domain.csproj" />
+    <Folder Include="NotificationAgg\Interfaces\Repository\" />
+    <Folder Include="NotificationAgg\Interfaces\Services\" />
+    <Folder Include="OrderAgg\Interfaces\Repository\" />
+    <Folder Include="OrderAgg\Interfaces\Services\" />
+    <Folder Include="PaymentAgg\Enum\" />
+    <Folder Include="PaymentAgg\Interfaces\Repository\" />
+    <Folder Include="PaymentAgg\Interfaces\Services\" />
+    <Folder Include="ProductAgg\Interfaces\Repository\" />
+    <Folder Include="PurchaseReportAgg\Interfaces\Repository\" />
+    <Folder Include="PurchaseReportAgg\Interfaces\Services\" />
+    <Folder Include="RoleAgg\Interfaces\Repository\" />
+    <Folder Include="RoleAgg\Interfaces\Services\" />
+    <Folder Include="SiteEntities\Interfaces\Repository\" />
+    <Folder Include="SiteEntities\Interfaces\Services\" />
+    <Folder Include="StockAgg\Interfaces\Repository\" />
+    <Folder Include="StockAgg\Interfaces\Services\" />
+    <Folder Include="UserAgg\Interfaces\Services\" />
+    <Folder Include="UserAgg\Interfaces\Repository\" />
   </ItemGroup>
 
 </Project>

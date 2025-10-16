@@ -1,0 +1,6 @@
+@DangMedicalSystem_HostAddress = http://localhost:5290
+
+GET {{DangMedicalSystem_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

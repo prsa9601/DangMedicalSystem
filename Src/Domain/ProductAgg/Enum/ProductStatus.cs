@@ -2,8 +2,8 @@
 {
     public enum ProductStatus
     {
-        IsActive,
-        NotActive,
-        IsDone,
+        IsActive, // فعال است
+        NotActive, //فعال نیست
+        IsDone, //تکمیل شده
     }
 }
