@@ -1,4 +1,5 @@
 ﻿using Common.Domain;
+using Domain.ProductAgg.Enum;
 
 namespace Domain.ProductAgg
 {
@@ -9,6 +10,7 @@ namespace Domain.ProductAgg
         public int Dong { get; private set; }
         //سود هر دانگ
         public string Profit { get; private set; }
+        public PaymentTime ProfitableTime { get; set; }
         public string PricePerDong
         {
             get
@@ -37,5 +39,9 @@ namespace Domain.ProductAgg
             Profit = profit;
         }
 
+        public void SetProfitableTime(PaymentTime paymentTime)
+        {
+            ProfitableTime = paymentTime;
+        }
     }
 }

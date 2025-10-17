@@ -1,6 +1,6 @@
 ﻿using Domain.ProductAgg.Interfaces.Services;
 
-namespace Application.ProductAgg.Service
+namespace Application.Product.Service
 {
     public class ProductDomainService : IProductDomainService
     {
