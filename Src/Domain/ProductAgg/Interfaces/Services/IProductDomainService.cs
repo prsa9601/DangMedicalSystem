@@ -2,6 +2,7 @@
 {
     public interface IProductDomainService
     {
-        public Task<bool> SlugIsExist(string slug);
+        bool SlugIsExist(string slug);
+        bool PhoneNumberIsExist(string phoneNumber);
     }
 }

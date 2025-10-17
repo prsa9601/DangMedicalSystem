@@ -17,7 +17,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Src\Applicat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Src\Infrastructure\Infrastructure.csproj", "{700C2707-6321-469A-81C3-7CBF42D650D9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DangMedicalSystem", "Src\EndPoint\DangMedicalSystem\DangMedicalSystem.csproj", "{83C7F05C-9ED1-4EFA-BEBA-859315177063}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DangMedicalSystem.Api", "Src\EndPoint\DangMedicalSystem\DangMedicalSystem.Api.csproj", "{83C7F05C-9ED1-4EFA-BEBA-859315177063}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

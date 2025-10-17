@@ -27,7 +27,6 @@
     <Folder Include="SiteEntities\Interfaces\Services\" />
     <Folder Include="StockAgg\Interfaces\Repository\" />
     <Folder Include="StockAgg\Interfaces\Services\" />
-    <Folder Include="UserAgg\Interfaces\Services\" />
     <Folder Include="UserAgg\Interfaces\Repository\" />
   </ItemGroup>
 

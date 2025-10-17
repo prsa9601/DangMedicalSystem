@@ -7,6 +7,7 @@ namespace Domain.ProductAgg
         public Guid ProductId { get; internal set; }
         public string TotalPrice { get; private set; }
         public int Dong { get; private set; }
+        //سود هر دانگ
         public string Profit { get; private set; }
         public string PricePerDong
         {
@@ -22,9 +23,18 @@ namespace Domain.ProductAgg
             //private set;
         }
 
-        public Inventory(string totalPrice)
+        public Inventory(string totalPrice, int dong, string profit)
         {
             TotalPrice = totalPrice;
+            Dong = dong;
+            Profit = profit;
+        }
+
+        public void EditInventory(string totalPrice, int dong, string profit)
+        {
+            TotalPrice = totalPrice;
+            Dong = dong;
+            Profit = profit;
         }
 
     }

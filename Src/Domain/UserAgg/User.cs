@@ -1,24 +1,27 @@
 ﻿using Common.Domain;
+using Domain.UserAgg.Enum;
+using System.ComponentModel.DataAnnotations;
 
 namespace Domain.UserAgg
 {
     public class User : AggregateRoot
     {
-        public string UserName { get; set; }
-        public string FirstName { get; set; }
-        public string LastName { get; set; }
-        public int Age { get; set; }
-        public required string PhoneNumber { get; set; }
-        public required string Password { get; set; }
-        public string NationalityCode { get; set; }
-        public string ImageName { get; set; }
-        public string NationalCardPhoto { get; set; }
-        public string BirthCertificatePhoto { get; set; }
+        public string FirstName { get; private set; }
+        public string LastName { get; private set; }
+        public string PhoneNumber { get; private set; }
+        public string Password { get; private set; }
+        public string NationalityCode { get; private set; }
+        public string ImageName { get; private set; }
+        public string NationalCardPhoto { get; private set; }
+        public string BirthCertificatePhoto { get; private set; }
+        public UserStatus Status { get; private set; }
+        public bool IsActive { get; private set; }
 
+        public UserBankAccount BankAccount { get; private set; }
+        public List<UserOtp> UserOtps { get; private set; }
+        public List<UserBlock> UserBlocks { get; private set; }
+        public List<UserSession> UserSessions { get; private set; }
 
-        public List<UserOtp> UserOtps { get; set; }
-        public List<UserBlock> UserBlocks { get; set; }
-        public List<UserSession> UserSessions { get; set; }
         public User()
         {
             UserBlocks = new();
@@ -38,11 +41,66 @@ namespace Domain.UserAgg
             userBlock.UserId = Id;
             UserBlocks.Add(userBlock);
         }
+
         public void SetUserSession(string jwtRefreshToken, string ipAddress, DateTime expireDate)
         {
             var userSession = new UserSession(jwtRefreshToken, ipAddress, expireDate);
             userSession.UserId = Id;
             UserSessions.Add(userSession);
         }
+
+        #region SetBuilde
+
+        public void SetFirstName(string firstName)
+        {
+            FirstName = firstName;
+        }
+
+        public void SetLastName(string lastName)
+        {
+            LastName = lastName;
+        }
+
+        public void SetPassword(string password)
+        {
+            Password = password;
+        }
+
+        public void SetPhoneNumber(string phoneNumber)
+        {
+            PhoneNumber = phoneNumber;
+        }
+
+        public void SetNationalityCode(string nationalityCode)
+        {
+            NationalityCode = nationalityCode;
+        }
+
+        public void SetNationalCardPhoto(string nationalCardPhoto)
+        {
+            NationalCardPhoto = nationalCardPhoto;
+        }
+
+        public void SetBirthCertificatePhoto(string birthCertificatePhoto)
+        {
+            BirthCertificatePhoto = birthCertificatePhoto;
+        }
+
+        public void SetUserStatus(UserStatus userStatus)
+        {
+            Status = userStatus;
+        }
+
+        public void SetAsActive()
+        {
+            IsActive = true;
+        }
+
+        public void SetAsDeActive()
+        {
+            IsActive = false;
+        }
+
+        #endregion
     }
 }
