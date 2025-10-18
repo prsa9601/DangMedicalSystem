@@ -16,4 +16,11 @@
     <ProjectReference Include="..\Domain\Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Auth\Commands\Login\" />
+    <Folder Include="Auth\Commands\GenerateAndSendOtpCode\" />
+    <Folder Include="Auth\Commands\VerificationOtpCode\" />
+    <Folder Include="User\" />
+  </ItemGroup>
+
 </Project>

@@ -15,7 +15,7 @@ namespace Domain.UserAgg
         public string NationalCardPhoto { get; private set; }
         public string BirthCertificatePhoto { get; private set; }
         public UserStatus Status { get; private set; }
-        public bool IsActive { get; private set; }
+        public bool IsActive { get; private set; } = false;
 
         public UserBankAccount BankAccount { get; private set; }
         public List<UserOtp> UserOtps { get; private set; }
@@ -49,11 +49,16 @@ namespace Domain.UserAgg
             UserSessions.Add(userSession);
         }
 
-        #region SetBuilde
+        #region SetBuilder
 
         public void SetFirstName(string firstName)
         {
             FirstName = firstName;
+        }
+    
+        public void SetImageName(string imageName)
+        {
+            ImageName = imageName;
         }
 
         public void SetLastName(string lastName)

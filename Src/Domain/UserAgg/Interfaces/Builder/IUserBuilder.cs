@@ -12,7 +12,7 @@ namespace Domain.UserAgg.Interfaces.Builder
         public IUserBuilder WithImageName(string imageName);
         public IUserBuilder WithBirthCertificatePhoto(string birthCertificatePhoto);
         public IUserBuilder WithNationalCardPhoto(string nationalCardPhoto);
-        public IUserBuilder WithIsActive(bool IsActive);
+        public IUserBuilder WithIsActive(bool isActive);
         public IUserBuilder WithUserStatus(UserStatus userStatus);
 
         public User Build(); 

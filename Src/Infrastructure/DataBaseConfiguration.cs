@@ -1,4 +1,6 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Application.Auth.Commands.Register;
+using Application.Utilities;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,6 +12,16 @@ namespace Infrastructure
         {
             services.AddDbContext<Context>(options =>
                 options.UseSqlServer(configuration.GetSection("ConnectionStrings")["DefaultConnection"]));
+
+            //MediatR
+            services.AddMediatR(cfg =>
+            {
+                cfg.RegisterServicesFromAssemblies(
+                    typeof(Directories).Assembly,
+                    typeof(RegisterUserCommandHandler).Assembly
+                );
+            });
+
             //configuration.GetConnectionString("DefaultConnection");
             return services;
         }
