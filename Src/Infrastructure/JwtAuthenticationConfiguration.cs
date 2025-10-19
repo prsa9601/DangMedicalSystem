@@ -22,7 +22,7 @@ namespace Infrastructure
                 options.MinimumSameSitePolicy = Microsoft.AspNetCore.Http.SameSiteMode.Strict;
                 options.HttpOnly = Microsoft.AspNetCore.CookiePolicy.HttpOnlyPolicy.Always;
                 options.Secure = Microsoft.AspNetCore.Http.CookieSecurePolicy.Always;
-                //options.CheckConsentNeeded = context => true;
+                options.CheckConsentNeeded = context => true;
             });
 
             services.AddAntiforgery(options =>
@@ -140,10 +140,13 @@ namespace Infrastructure
 
 
             });
+
+
             //Jwt
             services.AddSingleton<JwtSettings>(new JwtSettings());
             services.AddScoped<IJwtSettingsFactory, JwtSettingsFactory>();
             services.AddScoped<IJwtServcie, JwtService>();
+
             // در InfrastructureBootstrapper
             services.AddScoped<IJwtServcie>(provider =>
             {

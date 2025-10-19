@@ -1,12 +1,5 @@
 ﻿using Common.Application.FileUtil.Interfaces;
-using Common.Application.Validation;
 using Microsoft.AspNetCore.Http;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Common.Application.FileUtil.Services
 {

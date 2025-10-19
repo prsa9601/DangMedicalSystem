@@ -1,6 +1,6 @@
 ﻿using System.Net;
 using Common.Application.Validation;
-using Common.Domain.Exceptions;
+using Common.Domain.Exceptions; 
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Hosting;

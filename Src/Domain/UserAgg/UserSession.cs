@@ -18,7 +18,7 @@ namespace Domain.UserAgg
 
         //public string JwtAuthToken { get; set; }
         public DateTime ExpireDate { get; private set; }
-        public bool IsActive { get; private set; } // تگه کاربر لاگ ائت کنه فالس میشه
+        public bool IsActive { get; private set; } // اگه کاربر لاگ ائت کنه فالس میشه
         public string IpAddress { get; private set; }
 
         public void ChangeActivity(bool isActive)

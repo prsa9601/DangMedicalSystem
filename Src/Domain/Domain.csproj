@@ -18,10 +18,8 @@
     <Folder Include="PaymentAgg\Enum\" />
     <Folder Include="PaymentAgg\Interfaces\Repository\" />
     <Folder Include="PaymentAgg\Interfaces\Services\" />
-    <Folder Include="ProductAgg\Interfaces\Repository\" />
     <Folder Include="PurchaseReportAgg\Interfaces\Repository\" />
     <Folder Include="PurchaseReportAgg\Interfaces\Services\" />
-    <Folder Include="RoleAgg\Interfaces\Repository\" />
     <Folder Include="RoleAgg\Interfaces\Services\" />
     <Folder Include="SiteEntities\Interfaces\Repository\" />
     <Folder Include="SiteEntities\Interfaces\Services\" />

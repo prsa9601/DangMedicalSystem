@@ -14,7 +14,13 @@ builder.Services.DataBaseConfig(builder.Configuration);
 
 #region ServiceInjection
 
-//builder.Services.ApplicationDependencyInjection();
+//builder.Services.ApplicationInject();
+
+#endregion
+
+#region ServiceInjection
+
+builder.Services.InfrastructureInject(builder.Configuration);
 
 #endregion
 builder.Services.AddOpenApi();

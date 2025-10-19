@@ -18,8 +18,10 @@ namespace Domain.UserAgg
         public bool IsActive { get; private set; } = false;
 
         public UserBankAccount BankAccount { get; private set; }
+        public UserRole UserRole { get; private set; }
         public List<UserOtp> UserOtps { get; private set; }
         public List<UserBlock> UserBlocks { get; private set; }
+        public List<UserAttempt> UserAttempts { get; private set; }
         public List<UserSession> UserSessions { get; private set; }
 
         public User()
@@ -27,12 +29,21 @@ namespace Domain.UserAgg
             UserBlocks = new();
             UserOtps = new();
             UserSessions = new();
+            UserAttempts = new();
         }
-        public void SetUserOtp(DateTime expireDate, string otpCode)
+
+        public void SetUserOtp(string otpCode)
         {
-            var userOtp = new UserOtp(otpCode, expireDate);
+            var userOtp = new UserOtp(otpCode, DateTime.Now.AddMinutes(3));
             userOtp.UserId = Id;
             UserOtps.Add(userOtp);
+        }
+
+        public void SetUserRole(Guid roleId)
+        {
+            var userRole = new UserRole(roleId);
+            userRole.UserId = Id;
+            UserRole = UserRole;
         }
 
         public void SetUserBlock(DateTime blockToDate, string description)
@@ -49,13 +60,27 @@ namespace Domain.UserAgg
             UserSessions.Add(userSession);
         }
 
+        public void SetUserAttempt(DateTime attemptDate, bool isSuccessful, string ipAddress, string userAgent,
+            string failureReason, DateTime expireDate, AttemptType attemptType)
+        {
+            var userAttempt = new UserAttempt(attemptDate, isSuccessful,
+                ipAddress, userAgent, failureReason, expireDate, attemptType);
+
+            userAttempt.UserId = Id;
+            UserAttempts.Add(userAttempt);
+        }
+        public void RemoveUserAttempt(DateTime expireDate, AttemptType attemptType)
+        {
+            UserAttempts.RemoveAll(i => i.ExpireDate > DateTime.Now && i.AttemptType == attemptType);
+        }
+
         #region SetBuilder
 
         public void SetFirstName(string firstName)
         {
             FirstName = firstName;
         }
-    
+
         public void SetImageName(string imageName)
         {
             ImageName = imageName;

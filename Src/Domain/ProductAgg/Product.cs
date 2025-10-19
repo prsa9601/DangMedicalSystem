@@ -1,4 +1,5 @@
 ﻿using Common.Domain;
+using Common.Domain.Utils;
 using Common.Domain.ValueObjects;
 using Domain.ProductAgg.Enum;
 using Domain.ProductAgg.Interfaces.Services;
@@ -14,13 +15,17 @@ namespace Domain.ProductAgg
         public SeoData SeoData { get; private set; }
         public ProductStatus Status { get; private set; }
 
+        private Product()
+        {
+            SeoData = SeoData.CreateEmpty();
+        }
         public Product(string title, string description,
             string slug, SeoData seoData, IProductDomainService service)
         {
             Guard(slug, title, description, service);
             Title = title;
             Description = description;
-            Slug = slug;
+            Slug = slug.ToSlug();
             SeoData = seoData;
         }
         public void Edit(string title, string description,
@@ -29,7 +34,7 @@ namespace Domain.ProductAgg
             Guard(slug, title, description, service);
             Title = title;
             Description = description;
-            Slug = slug;
+            Slug = slug.ToSlug();
             SeoData = seoData;
         }
         public void SetImage(string imageName)

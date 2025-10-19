@@ -2,7 +2,7 @@
 using Domain.UserAgg.Interfaces.Repository;
 using Infrastructure._Utilities;
 
-namespace Infrastructure.Persistent.Ef.User
+namespace Infrastructure.Persistent.Ef.User.Repository
 {
     public class UserRepository :  BaseRepository<Domain.UserAgg.User>, IUserRepository
     {
