@@ -5,6 +5,8 @@ using Common.AspNetCore;
 using Facade.User;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Query.User.DTOs;
+using Query.User.DTOs.FilterDto;
 
 namespace DangMedicalSystem.Api.Controllers
 {
@@ -35,6 +37,18 @@ namespace DangMedicalSystem.Api.Controllers
         public async Task<ApiResult> SetImageUser([FromForm] SetImageUserCommand command)
         {
             return CommandResult(await _facade.SetImageUser(command));
+        }
+     
+        [HttpGet("GetById")]
+        public async Task<ApiResult<UserDto?>> GetById(Guid userId)
+        {
+            return QueryResult(await _facade.GetById(userId));
+        }
+    
+        [HttpGet("GetByFilter")]
+        public async Task<ApiResult<UserFilterResult>> GetByFilter([FromQuery] UserFilterParam param)
+        {
+            return QueryResult(await _facade.GetByFilter(param));
         }
 
     }

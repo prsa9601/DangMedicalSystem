@@ -13,14 +13,14 @@ namespace Infrastructure
             services.AddDbContext<Context>(options =>
                 options.UseSqlServer(configuration.GetSection("ConnectionStrings")["DefaultConnection"]));
             
-            //MediatR
-            services.AddMediatR(cfg =>
-            {
-                cfg.RegisterServicesFromAssemblies(
-                    typeof(Directories).Assembly,
-                    typeof(RegisterUserCommandHandler).Assembly
-                );
-            });
+            ////MediatR
+            //services.AddMediatR(cfg =>
+            //{
+            //    cfg.RegisterServicesFromAssemblies(
+            //        typeof(Directories).Assembly,
+            //        typeof(RegisterUserCommandHandler).Assembly
+            //    );
+            //});
 
             //configuration.GetConnectionString("DefaultConnection");
             return services;

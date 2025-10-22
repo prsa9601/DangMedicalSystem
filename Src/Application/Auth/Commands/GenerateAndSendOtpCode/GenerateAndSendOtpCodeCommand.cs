@@ -32,14 +32,13 @@ namespace Application.Auth.Commands.GenerateAndSendOtpCode
             {
                 string token = await _otpService.GenerateToken();
                 user.SetUserOtp(token);
-            
-                //var otpEvent = new AddOtpCodeEvent
-                //{
-                //    Id = Guid.NewGuid(),
-                //    Session = "AddOtpCode"
-                //};
-                //user.AddDomainEvent(otpEvent);
-                //user.ChangeConcurrencyStamp();
+
+                var otpEvent = new AddOtpCodeEvent
+                {
+                    Id = Guid.NewGuid(),
+                    Session = "AddOtpCode"
+                };
+                user.AddDomainEvent(otpEvent);
 
                 await _repository.SaveChangeAsync();
 
@@ -55,7 +54,6 @@ namespace Application.Auth.Commands.GenerateAndSendOtpCode
 
                 string token = await _otpService.GenerateToken();
                 userEntity.SetUserOtp(token);
-                //userEntity.ChangeConcurrencyStamp();
 
                 await _repository.SaveChangeAsync();
 

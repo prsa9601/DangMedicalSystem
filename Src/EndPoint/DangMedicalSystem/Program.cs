@@ -1,9 +1,12 @@
+using Application.Auth.Commands.Register;
+using Application.Utilities;
 using Common.AspNetCore;
 using Facade;
 using Infrastructure;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
+using Query.User.GetById;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -70,6 +73,15 @@ builder.Services.InitFacadeDependency();
 #region ServiceInjection
 
 builder.Services.InfrastructureInject(builder.Configuration);
+//MediatR
+builder.Services.AddMediatR(cfg =>
+{
+    cfg.RegisterServicesFromAssemblies(
+        typeof(Directories).Assembly,
+        typeof(RegisterUserCommandHandler).Assembly,
+        typeof(GetUserByIdQuery).Assembly
+    );
+});
 
 #endregion
 builder.Services.AddOpenApi();

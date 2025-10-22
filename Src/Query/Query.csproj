@@ -8,14 +8,11 @@
 
   <ItemGroup>
     <Folder Include="Auth\User\DTOs\" />
+    <Folder Include="Session\" />
     <Folder Include="Product\GetFilter\" />
     <Folder Include="Product\GetBySlug\" />
     <Folder Include="Product\GetBySlugForAdmin\" />
     <Folder Include="Product\User\DTOs\" />
-    <Folder Include="User\DTOs\" />
-    <Folder Include="User\GetFilter\" />
-    <Folder Include="User\GetById\" />
-    <Folder Include="User\GetExpression\" />
     <Folder Include="User\GetListByExpression\" />
   </ItemGroup>
 

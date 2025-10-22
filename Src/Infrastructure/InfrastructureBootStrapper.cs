@@ -4,6 +4,7 @@ using Domain.ProductAgg.Interfaces.Repository;
 using Domain.RoleAgg.Interfaces.Repository;
 using Domain.UserAgg;
 using Domain.UserAgg.Interfaces.Repository;
+using Infrastructure.Mapping.Service;
 using Infrastructure.Persistent.Ef.Product.Repository;
 using Infrastructure.Persistent.Ef.Role.Repository;
 using Infrastructure.Persistent.Ef.User.Repository;

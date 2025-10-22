@@ -3,6 +3,7 @@ using Facade.Product;
 using Facade.Session;
 using Facade.User;
 using Microsoft.Extensions.DependencyInjection;
+using Query.Mapping.Registration;
 
 namespace Facade
 {
@@ -17,6 +18,8 @@ namespace Facade
             services.AddScoped<IUserFacade, UserFacade>();
 
             services.AddScoped<IUserSessionFacade, UserSessionFacade>();
+
+            services.AddMapping();
 
 
         }

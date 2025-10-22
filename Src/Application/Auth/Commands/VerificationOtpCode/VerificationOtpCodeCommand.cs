@@ -23,19 +23,22 @@ namespace Application.Auth.Commands.VerificationOtpCode
             string password = Sha256Hasher.Hash("DefaultGuestPassword");
 
             var user = await _repository.GetUserByFilter(user =>
-            user.PhoneNumber.Equals(request.phoneNumber) 
-            && user.Password !=null );
+                user.PhoneNumber.Equals(request.phoneNumber) 
+                && user.Password != null );
 
             if (user is null)
                 return OperationResult<bool>.NotFound(false, "اطفا دوباره درخواست ارسال کد فعال سازی بدهید.");
 
-            var otp = user.UserOtps.FirstOrDefault(otp => otp.ExpireDate > DateTime.Now && otp.UserId == user.Id);
+            var otp = user.UserOtps.OrderByDescending(o => o.CreationDate)
+                .FirstOrDefault(otp => otp.ExpireDate > DateTime.Now && otp.UserId == user.Id);
 
             if (otp is null)
                 return OperationResult<bool>.NotFound(false, "زمان کد فعال سازی شما به پایان رسیده لطفا دوباره درخواست دهید.");
 
             if (!otp.OtpCode.Equals(request.token))
                 return OperationResult<bool>.Error("کد ارسالی شما اشتباه است");
+
+            //Create UserSession
 
             return OperationResult<bool>.Success(true);
         }
