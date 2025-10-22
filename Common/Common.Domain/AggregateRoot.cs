@@ -18,5 +18,9 @@ namespace Common.Domain
         {
             _domainEvents?.Remove(eventItem);
         }
+        public void ClearDomainEvents()
+        {
+            _domainEvents.Clear();
+        }
     }
 }

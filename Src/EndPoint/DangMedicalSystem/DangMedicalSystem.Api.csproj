@@ -12,10 +12,12 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="9.0.6" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\Infrastructure\Infrastructure.csproj" />
+    <ProjectReference Include="..\..\..\Common\Common.AspNetCore\Common.AspNetCore.csproj" />
+    <ProjectReference Include="..\..\Facade\Facade.csproj" />
   </ItemGroup>
 
 </Project>

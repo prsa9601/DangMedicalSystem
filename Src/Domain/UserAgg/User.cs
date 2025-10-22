@@ -14,23 +14,31 @@ namespace Domain.UserAgg
         public string ImageName { get; private set; }
         public string NationalCardPhoto { get; private set; }
         public string BirthCertificatePhoto { get; private set; }
-        public UserStatus Status { get; private set; }
-        public bool IsActive { get; private set; } = false;
+        public UserStatus Status { get; private set; } = UserStatus.NotConfirmed;
+        public bool IsActive { get; private set; } = true; //کاربر اکتیوه و میتونه کار کنه
 
-        public UserBankAccount BankAccount { get; private set; }
-        public UserRole UserRole { get; private set; }
+        public UserBankAccount? BankAccount { get; private set; }
+        public UserRole? UserRole { get; private set; }
+
         public List<UserOtp> UserOtps { get; private set; }
         public List<UserBlock> UserBlocks { get; private set; }
         public List<UserAttempt> UserAttempts { get; private set; }
         public List<UserSession> UserSessions { get; private set; }
 
+
+
         public User()
         {
-            UserBlocks = new();
             UserOtps = new();
-            UserSessions = new();
             UserAttempts = new();
+            UserBlocks = new();
+            UserSessions = new();
         }
+
+        //public void ChangeConcurrencyStamp()
+        //{
+        //    ConcurrencyStamp = Guid.NewGuid();
+        //}
 
         public void SetUserOtp(string otpCode)
         {
@@ -103,6 +111,7 @@ namespace Domain.UserAgg
 
         public void SetNationalityCode(string nationalityCode)
         {
+            NationalCodeGuard(nationalityCode);
             NationalityCode = nationalityCode;
         }
 
@@ -132,5 +141,11 @@ namespace Domain.UserAgg
         }
 
         #endregion
+
+        private void NationalCodeGuard(string nationalCode)
+        {
+            if (!IranianNationalIdChecker.IsValid(nationalCode))
+                throw new Exception("کد ملی شما صحیح نمیباشد.");
+        }
     }
 }

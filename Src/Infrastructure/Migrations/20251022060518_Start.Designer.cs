@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(Context))]
-    [Migration("20251019145520_Start")]
+    [Migration("20251022060518_Start")]
     partial class Start
     {
         /// <inheritdoc />
@@ -59,6 +59,46 @@ namespace Infrastructure.Migrations
                     b.ToTable("Product", "product");
                 });
 
+            modelBuilder.Entity("Domain.RoleAgg.Role", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("Title")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles");
+                });
+
+            modelBuilder.Entity("Domain.RoleAgg.RolePermission", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("Permission")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
+
+                    b.ToTable("RolePermission");
+                });
+
             modelBuilder.Entity("Domain.UserAgg.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -66,35 +106,34 @@ namespace Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<string>("BirthCertificatePhoto")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("FirstName")
-                        .IsRequired()
                         .HasMaxLength(70)
                         .HasColumnType("nvarchar(70)");
 
                     b.Property<string>("ImageName")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("nvarchar(max)")
+                        .HasDefaultValue("Default");
 
                     b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("bit")
+                        .HasDefaultValue(true);
 
                     b.Property<string>("LastName")
-                        .IsRequired()
                         .HasMaxLength(70)
                         .HasColumnType("nvarchar(70)");
 
                     b.Property<string>("NationalCardPhoto")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NationalityCode")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Password")
@@ -105,41 +144,13 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("Status")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("User", "user");
-                });
-
-            modelBuilder.Entity("Domain.UserAgg.UserBlock", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("BlockToDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("Description")
+                    b.Property<string>("Status")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<bool>("IsActive")
-                        .HasColumnType("bit");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
                     b.HasKey("Id");
 
-                    b.HasIndex("UserId");
-
-                    b.ToTable("UserBlock");
+                    b.ToTable("Users", "user");
                 });
 
             modelBuilder.Entity("Domain.ProductAgg.Product", b =>
@@ -189,8 +200,65 @@ namespace Infrastructure.Migrations
                         .IsRequired();
                 });
 
+            modelBuilder.Entity("Domain.RoleAgg.RolePermission", b =>
+                {
+                    b.HasOne("Domain.RoleAgg.Role", null)
+                        .WithMany("RolePermissions")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
             modelBuilder.Entity("Domain.UserAgg.User", b =>
                 {
+                    b.OwnsMany("Domain.UserAgg.UserAttempt", "UserAttempts", b1 =>
+                        {
+                            b1.Property<Guid>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<DateTime>("AttemptDate")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<string>("AttemptType")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<DateTime>("CreationDate")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<DateTime>("ExpireDate")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<string>("FailureReason")
+                                .HasMaxLength(500)
+                                .HasColumnType("nvarchar(500)");
+
+                            b1.Property<string>("IpAddress")
+                                .IsRequired()
+                                .HasMaxLength(45)
+                                .HasColumnType("nvarchar(45)");
+
+                            b1.Property<bool>("IsSuccessful")
+                                .HasColumnType("bit");
+
+                            b1.Property<string>("UserAgent")
+                                .HasMaxLength(500)
+                                .HasColumnType("nvarchar(500)");
+
+                            b1.Property<Guid>("UserId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("UserId");
+
+                            b1.ToTable("UserAttempts", "user");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserId");
+                        });
+
                     b.OwnsOne("Domain.UserAgg.UserBankAccount", "BankAccount", b1 =>
                         {
                             b1.Property<Guid>("Id")
@@ -204,6 +272,12 @@ namespace Infrastructure.Migrations
 
                             b1.Property<DateTime>("CreationDate")
                                 .HasColumnType("datetime2");
+
+                            b1.Property<int>("ExpirationDateMonth")
+                                .HasColumnType("int");
+
+                            b1.Property<int>("ExpirationDateYear")
+                                .HasColumnType("int");
 
                             b1.Property<string>("FirstName")
                                 .IsRequired()
@@ -231,7 +305,42 @@ namespace Infrastructure.Migrations
                             b1.HasIndex("UserId")
                                 .IsUnique();
 
-                            b1.ToTable("BankAccount", "user");
+                            b1.ToTable("BankAccounts", "user");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserId");
+                        });
+
+                    b.OwnsMany("Domain.UserAgg.UserBlock", "UserBlocks", b1 =>
+                        {
+                            b1.Property<Guid>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<DateTime>("BlockToDate")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<DateTime>("CreationDate")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<string>("Description")
+                                .IsRequired()
+                                .HasMaxLength(500)
+                                .HasColumnType("nvarchar(500)");
+
+                            b1.Property<bool>("IsActive")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("bit")
+                                .HasDefaultValue(true);
+
+                            b1.Property<Guid>("UserId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("UserId");
+
+                            b1.ToTable("UserBlocks", "user");
 
                             b1.WithOwner()
                                 .HasForeignKey("UserId");
@@ -267,6 +376,32 @@ namespace Infrastructure.Migrations
                                 .HasForeignKey("UserId");
                         });
 
+                    b.OwnsOne("Domain.UserAgg.UserRole", "UserRole", b1 =>
+                        {
+                            b1.Property<Guid>("Id")
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<DateTime>("CreationDate")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<Guid>("RoleId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<Guid>("UserId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("UserId")
+                                .IsUnique();
+
+                            b1.ToTable("UserRoles", "user");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserId");
+                        });
+
                     b.OwnsMany("Domain.UserAgg.UserSession", "UserSessions", b1 =>
                         {
                             b1.Property<Guid>("Id")
@@ -284,7 +419,9 @@ namespace Infrastructure.Migrations
                                 .HasColumnType("nvarchar(max)");
 
                             b1.Property<bool>("IsActive")
-                                .HasColumnType("bit");
+                                .ValueGeneratedOnAdd()
+                                .HasColumnType("bit")
+                                .HasDefaultValue(true);
 
                             b1.Property<string>("JwtRefreshToken")
                                 .IsRequired()
@@ -303,26 +440,22 @@ namespace Infrastructure.Migrations
                                 .HasForeignKey("UserId");
                         });
 
-                    b.Navigation("BankAccount")
-                        .IsRequired();
+                    b.Navigation("BankAccount");
+
+                    b.Navigation("UserAttempts");
+
+                    b.Navigation("UserBlocks");
 
                     b.Navigation("UserOtps");
+
+                    b.Navigation("UserRole");
 
                     b.Navigation("UserSessions");
                 });
 
-            modelBuilder.Entity("Domain.UserAgg.UserBlock", b =>
+            modelBuilder.Entity("Domain.RoleAgg.Role", b =>
                 {
-                    b.HasOne("Domain.UserAgg.User", null)
-                        .WithMany("UserBlocks")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
-            modelBuilder.Entity("Domain.UserAgg.User", b =>
-                {
-                    b.Navigation("UserBlocks");
+                    b.Navigation("RolePermissions");
                 });
 #pragma warning restore 612, 618
         }

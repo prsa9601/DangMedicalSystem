@@ -36,26 +36,39 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "User",
-                schema: "user",
+                name: "Roles",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    FirstName = table.Column<string>(type: "nvarchar(70)", maxLength: 70, nullable: false),
-                    LastName = table.Column<string>(type: "nvarchar(70)", maxLength: 70, nullable: false),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NationalityCode = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ImageName = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    NationalCardPhoto = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    BirthCertificatePhoto = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Status = table.Column<int>(type: "int", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    Title = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_User", x => x.Id);
+                    table.PrimaryKey("PK_Roles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Users",
+                schema: "user",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FirstName = table.Column<string>(type: "nvarchar(70)", maxLength: 70, nullable: true),
+                    LastName = table.Column<string>(type: "nvarchar(70)", maxLength: 70, nullable: true),
+                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    NationalityCode = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    ImageName = table.Column<string>(type: "nvarchar(max)", nullable: false, defaultValue: "Default"),
+                    NationalCardPhoto = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    BirthCertificatePhoto = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Users", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -84,7 +97,27 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "BankAccount",
+                name: "RolePermission",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    Permission = table.Column<int>(type: "int", nullable: false),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_RolePermission", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_RolePermission_Roles_RoleId",
+                        column: x => x.RoleId,
+                        principalTable: "Roles",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "BankAccounts",
                 schema: "user",
                 columns: table => new
                 {
@@ -94,40 +127,71 @@ namespace Infrastructure.Migrations
                     FirstName = table.Column<string>(type: "nvarchar(70)", maxLength: 70, nullable: false),
                     LastName = table.Column<string>(type: "nvarchar(70)", maxLength: 70, nullable: false),
                     IsConfirmed = table.Column<bool>(type: "bit", nullable: false),
+                    ExpirationDateMonth = table.Column<int>(type: "int", nullable: false),
+                    ExpirationDateYear = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_BankAccount", x => x.Id);
+                    table.PrimaryKey("PK_BankAccounts", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_BankAccount_User_UserId",
+                        name: "FK_BankAccounts_Users_UserId",
                         column: x => x.UserId,
                         principalSchema: "user",
-                        principalTable: "User",
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
-                name: "UserBlock",
+                name: "UserAttempts",
+                schema: "user",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    AttemptDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    IsSuccessful = table.Column<bool>(type: "bit", nullable: false),
+                    IpAddress = table.Column<string>(type: "nvarchar(45)", maxLength: 45, nullable: false),
+                    UserAgent = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    FailureReason = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: true),
+                    ExpireDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    AttemptType = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserAttempts", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserAttempts_Users_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "user",
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserBlocks",
+                schema: "user",
                 columns: table => new
                 {
                     Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     BlockToDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Description = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    Description = table.Column<string>(type: "nvarchar(500)", maxLength: 500, nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_UserBlock", x => x.Id);
+                    table.PrimaryKey("PK_UserBlocks", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserBlock_User_UserId",
+                        name: "FK_UserBlocks_Users_UserId",
                         column: x => x.UserId,
                         principalSchema: "user",
-                        principalTable: "User",
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -147,10 +211,32 @@ namespace Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_UserOtps", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserOtps_User_UserId",
+                        name: "FK_UserOtps_Users_UserId",
                         column: x => x.UserId,
                         principalSchema: "user",
-                        principalTable: "User",
+                        principalTable: "Users",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "UserRoles",
+                schema: "user",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    RoleId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserRoles", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_UserRoles_Users_UserId",
+                        column: x => x.UserId,
+                        principalSchema: "user",
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -164,7 +250,7 @@ namespace Infrastructure.Migrations
                     UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
                     JwtRefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     ExpireDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    IsActive = table.Column<bool>(type: "bit", nullable: false),
+                    IsActive = table.Column<bool>(type: "bit", nullable: false, defaultValue: true),
                     IpAddress = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     CreationDate = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
@@ -172,24 +258,36 @@ namespace Infrastructure.Migrations
                 {
                     table.PrimaryKey("PK_UserSessions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_UserSessions_User_UserId",
+                        name: "FK_UserSessions_Users_UserId",
                         column: x => x.UserId,
                         principalSchema: "user",
-                        principalTable: "User",
+                        principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_BankAccount_UserId",
+                name: "IX_BankAccounts_UserId",
                 schema: "user",
-                table: "BankAccount",
+                table: "BankAccounts",
                 column: "UserId",
                 unique: true);
 
             migrationBuilder.CreateIndex(
-                name: "IX_UserBlock_UserId",
-                table: "UserBlock",
+                name: "IX_RolePermission_RoleId",
+                table: "RolePermission",
+                column: "RoleId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserAttempts_UserId",
+                schema: "user",
+                table: "UserAttempts",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserBlocks_UserId",
+                schema: "user",
+                table: "UserBlocks",
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
@@ -197,6 +295,13 @@ namespace Infrastructure.Migrations
                 schema: "user",
                 table: "UserOtps",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserRoles_UserId",
+                schema: "user",
+                table: "UserRoles",
+                column: "UserId",
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_UserSessions_UserId",
@@ -209,18 +314,30 @@ namespace Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
-                name: "BankAccount",
+                name: "BankAccounts",
                 schema: "user");
+
+            migrationBuilder.DropTable(
+                name: "RolePermission");
 
             migrationBuilder.DropTable(
                 name: "SeoData",
                 schema: "product");
 
             migrationBuilder.DropTable(
-                name: "UserBlock");
+                name: "UserAttempts",
+                schema: "user");
+
+            migrationBuilder.DropTable(
+                name: "UserBlocks",
+                schema: "user");
 
             migrationBuilder.DropTable(
                 name: "UserOtps",
+                schema: "user");
+
+            migrationBuilder.DropTable(
+                name: "UserRoles",
                 schema: "user");
 
             migrationBuilder.DropTable(
@@ -228,11 +345,14 @@ namespace Infrastructure.Migrations
                 schema: "user");
 
             migrationBuilder.DropTable(
+                name: "Roles");
+
+            migrationBuilder.DropTable(
                 name: "Product",
                 schema: "product");
 
             migrationBuilder.DropTable(
-                name: "User",
+                name: "Users",
                 schema: "user");
         }
     }

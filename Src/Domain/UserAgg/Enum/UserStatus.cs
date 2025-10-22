@@ -4,6 +4,7 @@
     {
         IsConfirmed,
         AwaitingConfirmation,
-        NotConfirmed
+        NotConfirmed,
+        WrongInformation
     }
 }

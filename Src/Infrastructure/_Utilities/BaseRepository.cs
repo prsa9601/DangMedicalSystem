@@ -1,12 +1,14 @@
-﻿using System.Linq.Expressions;
+﻿using AngleSharp.Dom;
 using Common.Domain;
 using Common.Domain.Repository;
+using Domain.UserAgg;
 using Infrastructure.Persistent.Ef;
 using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 
 namespace Infrastructure._Utilities;
 
-public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : BaseEntity 
+public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : BaseEntity
 {
     protected readonly Context Context;
     public BaseRepository(Context context)
@@ -14,10 +16,12 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         Context = context;
     }
 
-    public virtual async Task<TEntity?> GetAsync(long id)
+    public virtual async Task<TEntity?> GetAsync(Guid id)
     {
         return await Context.Set<TEntity>().FirstOrDefaultAsync(t => t.Id.Equals(id)); ;
     }
+
+
 
     public async Task<List<TEntity>?> GetListByFilterAsync(Expression<Func<TEntity, bool>> expression)
     {
@@ -28,14 +32,14 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         return await Context.Set<TEntity>().AsTracking().FirstOrDefaultAsync(expression);
     }
 
-    public async Task<TEntity?> GetTracking(long id)
+    public async Task<TEntity?> GetTracking(Guid id)
     {
         return await Context.Set<TEntity>().AsTracking().FirstOrDefaultAsync(t => t.Id.Equals(id));
 
     }
     public async Task<List<TEntity>?> GetListTrackingAsync()
     {
-        return await Context.Set<TEntity>().AsTracking().Select(i=>i).ToListAsync();
+        return await Context.Set<TEntity>().AsTracking().Select(i => i).ToListAsync();
 
     }
     public async Task<TEntity?> GetTrackingWithString(string id)
@@ -71,8 +75,41 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
     }
     public async Task<int> SaveChangeAsync()
     {
-        return await Context.SaveChangesAsync();
+        try
+        {
+            return await Context.SaveChangesAsync();
+        }
+        catch (DbUpdateConcurrencyException ex)
+        {
+            // هندل کردن concurrency exception
+            foreach (var entry in ex.Entries)
+            {
+                if (entry.Entity is UserOtp)
+                {
+                    var databaseValues = await entry.GetDatabaseValuesAsync();
+                    if (databaseValues != null)
+                    {
+                        entry.OriginalValues.SetValues(databaseValues);
+                    }
+                }
+            }
+            throw;
+        }
+        //return await Context.SaveChangesAsync();
     }
+
+    public async Task<int> SaveChangeAsync(TEntity entity)
+    {
+        //Context.Set<TEntity>().Attach(entity);
+        Context.Entry(entity).State = EntityState.Modified;
+
+        return await Context.SaveChangesAsync();
+
+
+        //Context.Entry(entity).State = EntityState.Modified;
+        //return await Context.SaveChangesAsync();
+    }
+    
     public async Task<bool> ExistsAsync(Expression<Func<TEntity, bool>> expression)
     {
         return await Context.Set<TEntity>().AnyAsync(expression);
@@ -87,7 +124,7 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         return Context.Set<TEntity>().FirstOrDefault(t => t.Id.Equals(id)); ;
     }
 
-    public async Task<bool> Delete(Expression<Func<TEntity , bool>> expression)
+    public async Task<bool> Delete(Expression<Func<TEntity, bool>> expression)
     {
         try
         {
@@ -97,10 +134,10 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         }
         catch
         {
-            return false; 
+            return false;
         }
     }
-    public async Task<bool> DeleteOneEntity(Expression<Func<TEntity , bool>> expression)
+    public async Task<bool> DeleteOneEntity(Expression<Func<TEntity, bool>> expression)
     {
         try
         {
@@ -110,7 +147,7 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         }
         catch
         {
-            return false; 
+            return false;
         }
     }
     public Task<bool> DeleteAsync(TEntity entity)
@@ -122,7 +159,7 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
         }
         catch
         {
-            return Task.FromResult(false); 
+            return Task.FromResult(false);
         }
     }
 }

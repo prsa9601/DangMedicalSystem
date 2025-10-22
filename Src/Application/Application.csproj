@@ -17,7 +17,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="User\" />
+    <Folder Include="User\Builder\" />
+    <Folder Include="User\Block\" />
+    <Folder Include="User\Remove\" />
+    <Folder Include="User\SetSession\" />
+    <Folder Include="User\SetRole\" />
   </ItemGroup>
 
 </Project>

@@ -1,6 +1,8 @@
 ﻿using Application.Auth.Shared.Abstractions.Interfaces;
 using Common.Application;
-using Domain.UserAgg;
+using Common.Application.SecurityUtil;
+using Domain.UserAgg.Events;
+using Domain.UserAgg.Interfaces.Builder;
 using Domain.UserAgg.Interfaces.Repository;
 
 namespace Application.Auth.Commands.GenerateAndSendOtpCode
@@ -9,29 +11,56 @@ namespace Application.Auth.Commands.GenerateAndSendOtpCode
     {
         public string phoneNumber { get; set; }
     }
-    
+
     public class GenerateAndSendOtpCodeCommandHandler : IBaseCommandHandler<GenerateAndSendOtpCodeCommand, string>
     {
         private readonly IUserRepository _repository;
+        private readonly IUserBuilder _builder;
         private readonly IOtpService _otpService;
 
-        public GenerateAndSendOtpCodeCommandHandler(IUserRepository repository, IOtpService otpService)
+        public GenerateAndSendOtpCodeCommandHandler(IUserRepository repository, IOtpService otpService, IUserBuilder builder)
         {
             _repository = repository;
             _otpService = otpService;
+            _builder = builder;
         }
 
         public async Task<OperationResult<string>> Handle(GenerateAndSendOtpCodeCommand request, CancellationToken cancellationToken)
         {
-            var user = new User();
-            user.SetPhoneNumber(request.phoneNumber);
-            await _repository.AddAsync(user);
+            var user = await _repository.GetUserByFilterAsync(i => i.PhoneNumber.Equals(request.phoneNumber));
+            if (user != null)
+            {
+                string token = await _otpService.GenerateToken();
+                user.SetUserOtp(token);
+            
+                //var otpEvent = new AddOtpCodeEvent
+                //{
+                //    Id = Guid.NewGuid(),
+                //    Session = "AddOtpCode"
+                //};
+                //user.AddDomainEvent(otpEvent);
+                //user.ChangeConcurrencyStamp();
 
-            string token = await _otpService.GenerateToken();
-            user.SetUserOtp(token);
-            await _repository.SaveChangeAsync();
+                await _repository.SaveChangeAsync();
 
-            return OperationResult<string>.Success(token);
+                return OperationResult<string>.Success(token);
+            }
+            else
+            {
+                string password = Sha256Hasher.Hash("DefaultGuestPassword");
+                var userEntity = _builder.WithPhoneNumber(request.phoneNumber).WithPassword(password).Build();
+                userEntity.SetUserStatus(Domain.UserAgg.Enum.UserStatus.NotConfirmed);
+                
+                await _repository.AddAsync(userEntity);
+
+                string token = await _otpService.GenerateToken();
+                userEntity.SetUserOtp(token);
+                //userEntity.ChangeConcurrencyStamp();
+
+                await _repository.SaveChangeAsync();
+
+                return OperationResult<string>.Success(token);
+            }
         }
     }
 }

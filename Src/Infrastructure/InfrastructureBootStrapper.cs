@@ -1,4 +1,5 @@
 ﻿using Application;
+using Application.Auth.Shared.Abstractions.Interfaces;
 using Domain.ProductAgg.Interfaces.Repository;
 using Domain.RoleAgg.Interfaces.Repository;
 using Domain.UserAgg;
@@ -6,6 +7,7 @@ using Domain.UserAgg.Interfaces.Repository;
 using Infrastructure.Persistent.Ef.Product.Repository;
 using Infrastructure.Persistent.Ef.Role.Repository;
 using Infrastructure.Persistent.Ef.User.Repository;
+using Infrastructure.Services;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -19,10 +21,13 @@ namespace Infrastructure
             services.ConfigureJwtAuthentication(configuration);
             services.ApplicationInject();
 
+
             services.AddScoped<IUserRepository, UserRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
 
+            services.AddTransient<System.Random>();
+            services.AddScoped<IOtpService, OtpService>();
             return services;
         }
     }

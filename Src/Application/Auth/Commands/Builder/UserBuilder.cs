@@ -17,9 +17,9 @@ namespace Application.Auth.Commands.Builder
         private string? _firstName;
         private UserStatus _userStatus = UserStatus.NotConfirmed;
 
-        public User Build()
+        public Domain.UserAgg.User Build()
         {
-            var user = new User();
+            var user = new Domain.UserAgg.User();
 
             if (_birthCertificatePhoto is not null) user.SetBirthCertificatePhoto(_birthCertificatePhoto);
 

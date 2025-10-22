@@ -12,7 +12,7 @@ namespace Infrastructure
         {
             services.AddDbContext<Context>(options =>
                 options.UseSqlServer(configuration.GetSection("ConnectionStrings")["DefaultConnection"]));
-
+            
             //MediatR
             services.AddMediatR(cfg =>
             {

@@ -41,7 +41,8 @@
             return new OperationResult<TData>()
             {
                 Status = OperationResultStatus.NotFound,
-                Title = message,
+                Title = "اطلاعات یافت نشد",
+                Message = message,
                 Data = data,
             };
         }

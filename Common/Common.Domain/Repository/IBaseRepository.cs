@@ -5,12 +5,12 @@ namespace Common.Domain.Repository
   
     public interface IBaseRepository<T> where T : BaseEntity
     {
-        Task<T?> GetAsync(long id);
+        Task<T?> GetAsync(Guid id);
         Task<List<T>?> GetListTrackingAsync();
         Task<List<T>?> GetListByFilterAsync(Expression<Func<T, bool>> expression);
         Task<T?> GetByFilterAsync(Expression<Func<T, bool>> expression);
 
-        Task<T?> GetTracking(long id);
+        Task<T?> GetTracking(Guid id);
         Task<T?> GetTrackingWithString(string id);
 
         Task AddAsync(T entity);
@@ -23,6 +23,7 @@ namespace Common.Domain.Repository
         Task<int> Save();
         int SaveChange();
         Task<int> SaveChangeAsync();
+        Task<int> SaveChangeAsync(T entity);
 
         Task<bool> ExistsAsync(Expression<Func<T, bool>> expression);
 

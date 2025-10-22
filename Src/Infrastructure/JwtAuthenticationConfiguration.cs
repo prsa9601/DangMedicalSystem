@@ -44,11 +44,11 @@ namespace Infrastructure
                 {
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = new SymmetricSecurityKey(
-                        Encoding.UTF8.GetBytes(configuration["Jwt:SecretKey"])),
+                        Encoding.UTF8.GetBytes(configuration["JwtConfig:SecretKey"])),
                     ValidateIssuer = true,
-                    ValidIssuer = configuration["Jwt:Issuer"],
+                    ValidIssuer = configuration["JwtConfig:Issuer"],
                     ValidateAudience = true,
-                    ValidAudience = configuration["Jwt:Audience"],
+                    ValidAudience = configuration["JwtConfig:Audience"],
                     ValidateLifetime = true,
                     ClockSkew = TimeSpan.Zero
                 };
