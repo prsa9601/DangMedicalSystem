@@ -2,7 +2,7 @@
 using Domain.UserAgg.Enum;
 using Domain.UserAgg.Interfaces.Repository;
 
-namespace Application.User.ConfirmedAccount
+namespace Application.User.Commands.ConfirmedAccount
 {
     public class ConfirmedAccountUserCommand : IBaseCommand
     {

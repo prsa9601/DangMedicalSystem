@@ -1,12 +1,11 @@
 ﻿using Application.Product.Commands.Create;
 using Application.Product.Commands.Edit;
 using Application.Product.Commands.Remove;
-using Application.User.Create;
-using Application.User.Edit;
-using Application.User.SetImage;
 using Common.AspNetCore;
 using Facade.Product;
 using Microsoft.AspNetCore.Mvc;
+using Query.Product.DTOs;
+using Query.Product.DTOs.FilterDto;
 
 namespace DangMedicalSystem.Api.Controllers
 {
@@ -37,6 +36,18 @@ namespace DangMedicalSystem.Api.Controllers
         public async Task<ApiResult> RemoveProduct(RemoveProductCommand command)
         {
             return CommandResult(await _facade.RemoveProduct(command));
+        }
+
+        [HttpGet("GetProductByFilter")]
+        public async Task<ApiResult<ProductFilterResult>> GetProductByFilter([FromQuery] ProductFilterParam param)
+        {
+            return QueryResult(await _facade.GetByFilter(param));
+        }
+
+        [HttpGet("GetProductBySlug")]
+        public async Task<ApiResult<ProductDto?>> GetProductBySlug(string slug)
+        {
+            return QueryResult(await _facade.GetBySlug(slug));
         }
     }
 }

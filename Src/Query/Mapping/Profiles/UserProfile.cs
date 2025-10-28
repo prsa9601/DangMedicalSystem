@@ -1,4 +1,4 @@
-﻿using Application.User.Create;
+﻿using Application.User.Commands.Create;
 using AutoMapper;
 using Domain.UserAgg;
 using Query.User.DTOs;

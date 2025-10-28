@@ -10,7 +10,12 @@ namespace Application.Product.Commands.Edit
         public required string slug { get; set; }
         public required string title { get; set; }
         public required string description { get; set; }
-        public required SeoData seoData { get; set; }
+        public string? MetaTitle { get; set; }
+        public string? MetaDescription { get; set; }
+        public string? MetaKeyWords { get; set; }
+        public bool IndexPage { get; set; }
+        public string? Canonical { get; set; }
+        public string? Schema { get; set; }
         public Guid productId { get; set; }
     }
     public sealed class EditProductCommandHandler : IBaseCommandHandler<EditProductCommand>
@@ -29,7 +34,9 @@ namespace Application.Product.Commands.Edit
             var product = await _repository.GetTracking(request.productId);
             if (product == null) return OperationResult.NotFound("محصولی یافت نشد.");
 
-            product.Edit(request.title, request.description, request.slug, request.seoData, _service);
+            product.Edit(request.title, request.description, request.slug, new SeoData(
+                    request.MetaKeyWords, request.MetaDescription, request.MetaTitle,
+                    request.IndexPage, request.Canonical, request.Schema), _service);
             
             await _repository.SaveChangeAsync();
 

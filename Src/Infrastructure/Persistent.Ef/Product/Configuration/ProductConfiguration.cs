@@ -1,5 +1,6 @@
 ﻿using AngleSharp.Dom;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Infrastructure.Persistent.Ef.Product.Configuration
@@ -11,19 +12,19 @@ namespace Infrastructure.Persistent.Ef.Product.Configuration
             builder.ToTable("Product", "product");
 
             builder.HasKey(b => b.Id);
-
-            builder.OwnsOne(u => u.SeoData, option =>
-            {
-                option.ToTable("SeoData", "product");
-
-            });
            
             builder.Property(b => b.Slug)
                .IsRequired()
                .IsUnicode(false);
 
+            builder.Property(b => b.ImageName)
+               .IsRequired(false)
+               .IsUnicode(false);
+
             builder.OwnsOne(b => b.SeoData, config =>
             {
+                config.ToTable("SeoData", "product");
+
                 config.Property(b => b.MetaDescription)
                     .HasMaxLength(500)
                     .HasColumnName("MetaDescription");
@@ -46,6 +47,17 @@ namespace Infrastructure.Persistent.Ef.Product.Configuration
                 config.Property(b => b.Schema)
                     .HasColumnName("Schema");
             });
+
+            builder.OwnsOne(b => b.Inventory, inventory =>
+            {
+                inventory.ToTable("Inventory", "product");
+
+                inventory.HasKey(i => i.Id);
+
+                inventory.HasIndex(i => i.ProductId);
+            });
+
+
         }
     }
 }

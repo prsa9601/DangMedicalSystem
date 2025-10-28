@@ -6,7 +6,7 @@ using Domain.UserAgg.Interfaces.Builder;
 using Domain.UserAgg.Interfaces.Repository;
 using Microsoft.AspNetCore.Http;
 
-namespace Application.User.CompletionOfInformation
+namespace Application.User.Commands.CompletionOfInformation
 {
     public class CompletionOfInformationCommand : IBaseCommand
     {

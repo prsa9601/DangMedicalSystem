@@ -3,7 +3,7 @@ using Common.Application.SecurityUtil;
 using Domain.UserAgg.Interfaces.Builder;
 using Domain.UserAgg.Interfaces.Repository;
 
-namespace Application.User.Create
+namespace Application.User.Commands.Create
 {
     public class CreateUserCommand :IBaseCommand
     {

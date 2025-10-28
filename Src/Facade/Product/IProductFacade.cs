@@ -3,6 +3,11 @@ using Application.Product.Commands.Edit;
 using Application.Product.Commands.Remove;
 using Common.Application;
 using MediatR;
+using Query.Product.Dtos.FilterDto;
+using Query.Product.DTOs;
+using Query.Product.DTOs.FilterDto;
+using Query.Product.GetBySlug;
+using Query.Product.GetFilter;
 
 namespace Facade.Product
 {
@@ -11,6 +16,9 @@ namespace Facade.Product
         Task<OperationResult> RemoveProduct(RemoveProductCommand command);
         Task<OperationResult> CreateProduct(CreateProductCommand command);
         Task<OperationResult> EditProduct(EditProductCommand command);
+
+        Task<ProductDto?> GetBySlug(string slug);
+        Task<ProductFilterResult> GetByFilter(ProductFilterParam param);
     }
     public class ProductFacade : IProductFacade
     {
@@ -29,6 +37,16 @@ namespace Facade.Product
         public async Task<OperationResult> EditProduct(EditProductCommand command)
         {
             return await _mediator.Send(command);
+        }
+
+        public async Task<ProductFilterResult> GetByFilter(ProductFilterParam param)
+        {
+            return await _mediator.Send(new GetProductFilterQuery(param));
+        }
+
+        public async Task<ProductDto?> GetBySlug(string slug)
+        {
+            return await _mediator.Send(new GetProductBySlugQuery(slug));
         }
 
         public async Task<OperationResult> RemoveProduct(RemoveProductCommand command)

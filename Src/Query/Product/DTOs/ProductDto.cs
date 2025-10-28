@@ -1,5 +1,6 @@
 ﻿using Common.Domain.ValueObjects;
 using Common.Query;
+using Domain.ProductAgg;
 using Domain.ProductAgg.Enum;
 
 namespace Query.Product.DTOs
@@ -12,5 +13,6 @@ namespace Query.Product.DTOs
         public string Slug { get; set; }
         public SeoData SeoData { get; set; }
         public ProductStatus Status { get; set; }
+        public InventoryDto? InventoryDto { get; set; }
     }
 }

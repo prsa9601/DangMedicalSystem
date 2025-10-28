@@ -1,17 +1,20 @@
-﻿using Domain.ProductAgg.Interfaces.Services;
+﻿using Domain.ProductAgg.Interfaces.Repository;
+using Domain.ProductAgg.Interfaces.Services;
 
 namespace Application.Product.Service
 {
     public class ProductDomainService : IProductDomainService
     {
-        public bool PhoneNumberIsExist(string phoneNumber)
+        private readonly IProductRepository _repository;
+
+        public ProductDomainService(IProductRepository repository)
         {
-            throw new NotImplementedException();
+            _repository = repository;
         }
 
         public bool SlugIsExist(string slug)
         {
-            throw new NotImplementedException();
+            return _repository.Exists(i=>i.Slug.Equals(slug));
         }
     }
 }

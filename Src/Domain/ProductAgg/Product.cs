@@ -15,6 +15,8 @@ namespace Domain.ProductAgg
         public SeoData SeoData { get; private set; }
         public ProductStatus Status { get; private set; }
 
+        public Inventory? Inventory { get; private set; }
+
         private Product()
         {
             SeoData = SeoData.CreateEmpty();

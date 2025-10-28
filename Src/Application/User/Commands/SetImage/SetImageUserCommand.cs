@@ -4,7 +4,7 @@ using Common.Application.FileUtil.Interfaces;
 using Domain.UserAgg.Interfaces.Repository;
 using Microsoft.AspNetCore.Http;
 
-namespace Application.User.SetImage
+namespace Application.User.Commands.SetImage
 {
     public class SetImageUserCommand : IBaseCommand
     {

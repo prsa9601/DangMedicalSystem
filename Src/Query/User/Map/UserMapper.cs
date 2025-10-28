@@ -16,7 +16,7 @@ namespace Query.User.Map
                 Id = user.Id,
                 CreationDate = user.CreationDate,
                 FirstName = user.FirstName,
-                BankAccount = user.BankAccount,
+                BankAccount = user.BankAccount.BankAccountMapToBankAccountDto(),
                 BirthCertificatePhoto = user.BirthCertificatePhoto,
                 ImageName = user.ImageName,
                 IsActive = user.IsActive,
@@ -44,6 +44,21 @@ namespace Query.User.Map
 
             userRoleDto.Permissions.AddRange(permission.Select(i => i.Permission));
             return userRoleDto;
+        }
+        public static UserBankAccountDto BankAccountMapToBankAccountDto(this UserBankAccount? bankAccount)
+        {
+            if (bankAccount == null) return null;
+            return new UserBankAccountDto
+            {
+                UserId = bankAccount.UserId,
+                FirstName = bankAccount.FirstName,
+                CardNumber = bankAccount.CardNumber
+                ,ExpirationDateMonth = bankAccount.ExpirationDateMonth,
+                ExpirationDateYear = bankAccount.ExpirationDateYear,
+                IsConfirmed = bankAccount.IsConfirmed,
+                LastName = bankAccount.LastName,
+                Shaba = bankAccount.Shaba,
+            };
         }
     }
 }
