@@ -19,7 +19,6 @@
   <ItemGroup>
     <Folder Include="User\Builder\" />
     <Folder Include="User\Block\" />
-    <Folder Include="User\Commands\Remove\" />
     <Folder Include="User\Commands\SetSession\" />
     <Folder Include="User\Commands\SetRole\" />
   </ItemGroup>

@@ -82,6 +82,12 @@ namespace Domain.UserAgg
             UserAttempts.RemoveAll(i => i.ExpireDate > DateTime.Now && i.AttemptType == attemptType);
         }
 
+        public void ChangeActivity(bool isActive)
+        {
+            IsActive = isActive;
+        }
+
+
         #region SetBuilder
 
         public void SetFirstName(string firstName)

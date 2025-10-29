@@ -1,7 +1,9 @@
-﻿using Application.User.Commands.CompletionOfInformation;
+﻿using Application.User.Commands.ChangeActivityAccount;
+using Application.User.Commands.CompletionOfInformation;
 using Application.User.Commands.ConfirmedAccount;
 using Application.User.Commands.Create;
 using Application.User.Commands.Edit;
+using Application.User.Commands.Remove;
 using Application.User.Commands.SetImage;
 using Common.Application;
 using MediatR;
@@ -20,9 +22,11 @@ namespace Facade.User
         Task<OperationResult> CreateUser(CreateUserCommand command);
         Task<OperationResult<Guid>> CreateUserForAdmin(CreateUserForAdminCommand command);
         Task<OperationResult> EditUser(EditUserCommand command);
+        Task<OperationResult<string>> RemoveUser(RemoveUserCommand command);
         Task<OperationResult> SetImageUser(SetImageUserCommand command);
         Task<OperationResult> CompletionOfInformation(CompletionOfInformationCommand command);
         Task<OperationResult> ConfirmedAccount(ConfirmedAccountUserCommand command);
+        Task<OperationResult> ChangeActivityAccount(ChangeActivityUserAccountCommand command);
 
 
         Task<UserDto?> GetById(Guid userId);
@@ -36,6 +40,11 @@ namespace Facade.User
         public UserFacade(IMediator mediator)
         {
             _mediator = mediator;
+        }
+
+        public async Task<OperationResult> ChangeActivityAccount(ChangeActivityUserAccountCommand command)
+        {
+            return await _mediator.Send(command);
         }
 
         public async Task<OperationResult> CompletionOfInformation(CompletionOfInformationCommand command)
@@ -76,6 +85,11 @@ namespace Facade.User
         public async Task<UserDto?> GetById(Guid userId)
         {
             return await _mediator.Send(new GetUserByIdQuery(userId));
+        }
+
+        public async Task<OperationResult<string>> RemoveUser(RemoveUserCommand command)
+        {
+            return await _mediator.Send(command);
         }
 
         public async Task<OperationResult> SetImageUser(SetImageUserCommand command)

@@ -1,7 +1,9 @@
-﻿using Application.User.Commands.CompletionOfInformation;
+﻿using Application.User.Commands.ChangeActivityAccount;
+using Application.User.Commands.CompletionOfInformation;
 using Application.User.Commands.ConfirmedAccount;
 using Application.User.Commands.Create;
 using Application.User.Commands.Edit;
+using Application.User.Commands.Remove;
 using Application.User.Commands.SetImage;
 using Common.AspNetCore;
 using Facade.User;
@@ -37,7 +39,7 @@ namespace DangMedicalSystem.Api.Controllers
         }
         
         [HttpPost("CompletionOfInformation")]
-        public async Task<ApiResult> CompletionOfInformationUser(CompletionOfInformationCommand command)
+        public async Task<ApiResult> CompletionOfInformationUser([FromForm] CompletionOfInformationCommand command)
         {
             return CommandResult(await _facade.CompletionOfInformation(command));
         }
@@ -48,10 +50,25 @@ namespace DangMedicalSystem.Api.Controllers
             return CommandResult(await _facade.ConfirmedAccount(command));
         }
         
+        [HttpPatch("ChangeActivityAccount")]
+        public async Task<ApiResult> ChangeActivityAccount(ChangeActivityUserAccountCommand command)
+        {
+            return CommandResult(await _facade.ChangeActivityAccount(command));
+        }
+        
         [HttpPatch("EditUser")]
         public async Task<ApiResult> EditUser(EditUserCommand command)
         {
             return CommandResult(await _facade.EditUser(command));
+        }
+
+        [HttpDelete("RemoveUser")]
+        public async Task<ApiResult<string?>> RemoveUser(Guid userId)
+        {
+            return CommandResult(await _facade.RemoveUser(new RemoveUserCommand
+            {
+                UserId = userId
+            }));
         }
     
         [HttpPatch("SetImageUser")]
