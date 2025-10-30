@@ -86,6 +86,11 @@ namespace Domain.UserAgg
         {
             IsActive = isActive;
         }
+      
+        public void ChangePassword(string hashPassword)
+        {
+            Password = hashPassword;
+        }
 
 
         #region SetBuilder

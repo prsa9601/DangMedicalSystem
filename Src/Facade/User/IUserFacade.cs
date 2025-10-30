@@ -1,4 +1,5 @@
 ﻿using Application.User.Commands.ChangeActivityAccount;
+using Application.User.Commands.ChangePassword;
 using Application.User.Commands.CompletionOfInformation;
 using Application.User.Commands.ConfirmedAccount;
 using Application.User.Commands.Create;
@@ -26,6 +27,7 @@ namespace Facade.User
         Task<OperationResult> SetImageUser(SetImageUserCommand command);
         Task<OperationResult> CompletionOfInformation(CompletionOfInformationCommand command);
         Task<OperationResult> ConfirmedAccount(ConfirmedAccountUserCommand command);
+        Task<OperationResult> ChangePassword(ChangePasswordCommand command);
         Task<OperationResult> ChangeActivityAccount(ChangeActivityUserAccountCommand command);
 
 
@@ -43,6 +45,11 @@ namespace Facade.User
         }
 
         public async Task<OperationResult> ChangeActivityAccount(ChangeActivityUserAccountCommand command)
+        {
+            return await _mediator.Send(command);
+        }
+
+        public async Task<OperationResult> ChangePassword(ChangePasswordCommand command)
         {
             return await _mediator.Send(command);
         }

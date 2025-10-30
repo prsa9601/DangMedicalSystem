@@ -1,4 +1,5 @@
 ﻿using Application.User.Commands.ChangeActivityAccount;
+using Application.User.Commands.ChangePassword;
 using Application.User.Commands.CompletionOfInformation;
 using Application.User.Commands.ConfirmedAccount;
 using Application.User.Commands.Create;
@@ -48,6 +49,12 @@ namespace DangMedicalSystem.Api.Controllers
         public async Task<ApiResult> ConfirmedAccount(ConfirmedAccountUserCommand command)
         {
             return CommandResult(await _facade.ConfirmedAccount(command));
+        }
+        
+        [HttpPost("ChangePassword")]
+        public async Task<ApiResult> ChangePassword(ChangePasswordCommand command)
+        {
+            return CommandResult(await _facade.ChangePassword(command));
         }
         
         [HttpPatch("ChangeActivityAccount")]

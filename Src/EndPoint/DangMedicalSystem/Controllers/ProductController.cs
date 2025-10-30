@@ -33,9 +33,12 @@ namespace DangMedicalSystem.Api.Controllers
         }
 
         [HttpDelete("RemoveProduct")]
-        public async Task<ApiResult> RemoveProduct(RemoveProductCommand command)
+        public async Task<ApiResult> RemoveProduct(Guid productId)
         {
-            return CommandResult(await _facade.RemoveProduct(command));
+            return CommandResult(await _facade.RemoveProduct(new RemoveProductCommand
+            {
+                productId = productId,
+            }));
         }
 
         [HttpGet("GetProductByFilter")]
@@ -48,6 +51,12 @@ namespace DangMedicalSystem.Api.Controllers
         public async Task<ApiResult<ProductDto?>> GetProductBySlug(string slug)
         {
             return QueryResult(await _facade.GetBySlug(slug));
+        }
+       
+        [HttpGet("GetProductById")]
+        public async Task<ApiResult<ProductDto?>> GetProductById(Guid productId)
+        {
+            return QueryResult(await _facade.GetById(productId));
         }
     }
 }

@@ -43,24 +43,30 @@ namespace Domain.ProductAgg
         {
             ImageName = imageName;
         }
-      
+
         public void SetStatus(ProductStatus status)
         {
             Status = status;
         }
-       
-        public void ChangeStatus(ProductStatus productStatus) 
+
+        public void ChangeStatus(ProductStatus productStatus)
         {
             Status = productStatus;
         }
 
         public void Guard(string slug, string title, string description, IProductDomainService service)
         {
-            if (service.SlugIsExist(slug))
-                throw new Exception("Slug Is Exist.");
+            if (slug != Slug)
+            {
+                if (service.SlugIsExist(slug))
+                    throw new Exception("Slug Is Exist.");
+            }
 
-            if (string.IsNullOrEmpty(title))
-                throw new Exception("Title Can Not Be Null.");
+            if (title != Title)
+            {
+                if (string.IsNullOrEmpty(title))
+                    throw new Exception("Title Can Not Be Null.");
+            }
 
             if (string.IsNullOrEmpty(description))
                 throw new Exception("Description Can Not Be Null.");

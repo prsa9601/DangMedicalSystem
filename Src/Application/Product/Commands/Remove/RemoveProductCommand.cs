@@ -28,6 +28,7 @@ namespace Application.Product.Commands.Remove
 
             if (!result) return OperationResult.Error("مشکل سمت سرور رخ داده است لطفا دقایقی دیگر تلاش کنید.");
 
+            await _repository.SaveChangeAsync();
             return OperationResult.Success();
         }
     }
