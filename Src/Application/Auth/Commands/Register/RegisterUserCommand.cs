@@ -1,4 +1,5 @@
-﻿using Common.Application;
+﻿using Application.Auth.Shared.Utilities;
+using Common.Application;
 using Common.Application.SecurityUtil;
 using Domain.UserAgg;
 using Domain.UserAgg.Interfaces.Builder;
@@ -8,10 +9,20 @@ namespace Application.Auth.Commands.Register
 {
     public sealed class RegisterUserCommand : IBaseCommand
     {
+        public RegisterUserCommand(string phoneNumber, string password, string firstName, string lastName, string ipAddress)
+        {
+            this.phoneNumber = phoneNumber.EnsureLeadingZero();
+            this.password = password;
+            this.firstName = firstName;
+            this.lastName = lastName;
+            this.ipAddress = ipAddress;
+        }
+
         public string phoneNumber { get; set; }
         public string password { get; set; }
         public string firstName { get; set; }
         public string lastName { get; set; }
+        public string ipAddress { get; set; }
     }
     public sealed class RegisterUserCommandHandler : IBaseCommandHandler<RegisterUserCommand>
     {
@@ -27,16 +38,40 @@ namespace Application.Auth.Commands.Register
         public async Task<OperationResult> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
         {
             var password = Sha256Hasher.Hash(request.password);
-            var user = _builder.WithPassword(password).WithPhoneNumber(request.phoneNumber).
-                WithFirstName(request.firstName).WithLastName(request.lastName).Build();
+            var user = await _repository.GetByFilterAsync
+                (i=>i.PhoneNumber.Equals(request.phoneNumber));
+
+            user.SetFirstName(request.firstName);
+            user.SetLastName(request.lastName);
+            user.SetPassword(password);
+            user.SetPhoneNumber(request.phoneNumber);
+
+            if (CheckSessionForOtpCode(user, request.ipAddress) == false)
+            {
+                return OperationResult.Error("قبل از ثبت نام باید شماره تماستون رو فعال کنید.");
+            }
 
             if (user is null)
                 OperationResult.Error("خطایی سمت سرور رخ داده است لطفا بعدا تلاش کنید!");
 
-            await _repository.AddAsync(user!);
+            //await _repository.AddAsync(user!);
             _repository.SaveChange();
 
-            return OperationResult.Success();
+            return OperationResult.Success("ثبت نام با موفقیت انجام شد.");
+        }
+
+        private bool CheckSessionForOtpCode(Domain.UserAgg.User user, string ipAddress)
+        {
+            if (user == null)
+                return false;
+
+            var session = user.UserSessions.FirstOrDefault(i => i.ExpireDate > DateTime.Now && i.UserId.Equals(user.Id)
+            && i.IpAddress == ipAddress && i.IsActive == true && ((i.ExpireDate.Minute - i.CreationDate.Minute) == 7));
+
+            if (session is null)
+                return false;
+
+            return true;
         }
     }
 }

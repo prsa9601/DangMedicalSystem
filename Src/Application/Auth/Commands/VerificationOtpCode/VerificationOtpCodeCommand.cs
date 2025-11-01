@@ -1,4 +1,5 @@
-﻿using Common.Application;
+﻿using Application.Auth.Shared.Utilities;
+using Common.Application;
 using Common.Application.SecurityUtil;
 using Domain.UserAgg.Interfaces.Repository;
 
@@ -7,7 +8,16 @@ namespace Application.Auth.Commands.VerificationOtpCode
     public class VerificationOtpCodeCommand : IBaseCommand<bool>
     {
         public string phoneNumber { get; set; }
+
+        public VerificationOtpCodeCommand(string phoneNumber, string token, string ipAddress)
+        {
+            this.phoneNumber = phoneNumber.EnsureLeadingZero();
+            this.token = token;
+            this.ipAddress = ipAddress;
+        }
+
         public string token { get; set; }
+        public string ipAddress { get; set; }
     }
     public class VerificationOtpCodeCommandHandler : IBaseCommandHandler<VerificationOtpCodeCommand, bool>
     {
@@ -40,6 +50,10 @@ namespace Application.Auth.Commands.VerificationOtpCode
 
             //Create UserSession
 
+            user.SetUserSession(request.token, request.ipAddress , DateTime.Now.AddMinutes(7));
+
+
+            await _repository.SaveChangeAsync();
             return OperationResult<bool>.Success(true);
         }
     }

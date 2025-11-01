@@ -1,4 +1,5 @@
 ﻿using Application.Auth.Shared.Abstractions.Interfaces;
+using Application.Auth.Shared.Utilities;
 using Common.Application;
 using Common.Application.SecurityUtil;
 using Domain.UserAgg.Events;
@@ -10,6 +11,11 @@ namespace Application.Auth.Commands.GenerateAndSendOtpCode
     public class GenerateAndSendOtpCodeCommand : IBaseCommand<string>
     {
         public string phoneNumber { get; set; }
+
+        public GenerateAndSendOtpCodeCommand(string phoneNumber)
+        {
+            this.phoneNumber = phoneNumber.EnsureLeadingZero();
+        }
     }
 
     public class GenerateAndSendOtpCodeCommandHandler : IBaseCommandHandler<GenerateAndSendOtpCodeCommand, string>
