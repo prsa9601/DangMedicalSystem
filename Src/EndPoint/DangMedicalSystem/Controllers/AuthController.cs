@@ -2,9 +2,9 @@
 using Application.Auth.Commands.Login;
 using Application.Auth.Commands.Register;
 using Application.Auth.Commands.VerificationOtpCode;
+using Common.Application;
 using Common.AspNetCore;
 using Facade.Auth;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DangMedicalSystem.Api.Controllers
@@ -19,7 +19,8 @@ namespace DangMedicalSystem.Api.Controllers
         {
             _facade = facade;
         }
-     
+
+        
         [HttpPost("GenerateOtpCode")]
         public async Task<ApiResult<string>> GenerateAndSendOtpCode(GenerateAndSendOtpCodeCommand command)
         {
@@ -31,11 +32,13 @@ namespace DangMedicalSystem.Api.Controllers
         {
             return CommandResult(await _facade.RegisterUser(command))!;
         }
- 
+
         [HttpPost("LoginUser")]
-        public async Task<ApiResult<string>> LoginUser(UserLoginCommand command)
+        public async Task<ApiResult<LoginCommandResult>> LoginUser(UserLoginCommand command)
         {
-            return CommandResult(await _facade.LoginUser(command))!;
+            var result = await _facade.LoginUser(command);
+          
+            return CommandResult(result)!;
         }
 
         [HttpPost("VerificationOtpCode")]

@@ -1,6 +1,7 @@
+using DangMedicalSystem.Api;
 using Microsoft.AspNetCore.Mvc;
 
-namespace DangMedicalSystem.Controllers
+namespace DangMedicalSystem.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]

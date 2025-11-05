@@ -4,6 +4,7 @@ using Infrastructure.Auth.Jwt;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -31,10 +32,12 @@ namespace Infrastructure
                 options.Cookie.HttpOnly = false;
                 options.HeaderName = "X-XSRF-TOKEN";
             });
+                services.AddAuthorization();
 
             // Authentication
             services.AddAuthentication(options =>
             {
+                options.DefaultSignInScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             })
@@ -52,13 +55,33 @@ namespace Infrastructure
                     ValidateLifetime = true,
                     ClockSkew = TimeSpan.Zero
                 };
-            }).AddCookie(options =>
-            {
-                options.Cookie.Name = "auth-token";
-                options.Cookie.HttpOnly = true;
-                options.Cookie.SecurePolicy = Microsoft.AspNetCore.Http.CookieSecurePolicy.Always;
-                options.Cookie.SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Strict;
-                options.Cookie.MaxAge = TimeSpan.FromMinutes(60);
+                //options.SaveToken = true;
+                //options.Events = new JwtBearerEvents
+                //{
+                //    OnChallenge = async context =>
+                //    {
+                //        // جلوگیری از پاسخ پیش‌فرض
+                //        context.HandleResponse();
+
+                //        if (context.Request.Path.StartsWithSegments("/api"))
+                //        {
+                //            context.Response.StatusCode = 401;
+                //            await context.Response.WriteAsync("Unauthorized");
+                //        }
+                //        else
+                //        {
+                //            context.Response.Redirect("/Auth/Login");
+                //        }
+                //    }
+                //};
+            });
+            //.AddCookie(options =>
+            //{
+            //    options.Cookie.Name = "auth-Token";
+            //    options.Cookie.HttpOnly = true;
+            //    options.Cookie.SecurePolicy = Microsoft.AspNetCore.Http.CookieSecurePolicy.Always;
+            //    options.Cookie.SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Strict;
+            //    options.Cookie.MaxAge = TimeSpan.FromMinutes(60);
 
                 //options.Events = new CookieAuthenticationEvents
                 //{
@@ -139,7 +162,7 @@ namespace Infrastructure
 
 
 
-            });
+                //});
 
 
             //Jwt
@@ -154,8 +177,6 @@ namespace Infrastructure
             });
          
 
-            services.AddAuthentication();
-            services.AddAuthorization();
 
             return services;
         }

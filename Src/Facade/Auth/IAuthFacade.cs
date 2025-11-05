@@ -11,7 +11,7 @@ namespace Facade.Auth
     {
         Task<OperationResult<string>> GenerateAndSendOtpCode(GenerateAndSendOtpCodeCommand command); 
         Task<OperationResult> RegisterUser(RegisterUserCommand command); 
-        Task<OperationResult<string>> LoginUser(UserLoginCommand command); 
+        Task<OperationResult<LoginCommandResult>> LoginUser(UserLoginCommand command); 
         Task<OperationResult<bool>> VerificationOtpCode(VerificationOtpCodeCommand command); 
     }
     internal class AuthFacade : IAuthFacade
@@ -28,7 +28,7 @@ namespace Facade.Auth
             return await _mediator.Send(command);
         }
 
-        public async Task<OperationResult<string>> LoginUser(UserLoginCommand command)
+        public async Task<OperationResult<LoginCommandResult>> LoginUser(UserLoginCommand command)
         {
             return await _mediator.Send(command);
         }

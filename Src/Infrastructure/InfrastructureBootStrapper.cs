@@ -19,7 +19,6 @@ namespace Infrastructure
         public static IServiceCollection InfrastructureInject(this IServiceCollection services, IConfiguration configuration) 
         {
             services.DataBaseConfig(configuration);
-            services.ConfigureJwtAuthentication(configuration);
             services.ApplicationInject();
 
 
@@ -29,6 +28,7 @@ namespace Infrastructure
 
             services.AddTransient<System.Random>();
             services.AddScoped<IOtpService, OtpService>();
+            services.ConfigureJwtAuthentication(configuration);
             return services;
         }
     }

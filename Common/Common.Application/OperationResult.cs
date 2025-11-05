@@ -27,6 +27,16 @@
                 Data = default(TData),
             };
         }  
+        public static OperationResult<TData> NotFound(string message, TData? data)
+        {
+            return new OperationResult<TData>()
+            {
+                Status = OperationResultStatus.NotFound,
+                Title = "NotFound",
+                Message = message,
+                Data = data ?? default(TData),
+            };
+        }  
         public static OperationResult<TData> NotFound(TData data)
         {
             return new OperationResult<TData>()

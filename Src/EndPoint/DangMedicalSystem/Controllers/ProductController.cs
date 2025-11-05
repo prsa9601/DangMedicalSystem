@@ -3,6 +3,7 @@ using Application.Product.Commands.Edit;
 using Application.Product.Commands.Remove;
 using Common.AspNetCore;
 using Facade.Product;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Query.Product.DTOs;
 using Query.Product.DTOs.FilterDto;
@@ -41,6 +42,7 @@ namespace DangMedicalSystem.Api.Controllers
             }));
         }
 
+        [Authorize]
         [HttpGet("GetProductByFilter")]
         public async Task<ApiResult<ProductFilterResult>> GetProductByFilter([FromQuery] ProductFilterParam param)
         {

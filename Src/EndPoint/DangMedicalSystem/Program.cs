@@ -1,9 +1,12 @@
-using Application.Auth.Commands.Register;
+﻿using Application.Auth.Commands.Register;
 using Application.Utilities;
 using Common.AspNetCore;
+using Common.AspNetCore.Middlewares;
 using Facade;
 using Infrastructure;
+using Infrastructure.Shared.Middleware;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.OpenApi.Models;
 using Query.User.GetById;
@@ -86,18 +89,32 @@ builder.Services.AddMediatR(cfg =>
 #endregion
 builder.Services.AddOpenApi();
 
+//// اضافه کردن CORS
+//builder.Services.AddCors(options =>
+//{
+//    options.AddPolicy("AllowFrontend", policy =>
+//    {
+//        policy.WithOrigins("https://localhost:7135", "http://localhost:5285") // آدرس فرانت‌اند
+//              .AllowAnyMethod()
+//              .AllowAnyHeader()
+//              .AllowCredentials(); // مهم!
+//    });
+//});
+//var requireAuthPolicy = new AuthorizationPolicyBuilder()
+//    .RequireAuthenticatedUser()
+//    .Build();
+
+//builder.Services.AddAuthorizationBuilder()
+//    .SetFallbackPolicy(requireAuthPolicy);
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 
-app.UseHttpsRedirection();
-app.UseStaticFiles();
-app.UseCors("DangMedicalSystem.Api");
 
-app.UseAuthentication();
-app.UseAuthorization();
 
-app.MapControllers();
+app.UseSwagger();
+app.UseSwaggerUI();
 
 if (app.Environment.IsDevelopment())
 {
@@ -105,5 +122,18 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+
+app.UseCors("DangMedicalSystem.Api");
+
+app.UseMiddleware<AuthenticationMiddleware>();
+//app.UseMiddleware<JwtAuthenticationMiddleware>();
+app.UseAuthentication();
+app.UseAuthorization();
+
+app.UseApiCustomExceptionHandler();
+app.MapControllers();
 
 app.Run();

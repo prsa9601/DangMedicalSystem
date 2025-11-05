@@ -1,4 +1,4 @@
-namespace DangMedicalSystem
+namespace DangMedicalSystem.Api
 {
     public class WeatherForecast
     {

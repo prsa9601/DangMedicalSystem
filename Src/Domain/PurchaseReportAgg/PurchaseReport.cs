@@ -1,6 +1,6 @@
 ﻿using Common.Domain;
 
-namespace Domain.PurchaseReport
+namespace Domain.PurchaseReportAgg
 {
     public class PurchaseReport : BaseEntity
     {
