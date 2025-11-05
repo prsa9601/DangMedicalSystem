@@ -96,6 +96,12 @@ namespace DangMedicalSystem.Api.Controllers
             return QueryResult(await _facade.GetByFilter(param));
         }
     
+        [HttpGet("CheckOtpCodeForPhoneNumber")]
+        public async Task<ApiResult<UserDto?>> CheckOtpCodeForPhoneNumber(string phoneNumber, string ipAddress)
+        {
+            return QueryResult(await _facade.CheckOtpCodeForPhoneNumber(phoneNumber, ipAddress));
+        }
+    
         //[HttpGet("GetUserByExpressionFilter")]
         //public async Task<ApiResult<UserExpressionFilterResult>> GetUserByExpressionFilter(
         //    [FromQuery] UserExpressionFilterParam param)

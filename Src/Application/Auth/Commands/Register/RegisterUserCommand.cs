@@ -54,6 +54,7 @@ namespace Application.Auth.Commands.Register
             if (user is null)
                 OperationResult.Error("خطایی سمت سرور رخ داده است لطفا بعدا تلاش کنید!");
 
+            user.SetUserSession(Sha256Hasher.Hash(password), request.ipAddress, DateTime.Now.AddMinutes(3));
             //await _repository.AddAsync(user!);
             _repository.SaveChange();
 
@@ -66,11 +67,12 @@ namespace Application.Auth.Commands.Register
                 return false;
 
             var session = user.UserSessions.FirstOrDefault(i => i.ExpireDate > DateTime.Now && i.UserId.Equals(user.Id)
-            && i.IpAddress == ipAddress && i.IsActive == true && ((i.ExpireDate.Minute - i.CreationDate.Minute) == 7));
+            && i.IpAddress == ipAddress && i.IsActive == true && ((i.ExpireDate.Minute - i.CreationDate.Minute) == 3));
 
             if (session is null)
                 return false;
 
+            session.ChangeActivity(false);
             return true;
         }
     }

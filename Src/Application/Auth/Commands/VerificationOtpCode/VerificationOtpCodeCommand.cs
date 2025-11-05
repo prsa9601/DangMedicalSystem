@@ -50,7 +50,7 @@ namespace Application.Auth.Commands.VerificationOtpCode
 
             //Create UserSession
 
-            user.SetUserSession(request.token, request.ipAddress , DateTime.Now.AddMinutes(7));
+            user.SetUserSession(request.token, request.ipAddress , DateTime.Now.AddMinutes(3));
 
 
             await _repository.SaveChangeAsync();

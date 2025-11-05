@@ -1,4 +1,5 @@
-﻿using Application.User.Commands.ChangeActivityAccount;
+﻿using Application.Auth.Shared.Utilities;
+using Application.User.Commands.ChangeActivityAccount;
 using Application.User.Commands.ChangePassword;
 using Application.User.Commands.CompletionOfInformation;
 using Application.User.Commands.ConfirmedAccount;
@@ -8,6 +9,7 @@ using Application.User.Commands.Remove;
 using Application.User.Commands.SetImage;
 using Common.Application;
 using MediatR;
+using Query.User.CheckOtpCodeForPhoneNumber;
 using Query.User.DTOs;
 using Query.User.DTOs.FilterDto;
 using Query.User.DTOs.FilterDto.FilterExpression;
@@ -32,6 +34,7 @@ namespace Facade.User
 
 
         Task<UserDto?> GetById(Guid userId);
+        Task<UserDto?> CheckOtpCodeForPhoneNumber(string phoneNumber, string ipAddress);
         Task<UserFilterResult> GetByFilter(UserFilterParam param);
         Task<UserExpressionFilterResult> GetByExpressionFilter(UserExpressionFilterParam param);
     }
@@ -52,6 +55,11 @@ namespace Facade.User
         public async Task<OperationResult> ChangePassword(ChangePasswordCommand command)
         {
             return await _mediator.Send(command);
+        }
+
+        public async Task<UserDto?> CheckOtpCodeForPhoneNumber(string phoneNumber, string ipAddress)
+        {
+            return await _mediator.Send(new CheckOtpCodeForPhoneNumberQuery(phoneNumber.EnsureLeadingZero(), ipAddress));
         }
 
         public async Task<OperationResult> CompletionOfInformation(CompletionOfInformationCommand command)
