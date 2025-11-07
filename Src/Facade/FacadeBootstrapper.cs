@@ -1,5 +1,7 @@
 ﻿using Facade.Auth;
+using Facade.Order;
 using Facade.Product;
+using Facade.PurchaseReport;
 using Facade.Session;
 using Facade.User;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,6 +17,8 @@ namespace Facade
             services.AddScoped<IAuthFacade, AuthFacade>();
 
             services.AddScoped<IProductFacade, ProductFacade>();
+            services.AddScoped<IPurchaseReportFacade, PurchaseReportFacade>();
+            services.AddScoped<IOrderFacade, OrderFacade>();
             services.AddScoped<IUserFacade, UserFacade>();
 
             services.AddScoped<IUserSessionFacade, UserSessionFacade>();

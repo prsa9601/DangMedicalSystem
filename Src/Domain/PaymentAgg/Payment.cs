@@ -4,6 +4,9 @@ namespace Domain.PaymentAgg
 {
     public abstract class Payment : BaseEntity
     {
-        public string TotalPrice { get; set; }
+        public Guid ProductId { get; set; }
+        public Guid UserId { get; set; }
+        public Guid PurchaseReportId { get; set; }
+        public string ProfitPaymentPrice { get; set; }
     }
 }

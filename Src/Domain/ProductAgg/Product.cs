@@ -54,6 +54,26 @@ namespace Domain.ProductAgg
             Status = productStatus;
         }
 
+        public void SetInventory(string totalPrice, int dong, string profit)
+        {
+            Inventory = new Inventory(totalPrice, dong, profit);
+        }
+        public void EditInventory(string totalPrice, int dong, string profit)
+        {
+            if (Inventory is null)
+                Inventory = new Inventory(totalPrice, dong, profit);
+
+            Inventory.EditInventory(totalPrice, dong, profit);
+        }
+        public void SetInventoryProfitableTime(PaymentTime paymentTime)
+        {
+            if (Inventory is null)
+                throw new Exception("امکان اجرای درخواست ست کردن تاریخ سوددهی محصول وجود ندارد.");
+
+                Inventory.SetProfitableTime(paymentTime);
+        }
+
+
         public void Guard(string slug, string title, string description, IProductDomainService service)
         {
             if (slug != Slug)

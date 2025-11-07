@@ -24,7 +24,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Notification\" />
+    <Folder Include="Persistent.Ef\Notification\Configuration\" />
+    <Folder Include="Persistent.Ef\PurchaseReport\Configuration\" />
     <Folder Include="Persistent.Ef\Role\Configuration\" />
+    <Folder Include="Report\Excel\" />
   </ItemGroup>
 
 </Project>

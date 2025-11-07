@@ -1,12 +1,10 @@
 ﻿using Common.Domain;
-using System.Globalization;
+using Domain.OrderAgg.Interfaces.Services;
 
 namespace Domain.OrderAgg
 {
     public class OrderItem : BaseEntity
     {
-      
-
         public Guid OrderId { get; internal set; }
         public Guid ProductId { get; private set; }
         //قیمت هر دانگ
@@ -26,7 +24,7 @@ namespace Domain.OrderAgg
                 return 0;
             }
         }
-        
+
         public OrderItem(Guid productId, string pricePerDong, int dongAmount, Guid inventoryId)
         {
             ProductId = productId;
@@ -35,6 +33,29 @@ namespace Domain.OrderAgg
             InventoryId = inventoryId;
         }
 
-        //increase And decrease
+        public void EditOrderItem(Guid productId, string pricePerDong, int dongAmount, Guid inventoryId)
+        {
+            ProductId = productId;
+            PricePerDong = pricePerDong;
+            DongAmount = dongAmount;
+            InventoryId = inventoryId;
+        }
+
+        public async Task IncreaseDongAmount(int dongAmount, IOrderDomainService service)
+        {
+            int numberOfDongAvailable = await service.CheckNumberOfDongAvailable(ProductId);
+            if (numberOfDongAvailable == 0)
+                return;
+
+            DongAmount = numberOfDongAvailable < dongAmount + DongAmount ? DongAmount = numberOfDongAvailable : DongAmount + dongAmount;
+
+            DongAmount += dongAmount;
+        }
+
+        public void DecreaseDongAmount(int dongAmount, IOrderDomainService service)
+        {
+            DongAmount = DongAmount < dongAmount ? DongAmount = 0 : DongAmount - dongAmount;
+        }
+
     }
 }

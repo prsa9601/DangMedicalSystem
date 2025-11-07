@@ -18,7 +18,7 @@ namespace Infrastructure.Persistent.Ef.User.Configuration
             builder.Property(b => b.PhoneNumber).IsRequired();
             builder.Property(b => b.Password).IsRequired();
             builder.Property(b => b.NationalityCode).IsRequired(false);
-            builder.Property(b => b.ImageName).IsRequired().HasDefaultValue("Default");
+            builder.Property(b => b.ImageName).IsRequired().HasDefaultValue("Default.png");
             builder.Property(b => b.NationalCardPhoto).IsRequired(false);
             builder.Property(b => b.BirthCertificatePhoto).IsRequired(false);
             builder.Property(b => b.Status).IsRequired().HasConversion<string>();
@@ -72,7 +72,7 @@ namespace Infrastructure.Persistent.Ef.User.Configuration
             {
                 block.ToTable("UserBlocks", "user");
                 block.WithOwner().HasForeignKey("UserId");
-                block.Property<Guid>("Id").ValueGeneratedOnAdd();
+                //block.Property<Guid>("Id").ValueGeneratedOnAdd();
                 block.HasKey("Id");
 
                 block.Property(b => b.BlockToDate).IsRequired();

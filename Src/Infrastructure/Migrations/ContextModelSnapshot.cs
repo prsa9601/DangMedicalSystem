@@ -22,6 +22,28 @@ namespace Infrastructure.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Domain.OrderAgg.Order", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime>("DateOfPurchase")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("status")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("OrderItems", "order");
+                });
+
             modelBuilder.Entity("Domain.ProductAgg.Product", b =>
                 {
                     b.Property<Guid>("Id")
@@ -53,6 +75,59 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Product", "product");
+                });
+
+            modelBuilder.Entity("Domain.PurchaseReportAgg.PurchaseReport", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Profit")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("ProfitPerDang")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<int>("PurchaseDang")
+                        .HasColumnType("int");
+
+                    b.Property<int>("PurchaseDangPerDang")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PurchasePrice")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("PurchasePricePerDang")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TotalDang")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TotalPrice")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("TotalProfit")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("PurchaseReports");
                 });
 
             modelBuilder.Entity("Domain.RoleAgg.Role", b =>
@@ -112,7 +187,7 @@ namespace Infrastructure.Migrations
                         .IsRequired()
                         .ValueGeneratedOnAdd()
                         .HasColumnType("nvarchar(max)")
-                        .HasDefaultValue("Default");
+                        .HasDefaultValue("Default.png");
 
                     b.Property<bool>("IsActive")
                         .ValueGeneratedOnAdd()
@@ -144,6 +219,43 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users", "user");
+                });
+
+            modelBuilder.Entity("Domain.OrderAgg.Order", b =>
+                {
+                    b.OwnsMany("Domain.OrderAgg.OrderItem", "OrderItems", b1 =>
+                        {
+                            b1.Property<Guid>("OrderId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<Guid>("Id")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<DateTime>("CreationDate")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<int>("DongAmount")
+                                .HasColumnType("int");
+
+                            b1.Property<Guid>("InventoryId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("PricePerDong")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<Guid>("ProductId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.HasKey("OrderId", "Id");
+
+                            b1.ToTable("OrderItem", "order");
+
+                            b1.WithOwner()
+                                .HasForeignKey("OrderId");
+                        });
+
+                    b.Navigation("OrderItems");
                 });
 
             modelBuilder.Entity("Domain.ProductAgg.Product", b =>
@@ -345,7 +457,6 @@ namespace Infrastructure.Migrations
                     b.OwnsMany("Domain.UserAgg.UserBlock", "UserBlocks", b1 =>
                         {
                             b1.Property<Guid>("Id")
-                                .ValueGeneratedOnAdd()
                                 .HasColumnType("uniqueidentifier");
 
                             b1.Property<DateTime>("BlockToDate")

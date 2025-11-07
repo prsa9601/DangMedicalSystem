@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Notification\Commands\" />
     <Folder Include="User\Builder\" />
     <Folder Include="User\Block\" />
     <Folder Include="User\Commands\SetSession\" />

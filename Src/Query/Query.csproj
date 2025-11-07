@@ -8,9 +8,9 @@
 
   <ItemGroup>
     <Folder Include="Auth\User\DTOs\" />
-    <Folder Include="Session\" />
     <Folder Include="Product\GetBySlugForAdmin\" />
     <Folder Include="Product\User\DTOs\" />
+    <Folder Include="Session\DTOs\" />
   </ItemGroup>
 
   <ItemGroup>

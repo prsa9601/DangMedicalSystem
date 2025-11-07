@@ -2,6 +2,7 @@
 {
     public enum Permission
     {
+        Programmer,
         Admin,
         Guest,
         User,

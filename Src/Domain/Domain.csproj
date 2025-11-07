@@ -11,15 +11,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="NotificationAgg\Interfaces\Repository\" />
-    <Folder Include="NotificationAgg\Interfaces\Services\" />
-    <Folder Include="OrderAgg\Interfaces\Repository\" />
-    <Folder Include="OrderAgg\Interfaces\Services\" />
     <Folder Include="PaymentAgg\Enum\" />
     <Folder Include="PaymentAgg\Interfaces\Repository\" />
     <Folder Include="PaymentAgg\Interfaces\Services\" />
-    <Folder Include="PurchaseReportAgg\Interfaces\Repository\" />
-    <Folder Include="PurchaseReportAgg\Interfaces\Services\" />
     <Folder Include="RoleAgg\Interfaces\Services\" />
     <Folder Include="SiteEntities\Interfaces\Repository\" />
     <Folder Include="SiteEntities\Interfaces\Services\" />

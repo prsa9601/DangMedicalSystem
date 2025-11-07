@@ -14,7 +14,7 @@ namespace Application.Product.Commands.Edit
         public required string slug { get; set; }
         public required string title { get; set; }
         public required string description { get; set; }
-        public IFormFile Image { get; set; }
+        public IFormFile? Image { get; set; }
         public string? MetaTitle { get; set; }
         public string? MetaDescription { get; set; }
         public string? MetaKeyWords { get; set; }
@@ -48,11 +48,12 @@ namespace Application.Product.Commands.Edit
                     request.IndexPage, request.Canonical, request.Schema), _service);
 
             product.SetStatus(request.status);
-
-            var imageName = await _fileService.SaveFileAndGenerateName
-                (request.Image, Directories.ProductImagePath);
-            product.SetImage(imageName);
-
+            if (request.Image is not null)
+            {
+                var imageName = await _fileService.SaveFileAndGenerateName
+                    (request.Image, Directories.ProductImagePath);
+                product.SetImage(imageName);
+            }
             await _repository.SaveChangeAsync();
 
             return OperationResult.Success();

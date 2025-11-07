@@ -1,5 +1,7 @@
 ﻿using Common.Domain;
+using Domain.OrderAgg;
 using Domain.ProductAgg;
+using Domain.PurchaseReportAgg;
 using Domain.RoleAgg;
 using Domain.UserAgg;
 using Infrastructure.Persistent.Ef.Product.Configuration;
@@ -13,12 +15,14 @@ namespace Infrastructure
 {
     public class Context : DbContext
     {
-        //private readonly IMediator _mediator;, IMediator mediator
-        public Context(DbContextOptions<Context> options) : base(options)
+        private readonly IMediator _mediator;
+        public Context(DbContextOptions<Context> options, IMediator mediator) : base(options)
         {
-            //_mediator = mediator;
+            _mediator = mediator;
         }
 
+        public DbSet<PurchaseReport> PurchaseReports { get; set; }
+        public DbSet<Order> Orders { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<User> Users => Set<User>();
@@ -73,7 +77,7 @@ namespace Infrastructure
 
             foreach (var domainEvent in domainEvents)
             {
-                //await _mediator.Publish(domainEvent);
+                await _mediator.Publish(domainEvent);
             }
         }
 
