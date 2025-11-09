@@ -19,6 +19,7 @@ namespace Facade
             services.AddScoped<IProductFacade, ProductFacade>();
             services.AddScoped<IPurchaseReportFacade, PurchaseReportFacade>();
             services.AddScoped<IOrderFacade, OrderFacade>();
+            services.AddScoped<IInventoryFacade, InventoryFacade>();
             services.AddScoped<IUserFacade, UserFacade>();
 
             services.AddScoped<IUserSessionFacade, UserSessionFacade>();

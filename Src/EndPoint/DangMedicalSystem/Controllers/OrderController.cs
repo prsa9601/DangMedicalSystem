@@ -2,10 +2,8 @@
 using Application.Order.IsFinally;
 using Common.AspNetCore;
 using Facade.Order;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Query.Order.DTOs;
-using System.Threading.Tasks;
 
 namespace DangMedicalSystem.Api.Controllers
 {
@@ -32,19 +30,19 @@ namespace DangMedicalSystem.Api.Controllers
             return CommandResult(await _facade.IsFinally(command, cancellationToken));
         }
         
-        [HttpGet("GetById")]
+        [HttpGet("GetOrderById")]
         public async Task<ApiResult<OrderDto?>> GetById(Guid orderId, CancellationToken cancellationToken)
         {
             return QueryResult(await _facade.GetById(orderId, cancellationToken));
         }
         
-        [HttpGet("GetFilter")]
+        [HttpGet("GetOrdersByFilter")]
         public async Task<ApiResult<OrderFilterResult>> GetFilter([FromQuery] OrderFilterParam param, CancellationToken cancellationToken)
         {
             return QueryResult(await _facade.GetFilter(param, cancellationToken));
         }
       
-        [HttpGet("GetForReport")]
+        [HttpGet("GetOrdersForReport")]
         public async Task<ApiResult<OrderFilterResult>> GetForReport([FromQuery] OrderFilterParam param, CancellationToken cancellationToken)
         {
             return QueryResult(await _facade.GetForReport(param, cancellationToken));

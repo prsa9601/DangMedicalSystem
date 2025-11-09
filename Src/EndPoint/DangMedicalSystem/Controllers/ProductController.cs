@@ -42,7 +42,7 @@ namespace DangMedicalSystem.Api.Controllers
             }));
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet("GetProductByFilter")]
         public async Task<ApiResult<ProductFilterResult>> GetProductByFilter([FromQuery] ProductFilterParam param)
         {

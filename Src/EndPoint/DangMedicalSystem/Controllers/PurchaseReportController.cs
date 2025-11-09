@@ -17,7 +17,7 @@ namespace DangMedicalSystem.Api.Controllers
             _facade = facade;
         }
 
-        [HttpGet("GetFilterForAdmin")]
+        [HttpGet("GetPurchaseReportFilterForAdmin")]
         public async Task<ApiResult<PurchaseReportFilterResult>> GetFilterForAdmin(PurchaseReportFilterParam param
             , CancellationToken cancellationToken)
         {
