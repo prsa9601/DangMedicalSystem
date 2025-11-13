@@ -54,7 +54,7 @@ namespace Application.Auth.Commands.GenerateAndSendOtpCode
             {
                 string password = Sha256Hasher.Hash("DefaultGuestPassword");
                 var userEntity = _builder.WithPhoneNumber(request.phoneNumber).WithPassword(password).Build();
-                userEntity.SetUserStatus(Domain.UserAgg.Enum.UserStatus.NotConfirmed);
+                
                 
                 await _repository.AddAsync(userEntity);
 

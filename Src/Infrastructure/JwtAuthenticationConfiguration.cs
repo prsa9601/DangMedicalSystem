@@ -32,7 +32,6 @@ namespace Infrastructure
                 options.Cookie.HttpOnly = false;
                 options.HeaderName = "X-XSRF-TOKEN";
             });
-                services.AddAuthorization();
 
             // Authentication
             services.AddAuthentication(options =>
@@ -166,6 +165,7 @@ namespace Infrastructure
 
 
             //Jwt
+                services.AddAuthorization();
             services.AddSingleton<JwtSettings>(new JwtSettings());
             services.AddScoped<IJwtSettingsFactory, JwtSettingsFactory>();
             services.AddScoped<IJwtServcie, JwtService>();

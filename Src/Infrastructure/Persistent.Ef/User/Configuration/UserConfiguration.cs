@@ -17,11 +17,7 @@ namespace Infrastructure.Persistent.Ef.User.Configuration
             builder.Property(b => b.LastName).IsRequired(false).HasMaxLength(70);
             builder.Property(b => b.PhoneNumber).IsRequired();
             builder.Property(b => b.Password).IsRequired();
-            builder.Property(b => b.NationalityCode).IsRequired(false);
             builder.Property(b => b.ImageName).IsRequired().HasDefaultValue("Default.png");
-            builder.Property(b => b.NationalCardPhoto).IsRequired(false);
-            builder.Property(b => b.BirthCertificatePhoto).IsRequired(false);
-            builder.Property(b => b.Status).IsRequired().HasConversion<string>();
             builder.Property(b => b.IsActive).IsRequired().HasDefaultValue(true);
             builder.Property(b => b.CreationDate).IsRequired();
 
@@ -115,6 +111,17 @@ namespace Infrastructure.Persistent.Ef.User.Configuration
                 role.Property(r => r.CreationDate).IsRequired();
 
                 role.HasIndex("UserId").IsUnique();
+            });
+          
+            builder.OwnsOne(u => u.UserDocument, document =>
+            {
+                document.ToTable("UserDocument", "user");
+                document.Property(b => b.NationalityCode).IsRequired(false);
+                document.Property(b => b.NationalCardPhoto).IsRequired(false);
+                document.Property(b => b.BirthCertificatePhoto).IsRequired(false);
+                document.Property(b => b.Status).IsRequired().HasConversion<string>();
+
+                document.HasIndex("UserId").IsUnique();
             });
 
             // BankAccount (Owned One-to-One)

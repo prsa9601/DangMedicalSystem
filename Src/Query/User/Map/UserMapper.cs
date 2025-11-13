@@ -17,14 +17,14 @@ namespace Query.User.Map
                 CreationDate = user.CreationDate,
                 FirstName = user.FirstName,
                 BankAccount = user.BankAccount.BankAccountMapToBankAccountDto(),
-                BirthCertificatePhoto = user.BirthCertificatePhoto,
+                //BirthCertificatePhoto = user.BirthCertificatePhoto,
                 ImageName = user.ImageName,
                 IsActive = user.IsActive,
                 LastName = user.LastName,
-                NationalCardPhoto = user.NationalCardPhoto,
-                NationalityCode = user.NationalityCode,
+                //NationalCardPhoto = user.NationalCardPhoto,
+                //NationalityCode = user.NationalityCode,
                 PhoneNumber = user.PhoneNumber,
-                Status = user.Status,
+                //Status = user.Status,
                 UserRole =  user.UserRole!.UserRoleMapToUserRoleDto(context) ?? null,
             };
         }

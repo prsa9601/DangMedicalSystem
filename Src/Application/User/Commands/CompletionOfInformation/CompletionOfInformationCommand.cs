@@ -34,22 +34,20 @@ namespace Application.User.Commands.CompletionOfInformation
             if (user == null) return OperationResult.NotFound("خطای سمت سرور لطفا دقایقی دیگر دوباره تلاش کنید.");
 
 
-            user.SetUserStatus(UserStatus.AwaitingConfirmation);
 
             //set birthCertificate
             string birthCertificationPhotoName = await _fileService.SaveFileAndGenerateName(
                 request.birthCertificatePhoto, Directories.UserBirthCertificatePhotoPath);
 
-            user.SetBirthCertificatePhoto(birthCertificationPhotoName);
 
             //Set NationalCard
             string nationalCardPhotoName = await _fileService.SaveFileAndGenerateName(
                 request.nationalCardPhoto, Directories.UserNationalCardPhotoPath);
             
-            user.SetNationalCardPhoto(nationalCardPhotoName);
+
+            user.SetDocument(request.nationalityCode, nationalCardPhotoName, birthCertificationPhotoName);
 
             //Set NationalityCode
-            user.SetNationalityCode(request.nationalityCode);
 
             await _repository.SaveChangeAsync();
 

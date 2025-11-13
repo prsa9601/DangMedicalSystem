@@ -1,6 +1,6 @@
 ﻿namespace Domain.UserAgg.Enum
 {
-    public enum UserStatus
+    public enum UserDocumentStatus
     {
         IsConfirmed,
         AwaitingConfirmation,

@@ -10,13 +10,10 @@ namespace Domain.UserAgg
         public string LastName { get; private set; }
         public string PhoneNumber { get; private set; }
         public string Password { get; private set; }
-        public string NationalityCode { get; private set; }
         public string ImageName { get; private set; }
-        public string NationalCardPhoto { get; private set; }
-        public string BirthCertificatePhoto { get; private set; }
-        public UserStatus Status { get; private set; } = UserStatus.NotConfirmed;
         public bool IsActive { get; private set; } = true; //کاربر اکتیوه و میتونه کار کنه
 
+        public UserDocument? UserDocument { get; private set; }
         public UserBankAccount? BankAccount { get; private set; }
         public UserRole? UserRole { get; private set; }
 
@@ -86,10 +83,36 @@ namespace Domain.UserAgg
         {
             IsActive = isActive;
         }
-      
+
         public void ChangePassword(string hashPassword)
         {
             Password = hashPassword;
+        }
+
+        public void SetDocument(string nationalityCode,
+            string nationalCardPhoto, string birthCertificatePhoto)
+        {
+            var userDocument = new UserDocument(UserDocumentStatus.AwaitingConfirmation, nationalityCode,
+                birthCertificatePhoto, nationalCardPhoto);
+            userDocument.UserId = Id;
+        }
+
+        public void SetDocumentAsConfirmed()
+        {
+            if (UserDocument != null)
+            {
+                UserDocument.Confirmed();
+            }
+            else
+                throw new InvalidOperationException("کاربر درخواستی برای ثبت اطلاعات هویتی خود نداده است");
+        }
+
+        public void SetDocumentAsReject()
+        {
+            if (UserDocument != null)
+                UserDocument.Reject();
+            else
+                throw new InvalidOperationException("کاربر درخواستی برای ثبت اطلاعات هویتی خود نداده است");
         }
 
 
@@ -118,27 +141,6 @@ namespace Domain.UserAgg
         public void SetPhoneNumber(string phoneNumber)
         {
             PhoneNumber = phoneNumber;
-        }
-
-        public void SetNationalityCode(string nationalityCode)
-        {
-            NationalCodeGuard(nationalityCode);
-            NationalityCode = nationalityCode;
-        }
-
-        public void SetNationalCardPhoto(string nationalCardPhoto)
-        {
-            NationalCardPhoto = nationalCardPhoto;
-        }
-
-        public void SetBirthCertificatePhoto(string birthCertificatePhoto)
-        {
-            BirthCertificatePhoto = birthCertificatePhoto;
-        }
-
-        public void SetUserStatus(UserStatus userStatus)
-        {
-            Status = userStatus;
         }
 
         public void SetAsActive()

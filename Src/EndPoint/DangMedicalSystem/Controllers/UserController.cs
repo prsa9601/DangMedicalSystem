@@ -8,6 +8,7 @@ using Application.User.Commands.Remove;
 using Application.User.Commands.SetImage;
 using Common.AspNetCore;
 using Facade.User;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Query.User.DTOs;
@@ -89,11 +90,25 @@ namespace DangMedicalSystem.Api.Controllers
         {
             return QueryResult(await _facade.GetById(userId));
         }
+
+        [Authorize]
+        [HttpGet("GetCurrentUser")]
+        public async Task<ApiResult<UserDto?>> GetCurrentUser()
+        {
+            return QueryResult(await _facade.GetById(User.GetUserId()));
+        }
     
         [HttpGet("GetUserByFilter")]
         public async Task<ApiResult<UserFilterResult>> GetUserByFilter([FromQuery] UserFilterParam param)
         {
             return QueryResult(await _facade.GetByFilter(param));
+        }
+    
+        [HttpGet("GetUserByFilterForDocuments")]
+        public async Task<ApiResult<UserFilterForDocumentsResult>> GetUserByFilterForDocuments(
+            [FromQuery] UserFilterForDocumentsParam param)
+        {
+            return QueryResult(await _facade.GetByFilterForDocuments(param));
         }
     
         [HttpGet("CheckOtpCodeForPhoneNumber")]

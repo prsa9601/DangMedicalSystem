@@ -1,6 +1,8 @@
-﻿namespace Query.User.DTOs
+﻿using Common.Query;
+
+namespace Query.User.DTOs
 {
-    public class UserBankAccountDto
+    public class UserBankAccountDto : BaseDto
     {
         public string Shaba { get; set; }
         public string CardNumber { get; set; }

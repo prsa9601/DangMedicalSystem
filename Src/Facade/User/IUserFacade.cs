@@ -15,6 +15,7 @@ using Query.User.DTOs.FilterDto;
 using Query.User.DTOs.FilterDto.FilterExpression;
 using Query.User.GetById;
 using Query.User.GetFilter;
+using Query.User.GetFilterForDocuments;
 using Query.User.GetListByExpression;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
@@ -36,6 +37,7 @@ namespace Facade.User
         Task<UserDto?> GetById(Guid userId);
         Task<UserDto?> CheckOtpCodeForPhoneNumber(string phoneNumber, string ipAddress);
         Task<UserFilterResult> GetByFilter(UserFilterParam param);
+        Task<UserFilterForDocumentsResult> GetByFilterForDocuments(UserFilterForDocumentsParam param);
         Task<UserExpressionFilterResult> GetByExpressionFilter(UserExpressionFilterParam param);
     }
     internal class UserFacade : IUserFacade
@@ -95,6 +97,11 @@ namespace Facade.User
         public async Task<UserFilterResult> GetByFilter(UserFilterParam param)
         {
             return await _mediator.Send(new GetUsersByFilterQuery(param));
+        }
+
+        public async Task<UserFilterForDocumentsResult> GetByFilterForDocuments(UserFilterForDocumentsParam param)
+        {
+            return await _mediator.Send(new GetUsersByFilterForDocumentsQuery(param));
         }
 
         public async Task<UserDto?> GetById(Guid userId)
