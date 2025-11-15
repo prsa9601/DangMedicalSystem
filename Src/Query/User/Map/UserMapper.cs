@@ -20,18 +20,34 @@ namespace Query.User.Map
                 //BirthCertificatePhoto = user.BirthCertificatePhoto,
                 ImageName = user.ImageName,
                 IsActive = user.IsActive,
+                UserDocument = user.UserDocument.UserDocumentMapToUserDocumentDto() ?? null,
                 LastName = user.LastName,
                 //NationalCardPhoto = user.NationalCardPhoto,
                 //NationalityCode = user.NationalityCode,
                 PhoneNumber = user.PhoneNumber,
                 //Status = user.Status,
-                UserRole =  user.UserRole!.UserRoleMapToUserRoleDto(context) ?? null,
+                UserRole = user.UserRole!.UserRoleMapToUserRoleDto(context) ?? null,
+            };
+        }
+        public static UserDocumentDto UserDocumentMapToUserDocumentDto(this UserDocument? userDocument)
+        {
+            if (userDocument is null)
+                return null;
+            return new UserDocumentDto
+            {
+                CreationDate = userDocument.CreationDate,
+                BirthCertificatePhoto = userDocument.BirthCertificatePhoto,
+                Id = userDocument.Id,
+                NationalCardPhoto = userDocument.NationalCardPhoto,
+                NationalityCode = userDocument.NationalCardPhoto,
+                Status = userDocument.Status,
+                UserId = userDocument.UserId,
             };
         }
         public static UserRoleDto UserRoleMapToUserRoleDto(this UserRole? userRole, Context context)
         {
             if (userRole == null) return null;
-            var role =  context.Roles.FirstOrDefault(role => role.Id.Equals(userRole.RoleId));
+            var role = context.Roles.FirstOrDefault(role => role.Id.Equals(userRole.RoleId));
             var permission = role!.RolePermissions;
             var userRoleDto = new UserRoleDto
             {
@@ -53,7 +69,8 @@ namespace Query.User.Map
                 UserId = bankAccount.UserId,
                 FirstName = bankAccount.FirstName,
                 CardNumber = bankAccount.CardNumber
-                ,ExpirationDateMonth = bankAccount.ExpirationDateMonth,
+                ,
+                ExpirationDateMonth = bankAccount.ExpirationDateMonth,
                 ExpirationDateYear = bankAccount.ExpirationDateYear,
                 IsConfirmed = bankAccount.IsConfirmed,
                 LastName = bankAccount.LastName,

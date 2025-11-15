@@ -23,7 +23,7 @@ namespace Query.Product.GetBySlug
 
             if (product == null) return null;
 
-            return product.Map();
+            return product.Map(_context);
         }
     }
 }

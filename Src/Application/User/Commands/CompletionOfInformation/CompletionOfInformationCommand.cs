@@ -30,28 +30,35 @@ namespace Application.User.Commands.CompletionOfInformation
 
         public async Task<OperationResult> Handle(CompletionOfInformationCommand request, CancellationToken cancellationToken)
         {
-            var user = await _repository.GetTracking(request.userId);
-            if (user == null) return OperationResult.NotFound("خطای سمت سرور لطفا دقایقی دیگر دوباره تلاش کنید.");
+            try
+            {
+                var user = await _repository.GetTracking(request.userId);
+                if (user == null) return OperationResult.NotFound("خطای سمت سرور لطفا دقایقی دیگر دوباره تلاش کنید.");
 
 
 
-            //set birthCertificate
-            string birthCertificationPhotoName = await _fileService.SaveFileAndGenerateName(
-                request.birthCertificatePhoto, Directories.UserBirthCertificatePhotoPath);
+                //set birthCertificate
+                string birthCertificationPhotoName = await _fileService.SaveFileAndGenerateName(
+                    request.birthCertificatePhoto, Directories.UserBirthCertificatePhotoPath);
 
 
-            //Set NationalCard
-            string nationalCardPhotoName = await _fileService.SaveFileAndGenerateName(
-                request.nationalCardPhoto, Directories.UserNationalCardPhotoPath);
-            
+                //Set NationalCard
+                string nationalCardPhotoName = await _fileService.SaveFileAndGenerateName(
+                    request.nationalCardPhoto, Directories.UserNationalCardPhotoPath);
 
-            user.SetDocument(request.nationalityCode, nationalCardPhotoName, birthCertificationPhotoName);
 
-            //Set NationalityCode
+                user.SetDocument(request.nationalityCode, nationalCardPhotoName, birthCertificationPhotoName);
 
-            await _repository.SaveChangeAsync();
+                //Set NationalityCode
 
-            return OperationResult.Success();
+                await _repository.SaveChangeAsync();
+
+                return OperationResult.Success();
+            }
+            catch (Exception ex)
+            {
+                return OperationResult.Error(ex.Message);
+            }
         }
     }
 

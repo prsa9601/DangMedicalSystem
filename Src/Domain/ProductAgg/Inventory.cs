@@ -9,6 +9,7 @@ namespace Domain.ProductAgg
         public string TotalPrice { get; private set; }
         public int Dong { get; private set; }
         //سود هر دانگ
+        //public int DongPurchase { get; set; }
         public string Profit { get; private set; }
         public PaymentTime ProfitableTime { get; set; }
         public string PricePerDong
@@ -27,10 +28,21 @@ namespace Domain.ProductAgg
 
         public Inventory(string totalPrice, int dong, string profit)
         {
+            //DongPurchase = 0;
             TotalPrice = totalPrice;
             Dong = dong;
             Profit = profit;
         }
+
+        //public void IncreasePurchaseDong(int dong)
+        //{
+        //    DongPurchase += dong;
+        //}
+
+        //public void DecreasePurchaseDong(int dong)
+        //{
+        //    DongPurchase -= dong;
+        //}
 
         public void EditInventory(string totalPrice, int dong, string profit)
         {

@@ -49,6 +49,13 @@ namespace DangMedicalSystem.Api.Controllers
             return QueryResult(await _facade.GetByFilter(param));
         }
 
+        //[Authorize]
+        [HttpGet("GetProductByFilterForIndex")]
+        public async Task<ApiResult<ProductFilterForIndexPageResult>> GetProductByFilterForIndex([FromQuery] ProductFilterParam param)
+        {
+            return QueryResult(await _facade.GetByFilterForIndexPage(param));
+        }
+
         [HttpGet("GetProductBySlug")]
         public async Task<ApiResult<ProductDto?>> GetProductBySlug(string slug)
         {

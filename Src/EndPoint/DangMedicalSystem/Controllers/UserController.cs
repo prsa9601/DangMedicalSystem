@@ -7,6 +7,7 @@ using Application.User.Commands.Edit;
 using Application.User.Commands.Remove;
 using Application.User.Commands.SetImage;
 using Common.AspNetCore;
+using DangMedicalSystem.Api.Models.User;
 using Facade.User;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -39,11 +40,18 @@ namespace DangMedicalSystem.Api.Controllers
         {
             return CommandResult(await _facade.CreateUserForAdmin(command));
         }
-        
+
+        [Authorize]
         [HttpPost("CompletionOfInformation")]
-        public async Task<ApiResult> CompletionOfInformationUser([FromForm] CompletionOfInformationCommand command)
+        public async Task<ApiResult> CompletionOfInformationUser([FromForm] CompletionOfInformationCommandViewModel command)
         {
-            return CommandResult(await _facade.CompletionOfInformation(command));
+            return CommandResult(await _facade.CompletionOfInformation(new CompletionOfInformationCommand 
+            {
+                birthCertificatePhoto= command.birthCertificatePhoto,
+                nationalCardPhoto = command.nationalCardPhoto,
+                nationalityCode = command.nationalityCode,
+                 userId =User.GetUserId()
+            }));
         }
         
         [HttpPost("ConfirmedAccount")]

@@ -6,4 +6,8 @@ namespace Query.Product.DTOs.FilterDto
     public class ProductFilterResult : BaseFilter<ProductFilterData, ProductFilterParam>
     {
     }
+
+    public class ProductFilterForIndexPageResult : BaseFilter<ProductFilterForIndexPageData, ProductFilterParam>
+    {
+    }
 }

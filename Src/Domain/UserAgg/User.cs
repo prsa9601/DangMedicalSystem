@@ -92,9 +92,11 @@ namespace Domain.UserAgg
         public void SetDocument(string nationalityCode,
             string nationalCardPhoto, string birthCertificatePhoto)
         {
+            NationalCodeGuard(nationalityCode);
             var userDocument = new UserDocument(UserDocumentStatus.AwaitingConfirmation, nationalityCode,
                 birthCertificatePhoto, nationalCardPhoto);
             userDocument.UserId = Id;
+            UserDocument = userDocument;
         }
 
         public void SetDocumentAsConfirmed()

@@ -1,10 +1,12 @@
-﻿using Query.Product.DTOs;
+﻿using Infrastructure;
+using Query.Product.DTOs;
+using Query.PurchaseReport;
 
 namespace Query.Product
 {
     public static class ProductMapper
     {
-        public static ProductDto Map(this Domain.ProductAgg.Product product)
+        public static ProductDto Map(this Domain.ProductAgg.Product product, Context context)
         {
             return new ProductDto
             {
@@ -17,6 +19,8 @@ namespace Query.Product
                 Slug = product.Slug,
                 Status = product.Status,
                 Title = product.Title,
+                PurchaseReportDto = context.PurchaseReports.Where(i => i.ProductId.Equals(product.Id))
+                .Select(i => i.Map()).ToList(),
             };
         }
 
@@ -33,6 +37,7 @@ namespace Query.Product
                 Profit = inventory.Profit,
                 ProfitableTime = inventory.ProfitableTime,
                 TotalPrice = inventory.TotalPrice,
+
             };
         }
 

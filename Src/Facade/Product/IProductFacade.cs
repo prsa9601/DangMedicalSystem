@@ -9,6 +9,7 @@ using Query.Product.DTOs.FilterDto;
 using Query.Product.GetById;
 using Query.Product.GetBySlug;
 using Query.Product.GetFilter;
+using Query.Product.GetFilterForIndexPage;
 
 namespace Facade.Product
 {
@@ -21,6 +22,7 @@ namespace Facade.Product
         Task<ProductDto?> GetBySlug(string slug);
         Task<ProductDto?> GetById(Guid productId);
         Task<ProductFilterResult> GetByFilter(ProductFilterParam param);
+        Task<ProductFilterForIndexPageResult> GetByFilterForIndexPage(ProductFilterParam param);
     }
     public class ProductFacade : IProductFacade
     {
@@ -44,6 +46,11 @@ namespace Facade.Product
         public async Task<ProductFilterResult> GetByFilter(ProductFilterParam param)
         {
             return await _mediator.Send(new GetProductFilterQuery(param));
+        }
+
+        public async Task<ProductFilterForIndexPageResult> GetByFilterForIndexPage(ProductFilterParam param)
+        {
+            return await _mediator.Send(new GetFilterForIndexPageQuery(param));
         }
 
         public async Task<ProductDto?> GetById(Guid productId)
