@@ -1,5 +1,8 @@
 ﻿using Common.Query;
 using Common.Query.Filter;
+using Domain.ProductAgg;
+using Query.Product.DTOs;
+using Query.User.DTOs;
 
 namespace Query.PurchaseReport.DTOs
 {
@@ -37,6 +40,30 @@ namespace Query.PurchaseReport.DTOs
 
     public class PurchaseReportFilterResult : BaseFilter<PurchaseReportDto, PurchaseReportFilterParam>
     {
+
+    }
+    public class PurchaseReportUserInvestmentFilterResult : BaseFilter<UserPurchaseReportDto, PurchaseReportFilterParam>
+    {
+
+    }
+
+    public class ProductPurchaseReportDto
+    {
+        public string  Title { get; set; }
+        public string ImageName { get; set; }
+        public Guid PurchaseId { get; set; }
+    }
+    public class UserPurchaseReportDto
+    {
+        public Guid UserId { get; set; }
+        public string PhoneNumber { get; set; }
+        public string FirstName { get; set; }
+        public string Lastame { get; set; }
+        public int InvestmentCount { get; set; }
+        public List<ProductPurchaseReportDto> ProductPurchase { get; set; }
+        public List<PurchaseReportDto> PurchaseReport { get; set; }
+
+        //public UserBankAccountDto BankAccount { get; set; }
 
     }
 }
