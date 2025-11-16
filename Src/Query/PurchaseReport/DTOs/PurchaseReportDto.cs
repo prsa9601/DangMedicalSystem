@@ -47,13 +47,13 @@ namespace Query.PurchaseReport.DTOs
 
     }
 
-    public class ProductPurchaseReportDto
+    public class ProductPurchaseReportDto : BaseDto
     {
         public string  Title { get; set; }
         public string ImageName { get; set; }
         public Guid PurchaseId { get; set; }
     }
-    public class UserPurchaseReportDto
+    public class UserPurchaseReportDto : BaseDto
     {
         public Guid UserId { get; set; }
         public string PhoneNumber { get; set; }

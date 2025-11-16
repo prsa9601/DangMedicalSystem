@@ -57,8 +57,8 @@ namespace Query.PurchaseReport.ReportUserInvestment
             var skip = (@param.PageId - 1) * @param.Take;
             var model = new PurchaseReportUserInvestmentFilterResult()
             {
-                Data = await result.Skip(skip).Take(@param.Take)
-                    .Select(purchase => purchase.MapUserReport(_context)).ToListAsync(cancellationToken),
+                Data = await (await result.Skip(skip).Take(@param.Take)
+                    .Select(purchase => purchase).ToListAsync(cancellationToken)).MapUserReport(_context),
                 FilterParams = @param
             };
 

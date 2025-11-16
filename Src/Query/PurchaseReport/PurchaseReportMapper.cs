@@ -27,27 +27,35 @@ namespace Query.PurchaseReport
                 UserId = purchaseReport.UserId,
             };
         }
-        public static async Task<PurchaseReportUserInvestmentFilterResult> MapUserReport(this Domain.PurchaseReportAgg.PurchaseReport model, Context context)
+        public static async Task<List<UserPurchaseReportDto>> MapUserReport(this List<Domain.PurchaseReportAgg.PurchaseReport> model, Context context)
         {
-            Dictionary<Guid, PurchaseReportUserInvestmentFilterResult> UserReport = new();
-            if (UserReport.TryGetValue(model.UserId, out var user))
+            Dictionary<Guid, UserPurchaseReportDto> UserReport = new();
+
+            foreach (var item in model)
             {
+                if (UserReport.TryGetValue(item.UserId, out var user))
+                {
+                    user.InvestmentCount += 1;
+                    user.PurchaseReport.Add(item.Map());
+                    user.ProductPurchase.Add(await item.ProductReportDtoMapper(context));
+                }
+                else
+                {
+                    var userAgg = await context.Users.FirstOrDefaultAsync(user => user.Id.Equals
+                                             (item.UserId));
+
+                    if (userAgg == null)
+                        return null;
+
+                    var userReportMapResult = userAgg.UserReportDtoMapper();
+                    userReportMapResult.PurchaseReport.Add(item.Map());
+                    userReportMapResult.ProductPurchase.Add(await item.ProductReportDtoMapper(context));
+                    UserReport.Add(userAgg.Id, userReportMapResult);
+                }
 
             }
-            else
-            {
-                var userAgg = await context.Users.FirstOrDefaultAsync(user => user.Id.Equals
-                (model.UserId));
 
-                if (userAgg == null)
-                    return null;
-
-                var userReportMapResult = userAgg.UserReportDtoMapper();
-                userReportMapResult.PurchaseReport.Add(model.Map());
-                userReportMapResult.ProductPurchase.Add(await model.ProductReportDtoMapper(context));
-                UserReport.Add(userAgg.Id, userAgg.UserReportDtoMapper());
-
-            }
+            return UserReport.Values.ToList();
         }
         public static UserPurchaseReportDto UserReportDtoMapper(
             this Domain.UserAgg.User model)
@@ -56,6 +64,8 @@ namespace Query.PurchaseReport
             {
                 UserId = model.Id,
                 FirstName = model.FirstName,
+                Id = model.Id,
+                CreationDate = model.CreationDate,
                 Lastame = model.LastName,
                 PhoneNumber = model.PhoneNumber,
             };
@@ -74,6 +84,8 @@ namespace Query.PurchaseReport
             {
                 ImageName = product.ImageName,
                 Title = product.Title,
+                Id = product.Id,
+                CreationDate = product.CreationDate,
                 PurchaseId = model.Id,
             };
 
