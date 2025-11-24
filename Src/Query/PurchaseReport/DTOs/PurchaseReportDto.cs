@@ -1,6 +1,8 @@
 ﻿using Common.Query;
 using Common.Query.Filter;
 using Domain.ProductAgg;
+using Domain.ProductAgg.Enum;
+using Domain.ProfitAgg;
 using Query.Product.DTOs;
 using Query.User.DTOs;
 
@@ -31,6 +33,15 @@ namespace Query.PurchaseReport.DTOs
         public DateTime? StartDate { get; set; }
         public DateTime? EndDate { get; set; }
     }
+    public class UserPurchaseReportFilterParam : BaseFilterParam
+    {
+        public PurchaseReportFilter? PurchaseReportFilter { get; set; }
+        public Guid? ProductId { get; set; }
+        public string? PhoneNumber { get; set; }
+        public Guid UserId { get; set; }
+        public DateTime? StartDate { get; set; }
+        public DateTime? EndDate { get; set; }
+    }
     public enum PurchaseReportFilter
     {
         None,
@@ -42,7 +53,7 @@ namespace Query.PurchaseReport.DTOs
     {
 
     }
-    public class PurchaseReportUserInvestmentFilterResult : BaseFilter<UserPurchaseReportDto, PurchaseReportFilterParam>
+    public class PurchaseReportUserInvestmentFilterResult : BaseFilter<UserPurchaseReportDto, UserPurchaseReportFilterParam>
     {
 
     }
@@ -52,16 +63,34 @@ namespace Query.PurchaseReport.DTOs
         public string  Title { get; set; }
         public string ImageName { get; set; }
         public Guid PurchaseId { get; set; }
+        public InventoryDto InventoryDto { get; set; }
     }
+
+    public class ProfitPurchaseReportDto : BaseDto
+    {
+        public Guid UserId { get; set; }
+        public Guid ProductId { get; set; }
+        public Guid OrderId { get; set; }
+        public ProfitStatus Status { get; set; }
+        public DateTime ForWhatTime { get; set; }
+        public int ForWhatPeriod { get; set; }
+        public string ImageName { get; set; }
+        public string ProductName { get; set; }
+        public decimal AmountPaid { get; set; }
+        public PaymentTime ProfitableTime { get; set; }
+    }
+
     public class UserPurchaseReportDto : BaseDto
     {
         public Guid UserId { get; set; }
         public string PhoneNumber { get; set; }
         public string FirstName { get; set; }
+        public string ImageName { get; set; }
         public string Lastame { get; set; }
         public int InvestmentCount { get; set; }
-        public List<ProductPurchaseReportDto> ProductPurchase { get; set; }
-        public List<PurchaseReportDto> PurchaseReport { get; set; }
+        public List<ProductPurchaseReportDto>? ProductPurchase { get; set; } = new();
+        public List<PurchaseReportDto>? PurchaseReport { get; set; } = new();
+        public List<ProfitPurchaseReportDto>? ProfitPurchases { get; set; } = new();
 
         //public UserBankAccountDto BankAccount { get; set; }
 

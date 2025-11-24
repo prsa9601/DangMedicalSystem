@@ -1,4 +1,6 @@
-﻿using Application.User.Commands.ChangeActivityAccount;
+﻿using Application.User.BankAccount.Add;
+using Application.User.Commands.ChangeAccountStatus;
+using Application.User.Commands.ChangeActivityAccount;
 using Application.User.Commands.ChangePassword;
 using Application.User.Commands.CompletionOfInformation;
 using Application.User.Commands.ConfirmedAccount;
@@ -72,6 +74,12 @@ namespace DangMedicalSystem.Api.Controllers
             return CommandResult(await _facade.ChangeActivityAccount(command));
         }
         
+        [HttpPatch("ChangeUserDocumentStatus")]
+        public async Task<ApiResult> ChangeUserDocumentStatus(ChangeUserDocumentStatusCommand command)
+        {
+            return CommandResult(await _facade.SetUserDocumentStatus(command));
+        }
+        
         [HttpPatch("EditUser")]
         public async Task<ApiResult> EditUser(EditUserCommand command)
         {
@@ -123,6 +131,19 @@ namespace DangMedicalSystem.Api.Controllers
         public async Task<ApiResult<UserDto?>> CheckOtpCodeForPhoneNumber(string phoneNumber, string ipAddress)
         {
             return QueryResult(await _facade.CheckOtpCodeForPhoneNumber(phoneNumber, ipAddress));
+        }
+
+        [Authorize]
+        [HttpPost("AddBankAccount")]
+        public async Task<ApiResult> AddBankAccount(AddBankAccountCommandViewModel command)
+        {
+            return CommandResult(await _facade.AddBankAccount(new AddBankAccountCommand
+            {
+                UserId = User.GetUserId(),
+                FullName = command.FullName,
+                CardNumber = command.CardNumber,
+                ShabaNumber = command.ShabaNumber,
+            }));
         }
     
         //[HttpGet("GetUserByExpressionFilter")]

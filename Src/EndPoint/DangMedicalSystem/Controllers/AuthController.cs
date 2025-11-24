@@ -22,7 +22,7 @@ namespace DangMedicalSystem.Api.Controllers
 
         
         [HttpPost("GenerateOtpCode")]
-        public async Task<ApiResult<string>> GenerateAndSendOtpCode(GenerateAndSendOtpCodeCommand command)
+        public async Task<ApiResult<Dictionary<string, string>>> GenerateAndSendOtpCode(GenerateAndSendOtpCodeCommand command)
         {
             return CommandResult(await _facade.GenerateAndSendOtpCode(command))!;
         }

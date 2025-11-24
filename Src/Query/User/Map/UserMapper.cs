@@ -39,7 +39,7 @@ namespace Query.User.Map
                 BirthCertificatePhoto = userDocument.BirthCertificatePhoto,
                 Id = userDocument.Id,
                 NationalCardPhoto = userDocument.NationalCardPhoto,
-                NationalityCode = userDocument.NationalCardPhoto,
+                NationalityCode = userDocument.NationalityCode,
                 Status = userDocument.Status,
                 UserId = userDocument.UserId,
             };
@@ -67,13 +67,10 @@ namespace Query.User.Map
             return new UserBankAccountDto
             {
                 UserId = bankAccount.UserId,
-                FirstName = bankAccount.FirstName,
+                FullName = bankAccount.FullName,
                 CardNumber = bankAccount.CardNumber
                 ,
-                ExpirationDateMonth = bankAccount.ExpirationDateMonth,
-                ExpirationDateYear = bankAccount.ExpirationDateYear,
                 IsConfirmed = bankAccount.IsConfirmed,
-                LastName = bankAccount.LastName,
                 Shaba = bankAccount.Shaba,
             };
         }

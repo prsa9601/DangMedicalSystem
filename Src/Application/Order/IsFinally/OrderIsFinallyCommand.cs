@@ -15,9 +15,10 @@ namespace Application.Order.IsFinally
         private readonly IUserRepository _repository;
         private readonly IOrderRepository _orderRepository;
 
-        public OrderIsFinallyCommandHandler(IOrderRepository orderRepository)
+        public OrderIsFinallyCommandHandler(IOrderRepository orderRepository, IUserRepository repository)
         {
             _orderRepository = orderRepository;
+            _repository = repository;
         }
 
         public async Task<OperationResult> Handle(OrderIsFinallyCommand request, CancellationToken cancellationToken)

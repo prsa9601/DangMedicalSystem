@@ -1,6 +1,7 @@
 ﻿using Common.Domain;
 using Domain.OrderAgg;
 using Domain.ProductAgg;
+using Domain.ProfitAgg;
 using Domain.PurchaseReportAgg;
 using Domain.RoleAgg;
 using Domain.UserAgg;
@@ -22,6 +23,7 @@ namespace Infrastructure
         }
 
         public DbSet<PurchaseReport> PurchaseReports { get; set; }
+        public DbSet<Profit> Profits { get; set; }
         public DbSet<Order> Orders { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Role> Roles { get; set; }

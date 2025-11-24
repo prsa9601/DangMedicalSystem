@@ -9,7 +9,7 @@ namespace Facade.Auth
 {
     public interface IAuthFacade
     {
-        Task<OperationResult<string>> GenerateAndSendOtpCode(GenerateAndSendOtpCodeCommand command); 
+        Task<OperationResult<Dictionary<string, string>>> GenerateAndSendOtpCode(GenerateAndSendOtpCodeCommand command); 
         Task<OperationResult> RegisterUser(RegisterUserCommand command); 
         Task<OperationResult<LoginCommandResult>> LoginUser(UserLoginCommand command); 
         Task<OperationResult<bool>> VerificationOtpCode(VerificationOtpCodeCommand command); 
@@ -23,7 +23,7 @@ namespace Facade.Auth
             _mediator = mediator;
         }
 
-        public async Task<OperationResult<string>> GenerateAndSendOtpCode(GenerateAndSendOtpCodeCommand command)
+        public async Task<OperationResult<Dictionary<string, string>>> GenerateAndSendOtpCode(GenerateAndSendOtpCodeCommand command)
         {
             return await _mediator.Send(command);
         }

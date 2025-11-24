@@ -15,6 +15,8 @@ namespace Domain.OrderAgg
 
         public Order(Guid userId)
         {
+            DateOfPurchase = DateTime.MinValue;
+            status = OrderStatus.AwaitingPayment;
             UserId = userId;
             OrderItems = new();
         }

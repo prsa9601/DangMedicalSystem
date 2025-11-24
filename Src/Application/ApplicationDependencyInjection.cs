@@ -2,6 +2,7 @@
 using Application.Notification.Services;
 using Application.Order.Services;
 using Application.Product.Service;
+using Application.Profit;
 using Application.PurchaseReport.Services;
 using Application.User.Services;
 using Common.Application.FileUtil.Interfaces;
@@ -9,6 +10,7 @@ using Common.Application.FileUtil.Services;
 using Domain.NotificationAgg.Interfaces.Services;
 using Domain.OrderAgg.Interfaces.Services;
 using Domain.ProductAgg.Interfaces.Services;
+using Domain.ProfitAgg.Service;
 using Domain.PurchaseReportAgg.Interfaces.Services;
 using Domain.UserAgg.Interfaces.Builder;
 using Domain.UserAgg.Interfaces.Services;
@@ -29,6 +31,7 @@ namespace Application
             services.AddScoped<IUserDomainService, UserDomainService>();
             services.AddScoped<IProductDomainService, ProductDomainService>();
             services.AddScoped<IPurchaseReportDomainService, PurchaseReportDomainService>();
+            services.AddScoped<IProfitService, ProfitService>();
             services.AddScoped<IOrderDomainService, OrderDomainService>();
             services.AddScoped<INotificationDomainService, NotificationDomainService>();
 

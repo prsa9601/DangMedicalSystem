@@ -1,5 +1,6 @@
 ﻿using Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using Query.Product;
 using Query.PurchaseReport.DTOs;
 using System.Threading.Tasks;
 
@@ -7,9 +8,11 @@ namespace Query.PurchaseReport
 {
     public static class PurchaseReportMapper
     {
-        public static PurchaseReportDto Map(
-            this Domain.PurchaseReportAgg.PurchaseReport purchaseReport)
+        public static PurchaseReportDto? Map(
+            this Domain.PurchaseReportAgg.PurchaseReport? purchaseReport)
         {
+            if (purchaseReport == null)
+                return null;
             return new PurchaseReportDto
             {
                 CreationDate = purchaseReport.CreationDate,
@@ -57,6 +60,61 @@ namespace Query.PurchaseReport
 
             return UserReport.Values.ToList();
         }
+        public static async Task<UserPurchaseReportDto> MapUserReport(this Domain.PurchaseReportAgg.PurchaseReport model
+            , Context context)
+        {
+            var userAgg = await context.Users.FirstOrDefaultAsync(user => user.Id.Equals
+                                     (model.UserId));
+
+            if (userAgg == null)
+                return null;
+
+            var userReportMapResult = userAgg.UserReportDtoMapper();
+            userReportMapResult.PurchaseReport.Add(model.Map());
+            userReportMapResult.ProductPurchase.Add(await model.ProductReportDtoMapper(context));
+
+            return userReportMapResult;
+        }
+
+        public static async Task<List<ProfitPurchaseReportDto>> MapProfitReport(this Domain.PurchaseReportAgg.PurchaseReport model
+            , Context context)
+        {
+            var profit = context.Profits.Where(profit => profit.UserId.Equals(model.UserId) &&
+            profit.ProductId.Equals(model.ProductId));
+
+            var product = await context.Products.FirstOrDefaultAsync(i => i.Id.Equals(model.ProductId));
+
+            if (profit == null)
+                return null;
+
+            if (product == null)
+                return null;
+
+
+
+            List<ProfitPurchaseReportDto> result = new();
+            foreach (var item in profit)
+            {
+                result.Add(new ProfitPurchaseReportDto
+                {
+                    AmountPaid = item.AmountPaid,
+                    CreationDate = item.CreationDate,
+                    Id = item.Id,
+                    ImageName = item.ImageName,
+                    OrderId = item.OrderId,
+                    ProductId = item.ProductId,
+                    Status = item.Status,
+                    UserId = item.UserId,
+                    ProductName = product.Title,
+                    ForWhatPeriod = item.ForWhatPeriod,
+                    ForWhatTime = item.ForWhatTime,
+                    ProfitableTime = product.Inventory!.ProfitableTime,
+
+                });
+            }
+            return result;
+        }
+
         public static UserPurchaseReportDto UserReportDtoMapper(
             this Domain.UserAgg.User model)
         {
@@ -65,14 +123,15 @@ namespace Query.PurchaseReport
                 UserId = model.Id,
                 FirstName = model.FirstName,
                 Id = model.Id,
+                ImageName = model.ImageName,
                 CreationDate = model.CreationDate,
                 Lastame = model.LastName,
                 PhoneNumber = model.PhoneNumber,
             };
 
         }
-        public static async Task<ProductPurchaseReportDto> ProductReportDtoMapper(
-            this Domain.PurchaseReportAgg.PurchaseReport model, Context context)
+        public static async Task<ProductPurchaseReportDto?> ProductReportDtoMapper(
+            this Domain.PurchaseReportAgg.PurchaseReport? model, Context context)
         {
 
             var product = await context.Products.FirstOrDefaultAsync
@@ -87,6 +146,7 @@ namespace Query.PurchaseReport
                 Id = product.Id,
                 CreationDate = product.CreationDate,
                 PurchaseId = model.Id,
+                InventoryDto = product.Inventory.MapInventory(),
             };
 
         }

@@ -28,12 +28,12 @@ namespace Query.PurchaseReport.ReportForAdmin
             var @param = request.FilterParams;
             var result = _context.PurchaseReports.OrderByDescending(p => p.CreationDate).AsQueryable();
 
-            if (param.StartDate != DateTime.MinValue && param.StartDate != DateTime.MaxValue)
+            if (param.StartDate != DateTime.MinValue && param.StartDate != DateTime.MaxValue && param.StartDate is not null)
             {
                 result = result.Where(purchase => purchase.CreationDate >= param.StartDate);
             }
 
-            if (param.EndDate != DateTime.MinValue && param.EndDate != DateTime.MaxValue)
+            if (param.EndDate != DateTime.MinValue && param.EndDate != DateTime.MaxValue && param.EndDate is not null)
             {
                 result = result.Where(purchase => purchase.CreationDate <= param.EndDate);
             }

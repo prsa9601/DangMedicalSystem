@@ -21,6 +21,11 @@ namespace Domain.UserAgg
         {
             Status = UserDocumentStatus.WrongInformation;
         }
+      
+        public void SetStatus(UserDocumentStatus status)
+        {
+            Status = status;
+        }
 
         public UserDocumentStatus Status { get; private set; } = UserDocumentStatus.NotConfirmed;
         public string NationalityCode { get; private set; }

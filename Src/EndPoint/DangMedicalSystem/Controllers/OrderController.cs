@@ -1,7 +1,10 @@
 ﻿using Application.Order.CreateOrder;
 using Application.Order.IsFinally;
+using Application.Order.SetOrderItem;
 using Common.AspNetCore;
+using DangMedicalSystem.Api.Models.Order;
 using Facade.Order;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Query.Order.DTOs;
 
@@ -18,6 +21,7 @@ namespace DangMedicalSystem.Api.Controllers
             _facade = facade;
         }
 
+        
         [HttpPost("Create")]
         public async Task<ApiResult> Create(CancellationToken cancellationToken)
         {
@@ -25,9 +29,26 @@ namespace DangMedicalSystem.Api.Controllers
         }
         
         [HttpPost("IsFinally")]
-        public async Task<ApiResult> IsFinally(OrderIsFinallyCommand command, CancellationToken cancellationToken)
+        public async Task<ApiResult> IsFinally(OrderIsFinallyViewModel command, CancellationToken cancellationToken)
         {
-            return CommandResult(await _facade.IsFinally(command, cancellationToken));
+            return CommandResult(await _facade.IsFinally(new OrderIsFinallyCommand
+            {
+                orderId = command.orderId,
+                userId = /*User.GetUserId()*/ Guid.Parse("c66c9e0b-9d76-4d0a-9e3d-557f3c88f61d"),
+            }, cancellationToken));
+        }
+        
+        [HttpPatch("SetOrderItem")]
+        public async Task<ApiResult> SetOrderItem(SetOrderItemCommandViewModel command, CancellationToken cancellationToken)
+        {
+            return CommandResult(await _facade.SetOrderItem(new SetOrderItemCommand
+            {
+                userId = /*User.GetUserId()*/ Guid.Parse("c66c9e0b-9d76-4d0a-9e3d-557f3c88f61d"),
+                dongAmount = command.dongAmount,
+                inventoryId = command.inventoryId,  
+                orderId = command.orderId,
+                productId = command.productId,
+            }, cancellationToken));
         }
         
         [HttpGet("GetOrderById")]

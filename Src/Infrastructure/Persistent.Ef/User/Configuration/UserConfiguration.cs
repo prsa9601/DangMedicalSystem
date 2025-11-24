@@ -112,7 +112,7 @@ namespace Infrastructure.Persistent.Ef.User.Configuration
 
                 role.HasIndex("UserId").IsUnique();
             });
-          
+
             builder.OwnsOne(u => u.UserDocument, document =>
             {
                 document.ToTable("UserDocument", "user");
@@ -129,16 +129,15 @@ namespace Infrastructure.Persistent.Ef.User.Configuration
             {
                 bankAccount.ToTable("BankAccounts", "user");
                 bankAccount.WithOwner().HasForeignKey("UserId");
-                bankAccount.Property<Guid>("Id").ValueGeneratedOnAdd();
                 bankAccount.HasKey("Id");
 
-                bankAccount.Property(ba => ba.Shaba).IsRequired().HasMaxLength(25);
+                bankAccount.Property(ba => ba.Shaba).IsRequired().HasMaxLength(26);
                 bankAccount.Property(ba => ba.CardNumber).IsRequired().HasMaxLength(16);
-                bankAccount.Property(ba => ba.FirstName).IsRequired().HasMaxLength(70);
-                bankAccount.Property(ba => ba.LastName).IsRequired().HasMaxLength(70);
+                bankAccount.Property(ba => ba.FullName).IsRequired().HasMaxLength(70);
+                //bankAccount.Property(ba => ba.LastName).IsRequired().HasMaxLength(70);
                 bankAccount.Property(ba => ba.IsConfirmed).IsRequired();
-                bankAccount.Property(ba => ba.ExpirationDateMonth).IsRequired();
-                bankAccount.Property(ba => ba.ExpirationDateYear).IsRequired();
+                //bankAccount.Property(ba => ba.ExpirationDateMonth).IsRequired();
+                //bankAccount.Property(ba => ba.ExpirationDateYear).IsRequired();
                 bankAccount.Property(ba => ba.CreationDate).IsRequired();
             });
             //builder.ToTable("User", "user");

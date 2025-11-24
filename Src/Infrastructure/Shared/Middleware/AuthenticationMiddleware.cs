@@ -28,6 +28,58 @@ namespace Infrastructure.Shared.Middleware
                 // اگر endpoint دارای [Authorize] نبود، به ادامه پردازش برو
                 if (authorizeAttribute == null)
                 {
+
+                    if (!context.Request.Headers.TryGetValue("AuthToken", out var _))
+                    {
+                        var refreshTokenHeader = context.Request.Headers["RefreshToken"].ToString();
+                        var refreshTokenCookie = context.Request.Cookies["RefreshToken"]?.ToString();
+
+                        var refreshToken = (!string.IsNullOrEmpty(refreshTokenHeader) ? refreshTokenHeader : refreshTokenCookie)?.Replace("Bearer ", "");
+                        var jwtServiceAuthRefreshToken = _jwtFactory.CreateSetting(TokenType.AuthRefreshToken);
+                        var jwtServiceAuthToken = _jwtFactory.CreateSetting(TokenType.AuthToken);
+
+
+                        try
+                        {
+                            var refreshTokenValidate = jwtServiceAuthRefreshToken.ValidateToken(refreshToken);
+                            Guid.TryParse(refreshTokenValidate.FindFirst(ClaimTypes.NameIdentifier)?.Value, out var id);
+
+                            if (refreshTokenValidate.FindFirst
+                                (JwtRegisteredClaimNames.PhoneNumberVerified)?.Value == null)
+                            {
+                                context.Response.StatusCode = 401;
+                                await context.Response.WriteAsync("PhoneNumber is Not Exist In Token");
+                                return;
+                            }
+                            var authToken = jwtServiceAuthToken.GenerateToken(
+                                   id,
+                                   refreshTokenValidate.FindFirst(JwtRegisteredClaimNames.PhoneNumberVerified)!.Value!,
+                                   refreshTokenValidate.FindAll(ClaimTypes.Role)?.Select(r => r.Value).ToList());
+
+                            context.Response.Cookies.Append("auth-Token",
+                                   authToken,
+                                   new CookieOptions
+                                   {
+                                       HttpOnly = true,
+                                       Secure = true,
+                                       SameSite = SameSiteMode.Strict,
+                                       Expires = DateTime.UtcNow.AddMinutes(30),
+                                       Path = "/",
+                                   });
+
+                            context.Response.Headers["X-Auth-Token"] = authToken;
+                            //context.Request.Headers["Authorization"] = $"Bearer {authToken}";
+                            context.Response.Headers["Authorization"] = $"Bearer {authToken}";
+
+                        }
+                        catch
+                        {
+
+                            await _next(context);
+                            return;
+
+                        }
+                    }
                     await _next(context);
                     return;
                 }

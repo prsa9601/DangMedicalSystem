@@ -1,4 +1,5 @@
 ﻿using Common.Domain;
+using Common.Domain.BankInformationValidation.Strategy;
 using Domain.UserAgg.Enum;
 using System.ComponentModel.DataAnnotations;
 
@@ -14,7 +15,7 @@ namespace Domain.UserAgg
         public bool IsActive { get; private set; } = true; //کاربر اکتیوه و میتونه کار کنه
 
         public UserDocument? UserDocument { get; private set; }
-        public UserBankAccount? BankAccount { get; private set; }
+        public UserBankAccount? BankAccount { get; set; }
         public UserRole? UserRole { get; private set; }
 
         public List<UserOtp> UserOtps { get; private set; }
@@ -116,6 +117,33 @@ namespace Domain.UserAgg
             else
                 throw new InvalidOperationException("کاربر درخواستی برای ثبت اطلاعات هویتی خود نداده است");
         }
+    
+        public void SetDocumentStatus(UserDocumentStatus status)
+        {
+            if (UserDocument != null)
+                UserDocument.SetStatus(status);
+            else
+                throw new InvalidOperationException("کاربر درخواستی برای ثبت اطلاعات هویتی خود نداده است");
+        }
+
+        #region BankAccount
+
+        public void AddBankAccount(string shabaNumber, string cardNumber, string fullName)
+        {
+            if (BankAccount != null)
+            {
+                BankAccount.EditUserBankAccount(shabaNumber, cardNumber, fullName);
+            }
+            else
+            {
+                var bankAccount = new UserBankAccount(shabaNumber, cardNumber, fullName);
+                bankAccount.UserId = Id;
+                BankAccount = bankAccount;
+            }
+        }
+        #endregion
+
+
 
 
         #region SetBuilder

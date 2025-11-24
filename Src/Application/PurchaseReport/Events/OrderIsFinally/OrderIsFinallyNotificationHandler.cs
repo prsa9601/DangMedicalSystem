@@ -54,6 +54,8 @@ namespace Application.PurchaseReport.Events.OrderIsFinally
 
             }
             var orderEvent = order.OrderItems.FirstOrDefault(i => i.OrderId.Equals(notification.OrderId));
+            await _purchaseReportRepository.AddRange(purchaseReports);
+            await _purchaseReportRepository.SaveChangeAsync();
             order.OrderItems.Remove(orderEvent);
 
         }

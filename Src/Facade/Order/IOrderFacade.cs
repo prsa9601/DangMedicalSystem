@@ -1,6 +1,7 @@
 ﻿using Application.Order.CreateOrder;
 using Application.Order.EditOrder;
 using Application.Order.IsFinally;
+using Application.Order.SetOrderItem;
 using Common.Application;
 using MediatR;
 using Query.Order.DTOs;
@@ -15,6 +16,7 @@ namespace Facade.Order
     {
         Task<OperationResult> Create(CreateOrderCommand command, CancellationToken cancellationToken);
         Task<OperationResult> Edit(EditOrderCommand command, CancellationToken cancellationToken);
+        Task<OperationResult> SetOrderItem(SetOrderItemCommand command, CancellationToken cancellationToken);
         Task<OperationResult> IsFinally(OrderIsFinallyCommand command, CancellationToken cancellationToken);
 
 
@@ -57,6 +59,11 @@ namespace Facade.Order
         }
 
         public async Task<OperationResult> IsFinally(OrderIsFinallyCommand command, CancellationToken cancellationToken)
+        {
+            return await _mediator.Send(command, cancellationToken);
+        }
+
+        public async Task<OperationResult> SetOrderItem(SetOrderItemCommand command, CancellationToken cancellationToken)
         {
             return await _mediator.Send(command, cancellationToken);
         }

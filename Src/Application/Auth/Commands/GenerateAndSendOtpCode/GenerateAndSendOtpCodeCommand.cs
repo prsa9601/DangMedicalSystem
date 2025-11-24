@@ -8,7 +8,7 @@ using Domain.UserAgg.Interfaces.Repository;
 
 namespace Application.Auth.Commands.GenerateAndSendOtpCode
 {
-    public class GenerateAndSendOtpCodeCommand : IBaseCommand<string>
+    public class GenerateAndSendOtpCodeCommand : IBaseCommand<Dictionary<string, string>>
     {
         public string phoneNumber { get; set; }
 
@@ -18,7 +18,7 @@ namespace Application.Auth.Commands.GenerateAndSendOtpCode
         }
     }
 
-    public class GenerateAndSendOtpCodeCommandHandler : IBaseCommandHandler<GenerateAndSendOtpCodeCommand, string>
+    public class GenerateAndSendOtpCodeCommandHandler : IBaseCommandHandler<GenerateAndSendOtpCodeCommand, Dictionary<string, string>>
     {
         private readonly IUserRepository _repository;
         private readonly IUserBuilder _builder;
@@ -31,7 +31,7 @@ namespace Application.Auth.Commands.GenerateAndSendOtpCode
             _builder = builder;
         }
 
-        public async Task<OperationResult<string>> Handle(GenerateAndSendOtpCodeCommand request, CancellationToken cancellationToken)
+        public async Task<OperationResult<Dictionary<string, string>>> Handle(GenerateAndSendOtpCodeCommand request, CancellationToken cancellationToken)
         {
             var user = await _repository.GetUserByFilterAsync(i => i.PhoneNumber.Equals(request.phoneNumber));
             if (user != null)
@@ -48,14 +48,17 @@ namespace Application.Auth.Commands.GenerateAndSendOtpCode
 
                 await _repository.SaveChangeAsync();
 
-                return OperationResult<string>.Success(token);
+                return OperationResult<Dictionary<string, string>>.Success(new Dictionary<string, string>
+                {
+                    {token, default}
+                });
             }
             else
             {
                 string password = Sha256Hasher.Hash("DefaultGuestPassword");
                 var userEntity = _builder.WithPhoneNumber(request.phoneNumber).WithPassword(password).Build();
-                
-                
+
+
                 await _repository.AddAsync(userEntity);
 
                 string token = await _otpService.GenerateToken();
@@ -63,7 +66,10 @@ namespace Application.Auth.Commands.GenerateAndSendOtpCode
 
                 await _repository.SaveChangeAsync();
 
-                return OperationResult<string>.Success(token);
+                return OperationResult<Dictionary<string, string>>.Success(new Dictionary<string, string>
+                {
+                    {token, "Register"} 
+                });
             }
         }
     }

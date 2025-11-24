@@ -6,9 +6,9 @@ using Query.PurchaseReport.DTOs;
 
 namespace Query.PurchaseReport.ReportUserInvestment
 {
-    public class ReportUserInvestmentQueryFilter : QueryFilter<PurchaseReportUserInvestmentFilterResult, PurchaseReportFilterParam>
+    public class ReportUserInvestmentQueryFilter : QueryFilter<PurchaseReportUserInvestmentFilterResult, UserPurchaseReportFilterParam>
     {
-        public ReportUserInvestmentQueryFilter(PurchaseReportFilterParam filterParams) : base(filterParams)
+        public ReportUserInvestmentQueryFilter(UserPurchaseReportFilterParam filterParams) : base(filterParams)
         {
         }
     }
@@ -27,12 +27,12 @@ namespace Query.PurchaseReport.ReportUserInvestment
             var @param = request.FilterParams;
             var result = _context.PurchaseReports.OrderByDescending(p => p.CreationDate).AsQueryable();
 
-            if (param.StartDate != DateTime.MinValue && param.StartDate != DateTime.MaxValue)
+            if (param.StartDate != DateTime.MinValue && param.StartDate != DateTime.MaxValue && param.StartDate is not null)
             {
                 result = result.Where(purchase => purchase.CreationDate >= param.StartDate);
             }
 
-            if (param.EndDate != DateTime.MinValue && param.EndDate != DateTime.MaxValue)
+            if (param.EndDate != DateTime.MinValue && param.EndDate != DateTime.MaxValue && param.EndDate is not null)
             {
                 result = result.Where(purchase => purchase.CreationDate <= param.EndDate);
             }
@@ -40,6 +40,11 @@ namespace Query.PurchaseReport.ReportUserInvestment
             if (param.PurchaseReportFilter != null && param.PurchaseReportFilter == PurchaseReportFilter.None)
             {
                 result = result.Where(purchase => purchase.CreationDate >= param.StartDate);
+            }
+
+            if (param.UserId != null && param.UserId != default)
+            {
+                result = result.Where(purchase => purchase.UserId.Equals(param.UserId));
             }
 
             if (param.PhoneNumber != null)

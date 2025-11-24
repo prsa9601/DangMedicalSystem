@@ -16,12 +16,9 @@ namespace Query.User.Map
                 FirstName = user.FirstName,
                 BankAccount = user.BankAccount == null ? null : new UserBankAccountDto
                 {
-                    ExpirationDateMonth = user.BankAccount.ExpirationDateMonth,
-                    FirstName = user.BankAccount.FirstName,
-                    ExpirationDateYear = user.BankAccount.ExpirationDateYear,
+                    FullName = user.BankAccount.FullName,
                     CardNumber = user.BankAccount.CardNumber,
                     IsConfirmed = user.BankAccount.IsConfirmed,
-                    LastName = user.BankAccount.LastName,
                     Shaba = user.BankAccount.Shaba,
                     UserId = user.BankAccount.UserId,
                     Id = user.BankAccount.Id,
@@ -51,17 +48,15 @@ namespace Query.User.Map
                 FirstName = user.FirstName,
                 BankAccount = user.BankAccount == null ? null : new UserBankAccountDto
                 {
-                    ExpirationDateMonth = user.BankAccount.ExpirationDateMonth,
-                    FirstName = user.BankAccount.FirstName,
-                    ExpirationDateYear = user.BankAccount.ExpirationDateYear,
+                    FullName = user.BankAccount.FullName,
                     CardNumber = user.BankAccount.CardNumber,
                     IsConfirmed = user.BankAccount.IsConfirmed,
-                    LastName = user.BankAccount.LastName,
                     Shaba = user.BankAccount.Shaba,
                     UserId = user.BankAccount.UserId,
                     Id = user.BankAccount.Id,
                     CreationDate = user.BankAccount.CreationDate,
                 },
+                UserDocument = user.UserDocument.UserDocumentMapToUserDocumentDto(),
                 //BirthCertificatePhoto = user.BirthCertificatePhoto,
                 ImageName = user.ImageName,
                 IsActive = user.IsActive,

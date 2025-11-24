@@ -1,4 +1,6 @@
 ﻿using Application.Auth.Shared.Utilities;
+using Application.User.BankAccount.Add;
+using Application.User.Commands.ChangeAccountStatus;
 using Application.User.Commands.ChangeActivityAccount;
 using Application.User.Commands.ChangePassword;
 using Application.User.Commands.CompletionOfInformation;
@@ -26,12 +28,14 @@ namespace Facade.User
         Task<OperationResult> CreateUser(CreateUserCommand command);
         Task<OperationResult<Guid>> CreateUserForAdmin(CreateUserForAdminCommand command);
         Task<OperationResult> EditUser(EditUserCommand command);
+        Task<OperationResult> AddBankAccount(AddBankAccountCommand command);
         Task<OperationResult<string>> RemoveUser(RemoveUserCommand command);
         Task<OperationResult> SetImageUser(SetImageUserCommand command);
         Task<OperationResult> CompletionOfInformation(CompletionOfInformationCommand command);
         Task<OperationResult> ConfirmedAccount(ConfirmedAccountUserCommand command);
         Task<OperationResult> ChangePassword(ChangePasswordCommand command);
         Task<OperationResult> ChangeActivityAccount(ChangeActivityUserAccountCommand command);
+        Task<OperationResult> SetUserDocumentStatus(ChangeUserDocumentStatusCommand command);
 
 
         Task<UserDto?> GetById(Guid userId);
@@ -47,6 +51,11 @@ namespace Facade.User
         public UserFacade(IMediator mediator)
         {
             _mediator = mediator;
+        }
+
+        public async Task<OperationResult> AddBankAccount(AddBankAccountCommand command)
+        {
+            return await _mediator.Send(command);
         }
 
         public async Task<OperationResult> ChangeActivityAccount(ChangeActivityUserAccountCommand command)
@@ -115,6 +124,11 @@ namespace Facade.User
         }
 
         public async Task<OperationResult> SetImageUser(SetImageUserCommand command)
+        {
+            return await _mediator.Send(command);
+        }
+
+        public async Task<OperationResult> SetUserDocumentStatus(ChangeUserDocumentStatusCommand command)
         {
             return await _mediator.Send(command);
         }

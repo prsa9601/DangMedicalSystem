@@ -73,99 +73,99 @@ namespace Infrastructure
                 //        }
                 //    }
                 //};
+            })
+            .AddCookie(options =>
+            {
+                options.Cookie.Name = "auth-Token";
+                options.Cookie.HttpOnly = true;
+                options.Cookie.SecurePolicy = Microsoft.AspNetCore.Http.CookieSecurePolicy.Always;
+                options.Cookie.SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Strict;
+                options.Cookie.MaxAge = TimeSpan.FromMinutes(60);
+
+                options.Events = new CookieAuthenticationEvents
+                {
+                    //    OnValidatePrincipal = async context =>
+                    //    {
+                    //        // بررسی انقضا و رفرش توکن
+                    //        await TokenRefreshMiddleware(context);
+                    //    }
+
+
+                    // ۱. هنگام ساخت کوکی
+                    //OnSigningIn = async context =>
+                    //{
+                    //    // قبل از ایجاد کوکی احراز هویت
+                    //    await Task.CompletedTask;
+                    //},
+                    //
+                    //// ۲. پس از ورود موفق
+                    //OnSignedIn = async context =>
+                    //{
+                    //    // بعد از ایجاد کوکی
+                    //    await Task.CompletedTask;
+                    //},
+                    //
+                    //// ۳. هنگام خروج
+                    //OnSigningOut = async context =>
+                    //{
+                    //    // قبل از پاک کردن کوکی
+                    //    await Task.CompletedTask;
+                    //},
+                    //
+                    //// ۴. اعتبارسنجی اصلی (که شما دیدید)
+                    //OnValidatePrincipal = async context =>
+                    //{
+                    //    // بررسی انقضا و رفرش توکن
+                    //    await TokenRefreshMiddleware(context);
+                    //},
+                    //
+                    //// ۵. هنگامی که کاربر دسترسی ندارد
+                    //OnRedirectToAccessDenied = async context =>
+                    //{
+                    //    // مدیریت خطای دسترسی ممنوع
+                    //    context.Response.StatusCode = 403;
+                    //    await context.Response.WriteAsync("Access Denied");
+                    //    context.Response.Redirect("/AccessDenied");
+                    //},
+                    //
+                    // ۶. هنگامی که کاربر لاگین نکرده
+                    //OnRedirectToLogin = async context =>
+                    //{
+                    //    // مدیریت redirect به صفحه لاگین
+                    //    if (context.Request.Path.StartsWithSegments("/api"))
+                    //    {
+                    //        context.Response.StatusCode = 401;
+                    //        await context.Response.WriteAsync("Unauthorized");
+                    //    }
+                    //    else
+                    //    {
+                    //        context.Response.Redirect("/Login");
+                    //    }
+                    //},
+                    //
+                    //// ۷. هنگامی که کاربر از لاگ اوت بازدید می‌کند
+                    //OnRedirectToLogout = async context =>
+                    //{
+                    //    // مدیریت redirect به صفحه خروج
+                    //    context.Response.Redirect("/Logout");
+                    //},
+                    //
+                    //// ۸. هنگامی که کوکی منقضی شده
+                    //OnRedirectToReturnUrl = async context =>
+                    //{
+                    //    // مدیریت بازگشت به URL اصلی
+                    //    context.Response.Redirect(context.RedirectUri);
+                    //}
+
+                };
+
+
+
             });
-            //.AddCookie(options =>
-            //{
-            //    options.Cookie.Name = "auth-Token";
-            //    options.Cookie.HttpOnly = true;
-            //    options.Cookie.SecurePolicy = Microsoft.AspNetCore.Http.CookieSecurePolicy.Always;
-            //    options.Cookie.SameSite = Microsoft.AspNetCore.Http.SameSiteMode.Strict;
-            //    options.Cookie.MaxAge = TimeSpan.FromMinutes(60);
-
-                //options.Events = new CookieAuthenticationEvents
-                //{
-                //    OnValidatePrincipal = async context =>
-                //    {
-                //        // بررسی انقضا و رفرش توکن
-                //        await TokenRefreshMiddleware(context);
-                //    }
-
-
-                // ۱. هنگام ساخت کوکی
-                //OnSigningIn = async context =>
-                //{
-                //    // قبل از ایجاد کوکی احراز هویت
-                //    await Task.CompletedTask;
-                //},
-                //
-                //// ۲. پس از ورود موفق
-                //OnSignedIn = async context =>
-                //{
-                //    // بعد از ایجاد کوکی
-                //    await Task.CompletedTask;
-                //},
-                //
-                //// ۳. هنگام خروج
-                //OnSigningOut = async context =>
-                //{
-                //    // قبل از پاک کردن کوکی
-                //    await Task.CompletedTask;
-                //},
-                //
-                //// ۴. اعتبارسنجی اصلی (که شما دیدید)
-                //OnValidatePrincipal = async context =>
-                //{
-                //    // بررسی انقضا و رفرش توکن
-                //    await TokenRefreshMiddleware(context);
-                //},
-                //
-                //// ۵. هنگامی که کاربر دسترسی ندارد
-                //OnRedirectToAccessDenied = async context =>
-                //{
-                //    // مدیریت خطای دسترسی ممنوع
-                //    context.Response.StatusCode = 403;
-                //    await context.Response.WriteAsync("Access Denied");
-                //    context.Response.Redirect("/AccessDenied");
-                //},
-                //
-                //// ۶. هنگامی که کاربر لاگین نکرده
-                //OnRedirectToLogin = async context =>
-                //{
-                //    // مدیریت redirect به صفحه لاگین
-                //    if (context.Request.Path.StartsWithSegments("/api"))
-                //    {
-                //        context.Response.StatusCode = 401;
-                //        await context.Response.WriteAsync("Unauthorized");
-                //    }
-                //    else
-                //    {
-                //        context.Response.Redirect("/Login");
-                //    }
-                //},
-                //
-                //// ۷. هنگامی که کاربر از لاگ اوت بازدید می‌کند
-                //OnRedirectToLogout = async context =>
-                //{
-                //    // مدیریت redirect به صفحه خروج
-                //    context.Response.Redirect("/Logout");
-                //},
-                //
-                //// ۸. هنگامی که کوکی منقضی شده
-                //OnRedirectToReturnUrl = async context =>
-                //{
-                //    // مدیریت بازگشت به URL اصلی
-                //    context.Response.Redirect(context.RedirectUri);
-                //}
-
-                //};
-
-
-
-                //});
 
 
             //Jwt
-                services.AddAuthorization();
+            services.AddAuthorization();
             services.AddSingleton<JwtSettings>(new JwtSettings());
             services.AddScoped<IJwtSettingsFactory, JwtSettingsFactory>();
             services.AddScoped<IJwtServcie, JwtService>();
@@ -175,7 +175,7 @@ namespace Infrastructure
             {
                 return new JwtService(new JwtSettings());
             });
-         
+
 
 
             return services;

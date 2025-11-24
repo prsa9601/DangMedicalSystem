@@ -27,6 +27,7 @@ namespace Application.Order.CreateOrder
                 return OperationResult.NotFound();
 
             var order = new Domain.OrderAgg.Order(request.userId);
+            await _orderRepository.AddAsync(order);
             await _orderRepository.SaveChangeAsync();
             return OperationResult.Success();   
         }

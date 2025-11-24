@@ -41,7 +41,7 @@ namespace Query.User.GetFilterForDocuments
                 result = result.Where(r => $"{r.FirstName} {r.LastName}".Contains(@params.UserName));
 
             if (@params.UserStatus != null)
-                result = result.Where(r => r.UserDocument.Status.Equals(@params.UserName));
+                result = result.Where(r => r.UserDocument.Status.Equals(@params.UserStatus));
 
             if (@params.IsActive != null)
                 result = result.Where(r => r.IsActive == @params.IsActive);

@@ -39,6 +39,7 @@ namespace Query.User.DTOs.FilterDto
         public UserRoleDto? UserRole { get; set; }
 
         public UserBankAccountDto? BankAccount { get; set; }
+        public UserDocumentDto? UserDocument { get; set; }
 
         public List<UserOtpDto>? UserOtps { get; set; }
         public List<UserBlockDto>? UserBlocks { get; set; }

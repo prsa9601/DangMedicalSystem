@@ -3,6 +3,7 @@ using Application.Auth.Shared.Abstractions.Interfaces;
 using Domain.NotificationAgg.Interfaces.Repository;
 using Domain.OrderAgg.Interfaces.Repository;
 using Domain.ProductAgg.Interfaces.Repository;
+using Domain.ProfitAgg.Repository;
 using Domain.PurchaseReportAgg.Interfaces.Repository;
 using Domain.RoleAgg.Interfaces.Repository;
 using Domain.UserAgg;
@@ -11,6 +12,7 @@ using Infrastructure.Mapping.Service;
 using Infrastructure.Persistent.Ef.Notification.Repository;
 using Infrastructure.Persistent.Ef.Order.Repository;
 using Infrastructure.Persistent.Ef.Product.Repository;
+using Infrastructure.Persistent.Ef.Profit.Repository;
 using Infrastructure.Persistent.Ef.PurchaseReport.Repository;
 using Infrastructure.Persistent.Ef.Role.Repository;
 using Infrastructure.Persistent.Ef.User.Repository;
@@ -33,6 +35,7 @@ namespace Infrastructure
             services.AddScoped<IOrderRepository, OrderRepository>();
             services.AddScoped<INotificationRepository, NotificationRepository>();
             services.AddScoped<IRoleRepository, RoleRepository>();
+            services.AddScoped<IProfitRepository, ProfitRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
 
             services.AddTransient<System.Random>();

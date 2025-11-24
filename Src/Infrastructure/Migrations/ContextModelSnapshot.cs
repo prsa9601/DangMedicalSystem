@@ -28,20 +28,32 @@ namespace Infrastructure.Migrations
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("CreationDate")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<DateTime>("DateOfPurchase")
-                        .HasColumnType("datetime2");
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetime2")
+                        .HasDefaultValueSql("GETDATE()");
 
                     b.Property<Guid>("UserId")
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<int>("status")
-                        .HasColumnType("int");
+                    b.Property<string>("status")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("nvarchar(20)");
 
                     b.HasKey("Id");
 
-                    b.ToTable("OrderItems", "order");
+                    b.HasIndex("DateOfPurchase");
+
+                    b.HasIndex("UserId");
+
+                    b.HasIndex("status");
+
+                    b.ToTable("Orders", "order");
                 });
 
             modelBuilder.Entity("Domain.ProductAgg.Product", b =>
@@ -75,6 +87,44 @@ namespace Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Product", "product");
+                });
+
+            modelBuilder.Entity("Domain.ProfitAgg.Profit", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<decimal>("AmountPaid")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime>("CreationDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int>("ForWhatPeriod")
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("ForWhatTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("ImageName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<Guid>("OrderId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ProductId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<int>("Status")
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Profits", "profit");
                 });
 
             modelBuilder.Entity("Domain.PurchaseReportAgg.PurchaseReport", b =>
@@ -212,9 +262,6 @@ namespace Infrastructure.Migrations
                 {
                     b.OwnsMany("Domain.OrderAgg.OrderItem", "OrderItems", b1 =>
                         {
-                            b1.Property<Guid>("OrderId")
-                                .HasColumnType("uniqueidentifier");
-
                             b1.Property<Guid>("Id")
                                 .HasColumnType("uniqueidentifier");
 
@@ -227,6 +274,9 @@ namespace Infrastructure.Migrations
                             b1.Property<Guid>("InventoryId")
                                 .HasColumnType("uniqueidentifier");
 
+                            b1.Property<Guid>("OrderId")
+                                .HasColumnType("uniqueidentifier");
+
                             b1.Property<string>("PricePerDong")
                                 .IsRequired()
                                 .HasColumnType("nvarchar(max)");
@@ -234,9 +284,11 @@ namespace Infrastructure.Migrations
                             b1.Property<Guid>("ProductId")
                                 .HasColumnType("uniqueidentifier");
 
-                            b1.HasKey("OrderId", "Id");
+                            b1.HasKey("Id");
 
-                            b1.ToTable("OrderItem", "order");
+                            b1.HasIndex("OrderId");
+
+                            b1.ToTable("OrderItems", "order");
 
                             b1.WithOwner()
                                 .HasForeignKey("OrderId");
@@ -392,7 +444,6 @@ namespace Infrastructure.Migrations
                     b.OwnsOne("Domain.UserAgg.UserBankAccount", "BankAccount", b1 =>
                         {
                             b1.Property<Guid>("Id")
-                                .ValueGeneratedOnAdd()
                                 .HasColumnType("uniqueidentifier");
 
                             b1.Property<string>("CardNumber")
@@ -403,13 +454,7 @@ namespace Infrastructure.Migrations
                             b1.Property<DateTime>("CreationDate")
                                 .HasColumnType("datetime2");
 
-                            b1.Property<int>("ExpirationDateMonth")
-                                .HasColumnType("int");
-
-                            b1.Property<int>("ExpirationDateYear")
-                                .HasColumnType("int");
-
-                            b1.Property<string>("FirstName")
+                            b1.Property<string>("FullName")
                                 .IsRequired()
                                 .HasMaxLength(70)
                                 .HasColumnType("nvarchar(70)");
@@ -417,15 +462,10 @@ namespace Infrastructure.Migrations
                             b1.Property<bool>("IsConfirmed")
                                 .HasColumnType("bit");
 
-                            b1.Property<string>("LastName")
-                                .IsRequired()
-                                .HasMaxLength(70)
-                                .HasColumnType("nvarchar(70)");
-
                             b1.Property<string>("Shaba")
                                 .IsRequired()
-                                .HasMaxLength(25)
-                                .HasColumnType("nvarchar(25)");
+                                .HasMaxLength(26)
+                                .HasColumnType("nvarchar(26)");
 
                             b1.Property<Guid>("UserId")
                                 .HasColumnType("uniqueidentifier");
