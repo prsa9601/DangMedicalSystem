@@ -36,6 +36,11 @@ namespace Domain.UserAgg
             FullName = fullName;
         }
 
+        public void SetAsConfirmed(bool isConfirmed)
+        {
+            IsConfirmed = isConfirmed;
+        }
+     
         public void SetAsConfirmed()
         {
             IsConfirmed = true;

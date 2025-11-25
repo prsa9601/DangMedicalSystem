@@ -141,6 +141,19 @@ namespace Domain.UserAgg
                 BankAccount = bankAccount;
             }
         }
+
+        public void ChangeConfirmationBankAccount(bool visability)
+        {
+            if (BankAccount != null)
+            {
+                BankAccount.SetAsConfirmed(visability);
+            }
+            else
+            {
+                throw new Exception("اطلاعات بانکی کاربر یافت نشد.");
+            }
+        }
+
         #endregion
 
 

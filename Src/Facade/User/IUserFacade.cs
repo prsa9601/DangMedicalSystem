@@ -1,5 +1,6 @@
 ﻿using Application.Auth.Shared.Utilities;
 using Application.User.BankAccount.Add;
+using Application.User.BankAccount.ChangeVisability;
 using Application.User.Commands.ChangeAccountStatus;
 using Application.User.Commands.ChangeActivityAccount;
 using Application.User.Commands.ChangePassword;
@@ -29,6 +30,7 @@ namespace Facade.User
         Task<OperationResult<Guid>> CreateUserForAdmin(CreateUserForAdminCommand command);
         Task<OperationResult> EditUser(EditUserCommand command);
         Task<OperationResult> AddBankAccount(AddBankAccountCommand command);
+        Task<OperationResult> ChangeConfirmationBankAccount(ChangeConfirmationBankAccountCommand command);
         Task<OperationResult<string>> RemoveUser(RemoveUserCommand command);
         Task<OperationResult> SetImageUser(SetImageUserCommand command);
         Task<OperationResult> CompletionOfInformation(CompletionOfInformationCommand command);
@@ -59,6 +61,11 @@ namespace Facade.User
         }
 
         public async Task<OperationResult> ChangeActivityAccount(ChangeActivityUserAccountCommand command)
+        {
+            return await _mediator.Send(command);
+        }
+
+        public async Task<OperationResult> ChangeConfirmationBankAccount(ChangeConfirmationBankAccountCommand command)
         {
             return await _mediator.Send(command);
         }

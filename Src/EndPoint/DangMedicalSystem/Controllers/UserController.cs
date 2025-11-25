@@ -1,4 +1,5 @@
 ﻿using Application.User.BankAccount.Add;
+using Application.User.BankAccount.ChangeVisability;
 using Application.User.Commands.ChangeAccountStatus;
 using Application.User.Commands.ChangeActivityAccount;
 using Application.User.Commands.ChangePassword;
@@ -143,6 +144,17 @@ namespace DangMedicalSystem.Api.Controllers
                 FullName = command.FullName,
                 CardNumber = command.CardNumber,
                 ShabaNumber = command.ShabaNumber,
+            }));
+        }
+
+        [Authorize]
+        [HttpPatch("ChangeConfirmationBankAccount")]
+        public async Task<ApiResult> ChangeConfirmationBankAccount(ChangeConfirmationBankAccountCommand command)
+        {
+            return CommandResult(await _facade.ChangeConfirmationBankAccount(new ChangeConfirmationBankAccountCommand
+            {
+                UserId = command.UserId,
+                IsConfirmed = command.IsConfirmed
             }));
         }
     

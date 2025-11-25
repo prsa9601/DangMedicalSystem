@@ -177,7 +177,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("PurchaseReports");
+                    b.ToTable("PurchaseReports", (string)null);
                 });
 
             modelBuilder.Entity("Domain.RoleAgg.Role", b =>
@@ -194,7 +194,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Roles");
+                    b.ToTable("Roles", (string)null);
                 });
 
             modelBuilder.Entity("Domain.RoleAgg.RolePermission", b =>
@@ -215,7 +215,7 @@ namespace Infrastructure.Migrations
 
                     b.HasIndex("RoleId");
 
-                    b.ToTable("RolePermission");
+                    b.ToTable("RolePermission", (string)null);
                 });
 
             modelBuilder.Entity("Domain.StockAgg.Stock", b =>
@@ -247,7 +247,7 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Stocks");
+                    b.ToTable("Stocks", (string)null);
                 });
 
             modelBuilder.Entity("Domain.UserAgg.User", b =>
@@ -331,6 +331,42 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.ProductAgg.Product", b =>
                 {
+                    b.OwnsOne("Domain.ProductAgg.Inventory", "Inventory", b1 =>
+                        {
+                            b1.Property<Guid>("Id")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<DateTime>("CreationDate")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<int>("Dong")
+                                .HasColumnType("int");
+
+                            b1.Property<Guid>("ProductId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("Profit")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<int>("ProfitableTime")
+                                .HasColumnType("int");
+
+                            b1.Property<string>("TotalPrice")
+                                .IsRequired()
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("ProductId")
+                                .IsUnique();
+
+                            b1.ToTable("Inventory", "product");
+
+                            b1.WithOwner()
+                                .HasForeignKey("ProductId");
+                        });
+
                     b.OwnsOne("Common.Domain.ValueObjects.SeoData", "SeoData", b1 =>
                         {
                             b1.Property<Guid>("ProductId")
@@ -372,42 +408,6 @@ namespace Infrastructure.Migrations
                                 .HasForeignKey("ProductId");
                         });
 
-                    b.OwnsOne("Domain.ProductAgg.Inventory", "Inventory", b1 =>
-                        {
-                            b1.Property<Guid>("Id")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<DateTime>("CreationDate")
-                                .HasColumnType("datetime2");
-
-                            b1.Property<int>("Dong")
-                                .HasColumnType("int");
-
-                            b1.Property<Guid>("ProductId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<string>("Profit")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.Property<int>("ProfitableTime")
-                                .HasColumnType("int");
-
-                            b1.Property<string>("TotalPrice")
-                                .IsRequired()
-                                .HasColumnType("nvarchar(max)");
-
-                            b1.HasKey("Id");
-
-                            b1.HasIndex("ProductId")
-                                .IsUnique();
-
-                            b1.ToTable("Inventory", "product");
-
-                            b1.WithOwner()
-                                .HasForeignKey("ProductId");
-                        });
-
                     b.Navigation("Inventory");
 
                     b.Navigation("SeoData")
@@ -425,6 +425,46 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.UserAgg.User", b =>
                 {
+                    b.OwnsOne("Domain.UserAgg.UserBankAccount", "BankAccount", b1 =>
+                        {
+                            b1.Property<Guid>("Id")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<string>("CardNumber")
+                                .IsRequired()
+                                .HasMaxLength(16)
+                                .HasColumnType("nvarchar(16)");
+
+                            b1.Property<DateTime>("CreationDate")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<string>("FullName")
+                                .IsRequired()
+                                .HasMaxLength(70)
+                                .HasColumnType("nvarchar(70)");
+
+                            b1.Property<bool>("IsConfirmed")
+                                .HasColumnType("bit");
+
+                            b1.Property<string>("Shaba")
+                                .IsRequired()
+                                .HasMaxLength(26)
+                                .HasColumnType("nvarchar(26)");
+
+                            b1.Property<Guid>("UserId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.HasKey("Id");
+
+                            b1.HasIndex("UserId")
+                                .IsUnique();
+
+                            b1.ToTable("BankAccounts", "user");
+
+                            b1.WithOwner()
+                                .HasForeignKey("UserId");
+                        });
+
                     b.OwnsMany("Domain.UserAgg.UserAttempt", "UserAttempts", b1 =>
                         {
                             b1.Property<Guid>("Id")
@@ -468,46 +508,6 @@ namespace Infrastructure.Migrations
                             b1.HasIndex("UserId");
 
                             b1.ToTable("UserAttempts", "user");
-
-                            b1.WithOwner()
-                                .HasForeignKey("UserId");
-                        });
-
-                    b.OwnsOne("Domain.UserAgg.UserBankAccount", "BankAccount", b1 =>
-                        {
-                            b1.Property<Guid>("Id")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.Property<string>("CardNumber")
-                                .IsRequired()
-                                .HasMaxLength(16)
-                                .HasColumnType("nvarchar(16)");
-
-                            b1.Property<DateTime>("CreationDate")
-                                .HasColumnType("datetime2");
-
-                            b1.Property<string>("FullName")
-                                .IsRequired()
-                                .HasMaxLength(70)
-                                .HasColumnType("nvarchar(70)");
-
-                            b1.Property<bool>("IsConfirmed")
-                                .HasColumnType("bit");
-
-                            b1.Property<string>("Shaba")
-                                .IsRequired()
-                                .HasMaxLength(26)
-                                .HasColumnType("nvarchar(26)");
-
-                            b1.Property<Guid>("UserId")
-                                .HasColumnType("uniqueidentifier");
-
-                            b1.HasKey("Id");
-
-                            b1.HasIndex("UserId")
-                                .IsUnique();
-
-                            b1.ToTable("BankAccounts", "user");
 
                             b1.WithOwner()
                                 .HasForeignKey("UserId");
