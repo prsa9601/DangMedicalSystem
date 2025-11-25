@@ -71,6 +71,7 @@ namespace Query.PurchaseReport
 
             var userReportMapResult = userAgg.UserReportDtoMapper();
             userReportMapResult.PurchaseReport.Add(model.Map());
+            userReportMapResult.ProfitPurchases = await model.MapProfitReport(context);
             userReportMapResult.ProductPurchase.Add(await model.ProductReportDtoMapper(context));
 
             return userReportMapResult;

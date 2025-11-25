@@ -1,8 +1,10 @@
 ﻿using Facade.Auth;
 using Facade.Order;
 using Facade.Product;
+using Facade.Profit;
 using Facade.PurchaseReport;
 using Facade.Session;
+using Facade.Stock;
 using Facade.User;
 using Microsoft.Extensions.DependencyInjection;
 using Query.Mapping.Registration;
@@ -21,6 +23,8 @@ namespace Facade
             services.AddScoped<IOrderFacade, OrderFacade>();
             services.AddScoped<IInventoryFacade, InventoryFacade>();
             services.AddScoped<IUserFacade, UserFacade>();
+            services.AddScoped<IStockFacade, StockFacade>();
+            services.AddScoped<IProfitFacade, ProfitFacade>();
 
             services.AddScoped<IUserSessionFacade, UserSessionFacade>();
 

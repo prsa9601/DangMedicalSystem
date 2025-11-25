@@ -34,7 +34,7 @@ namespace DangMedicalSystem.Api.Controllers
             return CommandResult(await _facade.IsFinally(new OrderIsFinallyCommand
             {
                 orderId = command.orderId,
-                userId = /*User.GetUserId()*/ Guid.Parse("c66c9e0b-9d76-4d0a-9e3d-557f3c88f61d"),
+                userId = User.GetUserId(),
             }, cancellationToken));
         }
         
@@ -43,9 +43,8 @@ namespace DangMedicalSystem.Api.Controllers
         {
             return CommandResult(await _facade.SetOrderItem(new SetOrderItemCommand
             {
-                userId = /*User.GetUserId()*/ Guid.Parse("c66c9e0b-9d76-4d0a-9e3d-557f3c88f61d"),
+                userId = User.GetUserId(),
                 dongAmount = command.dongAmount,
-                inventoryId = command.inventoryId,  
                 orderId = command.orderId,
                 productId = command.productId,
             }, cancellationToken));

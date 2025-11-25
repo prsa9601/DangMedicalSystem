@@ -10,6 +10,8 @@ namespace Domain.ProductAgg
         public int Dong { get; private set; }
         //سود هر دانگ
         //public int DongPurchase { get; set; }
+
+        //سود هر دانگ
         public string Profit { get; private set; }
         public PaymentTime ProfitableTime { get; set; }
         public string PricePerDong

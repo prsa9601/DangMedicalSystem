@@ -6,6 +6,7 @@ using Domain.ProductAgg.Interfaces.Repository;
 using Domain.ProfitAgg.Repository;
 using Domain.PurchaseReportAgg.Interfaces.Repository;
 using Domain.RoleAgg.Interfaces.Repository;
+using Domain.StockAgg.Interfaces.Repository;
 using Domain.UserAgg;
 using Domain.UserAgg.Interfaces.Repository;
 using Infrastructure.Mapping.Service;
@@ -17,6 +18,7 @@ using Infrastructure.Persistent.Ef.PurchaseReport.Repository;
 using Infrastructure.Persistent.Ef.Role.Repository;
 using Infrastructure.Persistent.Ef.User.Repository;
 using Infrastructure.Services;
+using Infrastructure.Stock;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -37,6 +39,7 @@ namespace Infrastructure
             services.AddScoped<IRoleRepository, RoleRepository>();
             services.AddScoped<IProfitRepository, ProfitRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IStockRepository, StockRepository>();
 
             services.AddTransient<System.Random>();
             services.AddScoped<IOtpService, OtpService>();

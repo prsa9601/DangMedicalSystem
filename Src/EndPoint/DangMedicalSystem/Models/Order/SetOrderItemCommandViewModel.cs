@@ -4,7 +4,6 @@
     {
         public Guid orderId { get; set; }
         public Guid productId { get; set; }
-        public Guid inventoryId { get; set; }
         public int dongAmount { get; set; }
     }
     public class OrderIsFinallyViewModel

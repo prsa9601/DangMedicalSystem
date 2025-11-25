@@ -10,7 +10,6 @@ namespace Application.Order.SetOrderItem
         public Guid orderId { get; set; }
         public Guid userId { get; set; }
         public Guid productId { get; set; }
-        public Guid inventoryId { get; set; }
         public int dongAmount { get; set; }
     }
     internal sealed class SetOrderItemCommandHandler : IBaseCommandHandler<SetOrderItemCommand>
@@ -35,7 +34,7 @@ namespace Application.Order.SetOrderItem
 
             if (product == null) return OperationResult.NotFound();
 
-            order.SetOrderItem(request.productId, product.Inventory.PricePerDong ?? default, request.dongAmount, request.inventoryId);
+            order.SetOrderItem(request.productId, product.Inventory.PricePerDong ?? default, request.dongAmount, product.Inventory.Id);
 
             await _repository.SaveChangeAsync();
             return OperationResult.Success();

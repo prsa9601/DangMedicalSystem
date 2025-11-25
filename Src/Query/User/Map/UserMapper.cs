@@ -22,6 +22,7 @@ namespace Query.User.Map
                 IsActive = user.IsActive,
                 UserDocument = user.UserDocument.UserDocumentMapToUserDocumentDto() ?? null,
                 LastName = user.LastName,
+                
                 //NationalCardPhoto = user.NationalCardPhoto,
                 //NationalityCode = user.NationalityCode,
                 PhoneNumber = user.PhoneNumber,
