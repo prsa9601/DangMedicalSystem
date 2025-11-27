@@ -52,6 +52,7 @@ namespace Query.PurchaseReport
 
                     var userReportMapResult = userAgg.UserReportDtoMapper();
                     userReportMapResult.PurchaseReport.Add(item.Map());
+                    userReportMapResult.ProfitPurchases = await item.MapProfitReport(context);
                     userReportMapResult.ProductPurchase.Add(await item.ProductReportDtoMapper(context));
                     UserReport.Add(userAgg.Id, userReportMapResult);
                 }
@@ -64,7 +65,7 @@ namespace Query.PurchaseReport
             , Context context)
         {
 
-            if (model== null)
+            if (model == null)
                 return null;
 
             var userAgg = await context.Users.FirstOrDefaultAsync(user => user.Id.Equals
