@@ -1,4 +1,5 @@
 ﻿using Common.Domain;
+using Domain.NotificationAgg;
 using Domain.OrderAgg;
 using Domain.ProductAgg;
 using Domain.ProfitAgg;
@@ -27,6 +28,7 @@ namespace Infrastructure
         public DbSet<Profit> Profits { get; set; }
         public DbSet<Domain.StockAgg.Stock> Stocks { get; set; }
         public DbSet<Order> Orders { get; set; }
+        public DbSet<Notification> Notifications { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<User> Users => Set<User>();

@@ -1,4 +1,5 @@
 ﻿using Facade.Auth;
+using Facade.Notification;
 using Facade.Order;
 using Facade.Product;
 using Facade.Profit;
@@ -25,6 +26,7 @@ namespace Facade
             services.AddScoped<IUserFacade, UserFacade>();
             services.AddScoped<IStockFacade, StockFacade>();
             services.AddScoped<IProfitFacade, ProfitFacade>();
+            services.AddScoped<INotificationFacade, NotificationFacade>();
 
             services.AddScoped<IUserSessionFacade, UserSessionFacade>();
 

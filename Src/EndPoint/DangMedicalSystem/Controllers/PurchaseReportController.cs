@@ -1,5 +1,6 @@
 ﻿using Common.AspNetCore;
 using Facade.PurchaseReport;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Query.PurchaseReport.DTOs;
@@ -37,6 +38,7 @@ namespace DangMedicalSystem.Api.Controllers
             return QueryResult(await _facade.GetById(UserId));
         }
 
+        [Authorize]
         [HttpGet("GetForCurrentUser")]
         public async Task<ApiResult<UserPurchaseReportDto?>> GetForCurrentUser()
         {

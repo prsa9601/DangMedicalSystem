@@ -63,6 +63,10 @@ namespace Query.PurchaseReport
         public static async Task<UserPurchaseReportDto> MapUserReport(this Domain.PurchaseReportAgg.PurchaseReport model
             , Context context)
         {
+
+            if (model== null)
+                return null;
+
             var userAgg = await context.Users.FirstOrDefaultAsync(user => user.Id.Equals
                                      (model.UserId));
 
