@@ -35,7 +35,7 @@ namespace DangMedicalSystem.Api.Controllers
             return CommandResult(await _facade.CreateList(command));
         }
 
-        [HttpPost("EditNotification")]
+        [HttpPatch("EditNotification")]
         public async Task<ApiResult> EditNotification(EditNotificationCommand command)
         {
             return CommandResult(await _facade.Edit(command));
