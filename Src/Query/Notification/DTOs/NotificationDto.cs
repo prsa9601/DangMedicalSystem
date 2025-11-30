@@ -1,5 +1,7 @@
 ﻿using Common.Query;
 using Common.Query.Filter;
+using Query.Product.Dtos.FilterDto;
+using System.Diagnostics.CodeAnalysis;
 using System.Net.Http.Headers;
 
 namespace Query.Notification.DTOs
@@ -7,9 +9,15 @@ namespace Query.Notification.DTOs
     public class NotificationDto : BaseDto
     {
         public string Title { get; set; }
-        public List<Guid> UserIds { get; set; } = new List<Guid>();
+        public List<UserNotificationDto> Users { get; set; } = new List<UserNotificationDto>();
         public string Description { get; set; }
         public string? Link { get; set; }
+    }
+    public class UserNotificationDto : BaseDto
+    {
+        public string FirstName { get; set; }
+        public string LastName { get; set; }
+        public string PhoneNumber { get; set; }
     }
     public class NotificationDtoForUser : BaseDto
     {
@@ -20,7 +28,9 @@ namespace Query.Notification.DTOs
     }
     public class NotificationFilterParam : BaseFilterParam
     {
+        [AllowNull]
         public string? Title { get; set; }
+        [AllowNull]
         public string? Description { get; set; }
     }
     public class NotificationFilterParamForUser : BaseFilterParam

@@ -55,6 +55,8 @@ namespace Application.Auth.Commands.Register
                 OperationResult.Error("خطایی سمت سرور رخ داده است لطفا بعدا تلاش کنید!");
 
             user.SetUserSession(Sha256Hasher.Hash(password), request.ipAddress, DateTime.Now.AddMinutes(3));
+            
+            user.ChangeActivity(true);
             //await _repository.AddAsync(user!);
             _repository.SaveChange();
 

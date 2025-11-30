@@ -29,9 +29,11 @@ namespace Query.User.GetFilter
             //if (!string.IsNullOrWhiteSpace(@params.UserIds))
             //    result = result.Where(r => r.Email.Contains(@params.Email));
 
-            if (!string.IsNullOrWhiteSpace(@params.PhoneNumber))
-                result = result.Where(r => r.PhoneNumber.Contains(@params.PhoneNumber));
-
+            if (!string.IsNullOrWhiteSpace(@params.Search))
+                result = result.Where(r => r.PhoneNumber.Contains(@params.Search) || r.FirstName.Contains(@params.Search)
+                || r.LastName.Contains(@params.Search));
+         
+           
             if (@params.IsActive != null)
                 result = result.Where(r => r.IsActive == @params.IsActive);
 

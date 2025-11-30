@@ -13,7 +13,17 @@ namespace Query.Order
                 Id = order.Id,
                 status = order.status,
                 UserId = order.UserId,
-                OrderItems = order.OrderItems.Map()
+                OrderItems = new OrderItemDto
+                {
+                    DongAmount = order.OrderItems.DongAmount,
+                    PricePerDong = order.OrderItems.PricePerDong,
+                    CreationDate = order.CreationDate,
+                    Id = order.OrderItems.Id,
+                    InventoryId = order.OrderItems.InventoryId,
+                    OrderId = order.OrderItems.OrderId,
+                    ProductId = order.OrderItems.ProductId,
+                }
+                //OrderItems = order.OrderItems.Map()
             };
         }
     }

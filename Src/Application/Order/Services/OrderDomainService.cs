@@ -15,11 +15,16 @@ namespace Application.Order.Services
         public async Task<int> CheckNumberOfDongAvailable(Guid productId)
         {
             var order = await _repository.GetListByFilterAsync(order =>
-            order.OrderItems.Any(item =>
-            item.ProductId.Equals(productId)) && order.status == Domain.OrderAgg.Enum.OrderStatus.paid);
+            order.OrderItems
+            .ProductId.Equals(productId) && order.status == Domain.OrderAgg.Enum.OrderStatus.paid);
+
+            //var order = await _repository.GetListByFilterAsync(order =>
+            //order.OrderItems.Any(item =>
+            //item.ProductId.Equals(productId)) && order.status == Domain.OrderAgg.Enum.OrderStatus.paid);
 
             int dongCount = 0;
-            dongCount += order.Sum(o => o.OrderItems.Sum(i => i.DongAmount));
+            //dongCount += order.Sum(o => o.OrderItems.Sum(i => i.DongAmount));
+            dongCount += order.Sum(o => o.OrderItems.DongAmount);
             return 6 - dongCount;
         }
     }

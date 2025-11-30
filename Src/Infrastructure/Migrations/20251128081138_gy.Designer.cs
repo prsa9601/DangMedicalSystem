@@ -4,6 +4,7 @@ using Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class ContextModelSnapshot : ModelSnapshot
+    [Migration("20251128081138_gy")]
+    partial class gy
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -323,7 +326,7 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Domain.OrderAgg.Order", b =>
                 {
-                    b.OwnsOne("Domain.OrderAgg.OrderItem", "OrderItems", b1 =>
+                    b.OwnsMany("Domain.OrderAgg.OrderItem", "OrderItems", b1 =>
                         {
                             b1.Property<Guid>("Id")
                                 .HasColumnType("uniqueidentifier");
@@ -349,8 +352,7 @@ namespace Infrastructure.Migrations
 
                             b1.HasKey("Id");
 
-                            b1.HasIndex("OrderId")
-                                .IsUnique();
+                            b1.HasIndex("OrderId");
 
                             b1.ToTable("OrderItems", "order");
 
@@ -358,8 +360,7 @@ namespace Infrastructure.Migrations
                                 .HasForeignKey("OrderId");
                         });
 
-                    b.Navigation("OrderItems")
-                        .IsRequired();
+                    b.Navigation("OrderItems");
                 });
 
             modelBuilder.Entity("Domain.ProductAgg.Product", b =>

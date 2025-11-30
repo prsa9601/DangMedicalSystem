@@ -4,7 +4,7 @@ namespace Domain.NotificationAgg
 {
     public class Notification : BaseEntity
     {
-        public Notification(string title, List<Guid> userId, string description, string? link)
+        public Notification(string title, List<Guid>? userId, string description, string? link)
         {
             Title = title;
             UserId = userId;
@@ -29,7 +29,7 @@ namespace Domain.NotificationAgg
         }
 
         public string Title { get; set; }
-        public List<Guid> UserId { get; set; } = new List<Guid>();
+        public List<Guid>? UserId { get; set; } = new List<Guid>();
         public string Description { get; set; }
         public string? Link { get; set; }
     }

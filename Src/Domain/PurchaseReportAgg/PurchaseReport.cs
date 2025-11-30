@@ -6,6 +6,7 @@ namespace Domain.PurchaseReportAgg
     {
 
         public Guid UserId { get; set; }
+        public Guid OrderId { get; set; }
         public Guid ProductId { get; set; }
         //اطلاعات کل خرید آن زمان
         public string TotalPrice { get; set; }
@@ -21,10 +22,11 @@ namespace Domain.PurchaseReportAgg
         public int PurchaseDangPerDang { get; set; }
 
 
-        public PurchaseReport(Guid userId, Guid productId, string totalPrice,
+        public PurchaseReport(Guid userId, Guid orderId, Guid productId, string totalPrice,
             string totalDang, string totalProfit, string purchasePrice, int purchaseDang, 
             string profit, string profitPerDang, string purchasePricePerDang, int purchaseDangPerDang)
         {
+            OrderId = orderId;
             UserId = userId;
             ProductId = productId;
             TotalPrice = totalPrice;

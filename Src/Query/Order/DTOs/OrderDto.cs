@@ -8,7 +8,7 @@ namespace Query.Order.DTOs
         public DateTime DateOfPurchase { get; set; }
         public Guid UserId { get; set; }
         public OrderStatus status { get; set; }
-        public List<OrderItemDto> OrderItems { get; set; }
+        public OrderItemDto OrderItems { get; set; } = new();
     }
     public class OrderItemDto : BaseDto
     {

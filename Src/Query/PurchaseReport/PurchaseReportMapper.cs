@@ -1,7 +1,9 @@
 ﻿using Infrastructure;
 using Microsoft.EntityFrameworkCore;
+using Query.Order.DTOs;
 using Query.Product;
 using Query.PurchaseReport.DTOs;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace Query.PurchaseReport
@@ -28,9 +30,10 @@ namespace Query.PurchaseReport
                 TotalPrice = purchaseReport.TotalPrice,
                 TotalProfit = purchaseReport.TotalProfit,
                 UserId = purchaseReport.UserId,
+
             };
         }
-        public static async Task<List<UserPurchaseReportDto>> MapUserReport(this List<Domain.PurchaseReportAgg.PurchaseReport> model, Context context)
+        public static async Task<List<UserPurchaseReportDto>> MapUsersReport(this List<Domain.PurchaseReportAgg.PurchaseReport> model, Context context)
         {
             Dictionary<Guid, UserPurchaseReportDto> UserReport = new();
 
@@ -40,7 +43,8 @@ namespace Query.PurchaseReport
                 {
                     user.InvestmentCount += 1;
                     user.PurchaseReport.Add(item.Map());
-                    user.ProductPurchase.Add(await item.ProductReportDtoMapper(context));
+                    user.ProductPurchase.AddRange(await item.ProductReportDtoMapper(context));
+                    user.OrderDtos.AddRange(await item.OrderReportDtoMapper(context));
                 }
                 else
                 {
@@ -53,7 +57,8 @@ namespace Query.PurchaseReport
                     var userReportMapResult = userAgg.UserReportDtoMapper();
                     userReportMapResult.PurchaseReport.Add(item.Map());
                     userReportMapResult.ProfitPurchases = await item.MapProfitReport(context);
-                    userReportMapResult.ProductPurchase.Add(await item.ProductReportDtoMapper(context));
+                    userReportMapResult.ProductPurchase.AddRange(await item.ProductReportDtoMapper(context));
+                    userReportMapResult.OrderDtos.AddRange(await item.OrderReportDtoMapper(context));
                     UserReport.Add(userAgg.Id, userReportMapResult);
                 }
 
@@ -61,7 +66,7 @@ namespace Query.PurchaseReport
 
             return UserReport.Values.ToList();
         }
-        public static async Task<UserPurchaseReportDto> MapUserReport(this Domain.PurchaseReportAgg.PurchaseReport model
+        public static async Task<UserPurchaseReportDto> MapUserReport(this List<Domain.PurchaseReportAgg.PurchaseReport> model
             , Context context)
         {
 
@@ -69,15 +74,20 @@ namespace Query.PurchaseReport
                 return null;
 
             var userAgg = await context.Users.FirstOrDefaultAsync(user => user.Id.Equals
-                                     (model.UserId));
+                                     (model.FirstOrDefault().UserId));
 
             if (userAgg == null)
                 return null;
 
             var userReportMapResult = userAgg.UserReportDtoMapper();
-            userReportMapResult.PurchaseReport.Add(model.Map());
-            userReportMapResult.ProfitPurchases = await model.MapProfitReport(context);
-            userReportMapResult.ProductPurchase.Add(await model.ProductReportDtoMapper(context));
+            foreach (var item in model)
+            {
+                userReportMapResult.PurchaseReport.Add(item.Map());
+                userReportMapResult.ProfitPurchases = await item.MapProfitReport(context);
+                userReportMapResult.ProductPurchase.AddRange(await item.ProductReportDtoMapper(context));
+                userReportMapResult.OrderDtos.AddRange(await item.OrderReportDtoMapper(context));
+            }
+
 
             return userReportMapResult;
         }
@@ -136,25 +146,66 @@ namespace Query.PurchaseReport
             };
 
         }
-        public static async Task<ProductPurchaseReportDto?> ProductReportDtoMapper(
+        public static async Task<List<ProductPurchaseReportDto>?> ProductReportDtoMapper(
             this Domain.PurchaseReportAgg.PurchaseReport? model, Context context)
         {
 
-            var product = await context.Products.FirstOrDefaultAsync
-                (product => product.Id.Equals(model.ProductId));
+            var product = context.Products.AsTracking().Where
+                (product => product.Id.Equals(model.ProductId)).AsEnumerable();
 
             if (product == null)
                 return null;
-            return new ProductPurchaseReportDto
+            var result = product.Select(i => new ProductPurchaseReportDto
             {
-                ImageName = product.ImageName,
-                Title = product.Title,
-                Id = product.Id,
-                CreationDate = product.CreationDate,
+                ImageName = i.ImageName,
+                Title = i.Title,
+                Id = i.Id,
+                CreationDate = i.CreationDate,
                 PurchaseId = model.Id,
-                InventoryDto = product.Inventory.MapInventory(),
-            };
+                InventoryDto = i.Inventory.MapInventory(),
+            });
 
+            return result.ToList();
+        }
+        public static async Task<List<OrderDto>?> OrderReportDtoMapper(
+            this Domain.PurchaseReportAgg.PurchaseReport? model, Context context)
+        {
+
+            var order = context.Orders.AsTracking().Where
+                (order => order.Id.Equals(model.OrderId)).AsEnumerable();
+
+            if (order == null)
+                return null;
+            var result = order.Select(i => new OrderDto
+            {
+                Id = i.Id,
+                CreationDate = i.CreationDate,
+                status = i.status,
+                UserId = i.UserId,
+                DateOfPurchase = i.DateOfPurchase,
+                OrderItems = new OrderItemDto
+                {
+                    CreationDate = i.OrderItems.CreationDate,
+                    DongAmount = i.OrderItems.DongAmount,
+                    Id = i.OrderItems.Id,
+                    InventoryId = i.OrderItems.InventoryId,
+                    OrderId = i.OrderItems.OrderId,
+                    PricePerDong = i.OrderItems.PricePerDong,
+                    ProductId = i.OrderItems.ProductId,
+                },
+                //OrderItems = i.OrderItems.Select(i => new OrderItemDto
+                //{
+                //    CreationDate = i.CreationDate,
+                //    DongAmount = i.DongAmount,
+                //    Id = i.Id,
+                //    InventoryId = i.InventoryId,
+                //    OrderId = i.OrderId,
+                //    PricePerDong = i.PricePerDong,
+                //    ProductId = i.ProductId,
+                //}).ToList(),
+            });
+
+            return result.ToList();
         }
     }
 }

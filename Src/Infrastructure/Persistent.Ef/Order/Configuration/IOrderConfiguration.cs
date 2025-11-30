@@ -30,7 +30,7 @@ namespace Infrastructure.Persistent.Ef.Order.Configuration
                    .HasMaxLength(20);
 
 
-            builder.OwnsMany(r => r.OrderItems, item =>
+            builder.OwnsOne(r => r.OrderItems, item =>
             {
                 item.ToTable("OrderItems", "order");
                 item.HasKey(b => b.Id);
@@ -44,6 +44,20 @@ namespace Infrastructure.Persistent.Ef.Order.Configuration
                 item.Property(b => b.DongAmount).IsRequired();
                 item.Property(b => b.InventoryId).IsRequired();
             });
+            //builder.OwnsMany(r => r.OrderItems, item =>
+            //{
+            //    item.ToTable("OrderItems", "order");
+            //    item.HasKey(b => b.Id);
+
+            //    // اضافه کردن کانفیگوریشن‌های اضافی برای OrderItems
+            //    item.Property(b => b.OrderId).IsRequired();
+            //    item.Property(b => b.ProductId).IsRequired();
+            //    item.Property(b => b.PricePerDong)
+            //        .IsRequired()
+            //        .HasConversion<string>(); // یا از نوع decimal استفاده کنید
+            //    item.Property(b => b.DongAmount).IsRequired();
+            //    item.Property(b => b.InventoryId).IsRequired();
+            //});
 
             // Indexes
             builder.HasIndex(o => o.UserId);

@@ -22,7 +22,7 @@ namespace Query.Notification.GetByIdForAdmin
             if (notification == null)
                 return null;
 
-            return notification.Map();
+            return notification.Map(_context);
         }
     }
 }

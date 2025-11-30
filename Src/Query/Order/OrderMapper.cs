@@ -15,7 +15,17 @@ namespace Query.Order
                 Id = order.Id,
                 status = order.status,
                 UserId = order.UserId,
-                OrderItems = order.OrderItems.Map()
+                OrderItems = new OrderItemDto
+                {
+                    CreationDate = order.OrderItems.CreationDate,
+                    Id = order.OrderItems.Id,
+                    DongAmount = order.OrderItems.DongAmount,
+                    InventoryId = order.OrderItems.InventoryId,
+                    OrderId = order.OrderItems.OrderId,
+                    PricePerDong = order.OrderItems.PricePerDong,
+                    ProductId = order.OrderItems.ProductId,
+                }
+                //OrderItems = order.OrderItems.Map()
             };
         }
 

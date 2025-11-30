@@ -40,7 +40,10 @@ namespace Application.Profit.Create
         public async Task<OperationResult> Handle(CreateProfitCommand request, CancellationToken cancellationToken)
         {
             var orders = await _orderRepository.GetByFilterAsync(i => i.Id.Equals(request.OrderId) &&
-            i.UserId.Equals(request.UserId) && i.OrderItems.Any(r => r.ProductId.Equals(request.ProductId)));
+            i.UserId.Equals(request.UserId) && i.OrderItems.ProductId.Equals(request.ProductId));
+   
+            //var orders = await _orderRepository.GetByFilterAsync(i => i.Id.Equals(request.OrderId) &&
+            //i.UserId.Equals(request.UserId) && i.OrderItems.Any(r => r.ProductId.Equals(request.ProductId)));
 
             //var orders = await _orderRepository.GetListByFilterAsync(i => i.Id.Equals(request.OrderId) &&
             //i.UserId.Equals(request.UserId) && i.OrderItems.Any(r => r.ProductId.Equals(request.ProductId)));
@@ -50,13 +53,15 @@ namespace Application.Profit.Create
 
             var product = await _productRepository.GetTracking(request.ProductId);
 
-            var dongAmounts = orders.OrderItems.Where(o => o.ProductId.Equals(request.ProductId))
-                .Select(i => i.DongAmount);
+
+            //var dongAmounts = orders.OrderItems.Where(o => o.ProductId.Equals(request.ProductId))
+            //    .Select(i => i.DongAmount);
 
             //var dongAmounts = orders.Where(i => i.OrderItems.Any(o => o.ProductId.Equals(request.ProductId)))
             //    .Select(i => i.OrderItems.Select(i => i.DongAmount));
 
-            decimal dongAmount = dongAmounts.Sum();
+            decimal dongAmount = orders.OrderItems.DongAmount;
+            //decimal dongAmount = dongAmounts.Sum();
 
             var profits = await _repository.GetListByFilterAsync(i => i.ProductId.Equals(request.ProductId)
             && i.UserId.Equals(request.UserId));

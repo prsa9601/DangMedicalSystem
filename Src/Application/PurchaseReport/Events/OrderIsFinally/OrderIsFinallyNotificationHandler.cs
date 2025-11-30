@@ -35,28 +35,40 @@ namespace Application.PurchaseReport.Events.OrderIsFinally
                 return;
 
 
-            List<Domain.PurchaseReportAgg.PurchaseReport> purchaseReports = new();
-            foreach (var item in order.OrderItems)
+            //List<Domain.PurchaseReportAgg.PurchaseReport> purchaseReports = new();
+            //foreach (var item in order.OrderItems)
+            //{
+            //    var product = await _productRepository.GetByFilterAsync(i => i.Id.Equals(item.ProductId));
+            //    if (product == null)
+            //        return;
+            //    string profit = null;
+            //    if (decimal.TryParse(product.Inventory.Profit, out var inventoryProfit))
+            //    {
+
+            //        profit = (item.DongAmount * inventoryProfit).ToString();
+            //    }
+            //    purchaseReports.Add(new Domain.PurchaseReportAgg.PurchaseReport(user.Id, notification.OrderId, item.ProductId, product.Inventory.TotalPrice,
+            //        product.Inventory.Dong.ToString(), profit, item.TotalPrice.ToString(), item.DongAmount, product.Inventory.Profit,
+            //        product.Inventory.Profit, product.Inventory.PricePerDong, product.Inventory.Dong
+            //        ));
+
+            //}
+            var product = await _productRepository.GetByFilterAsync(i => i.Id.Equals(order.OrderItems.ProductId));
+            if (product == null)
+                return;
+            string profit = null;
+            if (decimal.TryParse(product.Inventory.Profit, out var inventoryProfit))
             {
-                var product = await _productRepository.GetByFilterAsync(i => i.Id.Equals(item.ProductId));
-                if (product == null)
-                    return;
-                string profit = null;
-                if (decimal.TryParse(product.Inventory.Profit, out var inventoryProfit))
-                {
 
-                    profit = (item.DongAmount * inventoryProfit).ToString();
-                }
-                purchaseReports.Add(new Domain.PurchaseReportAgg.PurchaseReport(user.Id, item.ProductId, product.Inventory.TotalPrice,
-                    product.Inventory.Dong.ToString(), profit, item.TotalPrice.ToString(), item.DongAmount, product.Inventory.Profit,
-                    product.Inventory.Profit, product.Inventory.PricePerDong, product.Inventory.Dong
-                    ));
-
+                profit = (order.OrderItems.DongAmount * inventoryProfit).ToString();
             }
-            var orderEvent = order.OrderItems.FirstOrDefault(i => i.OrderId.Equals(notification.OrderId));
-            await _purchaseReportRepository.AddRange(purchaseReports);
+            var purchaseReports = new Domain.PurchaseReportAgg.PurchaseReport(user.Id, notification.OrderId, order.OrderItems.ProductId, product.Inventory.TotalPrice,
+                product.Inventory.Dong.ToString(), profit, order.OrderItems.TotalPrice.ToString(), order.OrderItems.DongAmount, product.Inventory.Profit,
+                product.Inventory.Profit, product.Inventory.PricePerDong, product.Inventory.Dong
+                );
+
+            await _purchaseReportRepository.AddAsync(purchaseReports);
             await _purchaseReportRepository.SaveChangeAsync();
-            order.OrderItems.Remove(orderEvent);
 
         }
     }

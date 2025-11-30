@@ -2,6 +2,7 @@
 using Common.Domain.BankInformationValidation.Strategy;
 using Domain.UserAgg.Enum;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 
 namespace Domain.UserAgg
 {
@@ -12,7 +13,7 @@ namespace Domain.UserAgg
         public string PhoneNumber { get; private set; }
         public string Password { get; private set; }
         public string ImageName { get; private set; }
-        public bool IsActive { get; private set; } = true; //کاربر اکتیوه و میتونه کار کنه
+        public bool IsActive { get; private set; } = false; //کاربر اکتیوه و میتونه کار کنه
 
         public UserDocument? UserDocument { get; private set; }
         public UserBankAccount? BankAccount { get; set; }
@@ -38,6 +39,12 @@ namespace Domain.UserAgg
         //    ConcurrencyStamp = Guid.NewGuid();
         //}
 
+
+        public void ChangeActivity(bool isActive)
+        {
+            IsActive = isActive;
+        }
+        
         public void SetUserOtp(string otpCode)
         {
             var userOtp = new UserOtp(otpCode, DateTime.Now.AddMinutes(3));
@@ -80,10 +87,6 @@ namespace Domain.UserAgg
             UserAttempts.RemoveAll(i => i.ExpireDate > DateTime.Now && i.AttemptType == attemptType);
         }
 
-        public void ChangeActivity(bool isActive)
-        {
-            IsActive = isActive;
-        }
 
         public void ChangePassword(string hashPassword)
         {

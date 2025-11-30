@@ -3,6 +3,7 @@ using Common.Query.Filter;
 using Domain.ProductAgg;
 using Domain.ProductAgg.Enum;
 using Domain.ProfitAgg;
+using Query.Order.DTOs;
 using Query.Product.DTOs;
 using Query.User.DTOs;
 
@@ -88,6 +89,7 @@ namespace Query.PurchaseReport.DTOs
         public string ImageName { get; set; }
         public string Lastame { get; set; }
         public int InvestmentCount { get; set; }
+        public List<OrderDto>? OrderDtos { get; set; } = new();
         public List<ProductPurchaseReportDto>? ProductPurchase { get; set; } = new();
         public List<PurchaseReportDto>? PurchaseReport { get; set; } = new();
         public List<ProfitPurchaseReportDto>? ProfitPurchases { get; set; } = new();

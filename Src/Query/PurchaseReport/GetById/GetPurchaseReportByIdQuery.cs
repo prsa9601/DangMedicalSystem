@@ -21,9 +21,10 @@ namespace Query.PurchaseReport.GetById
 
         public async Task<UserPurchaseReportDto?> Handle(GetPurchaseReportByIdQuery request, CancellationToken cancellationToken)
         {
-            var result = await _context.PurchaseReports.FirstOrDefaultAsync(p => p.UserId.Equals(request.UserId));
+            var result = await _context.PurchaseReports.Where(p => p.UserId.Equals(request.UserId)).ToListAsync();
 
-            return await result.MapUserReport(_context) ?? null;
+            var model = await result.MapUserReport(_context) ?? null;
+            return model;
         }
     }
 }

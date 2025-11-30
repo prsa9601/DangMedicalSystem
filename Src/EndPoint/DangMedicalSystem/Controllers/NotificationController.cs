@@ -48,13 +48,13 @@ namespace DangMedicalSystem.Api.Controllers
         }
 
         [HttpGet("GetFilterForAdmin")]
-        public async Task<ApiResult<NotificationFilterResult>> GetFilterForAdmin(NotificationFilterParam param)
+        public async Task<ApiResult<NotificationFilterResult>> GetFilterForAdmin([FromQuery] NotificationFilterParam param)
         {
             return QueryResult(await _facade.GetFilterForAdmin(param));
         }
 
         [HttpGet("GetFilterForCurrentUser")]
-        public async Task<ApiResult<NotificationFilterResultForUser>> GetFilterForCurrentUser(NotificationFilterParam param)
+        public async Task<ApiResult<NotificationFilterResultForUser>> GetFilterForCurrentUser([FromQuery] NotificationFilterParam param)
         {
             return QueryResult(await _facade.GetFilterForCurrentUser(new NotificationFilterParamForUser
             {
@@ -72,7 +72,7 @@ namespace DangMedicalSystem.Api.Controllers
             return QueryResult(await _facade.GetById(id, userId));
         }
 
-        [HttpGet("GetByIdForAdmin")]
+        [HttpGet("GetByIdForAdmin/{id}")]
         public async Task<ApiResult<NotificationDto?>> GetByIdForAdmin(Guid id)
         {
             return QueryResult(await _facade.GetByIdForAdmin(id));

@@ -51,8 +51,9 @@ namespace Query.Order.GetForReport
 
             if (param.ProductId != null)
             {
-                result = result.Where(order => order.OrderItems.Any(i =>
-                i.ProductId.Equals(param.ProductId)));
+                result = result.Where(order => order.OrderItems.ProductId.Equals(param.ProductId));
+                //result = result.Where(order => order.OrderItems.Any(i =>
+                //i.ProductId.Equals(param.ProductId)));
             }
 
             var skip = (@param.PageId - 1) * @param.Take;

@@ -27,6 +27,12 @@ namespace Facade.Notification
     internal class NotificationFacade : INotificationFacade
     {
         private readonly IMediator _mediator;
+
+        public NotificationFacade(IMediator mediator)
+        {
+            _mediator = mediator;
+        }
+
         public async Task<OperationResult> Create(CreateNotificationCommand command)
         {
             return await _mediator.Send(command);
@@ -62,7 +68,13 @@ namespace Facade.Notification
 
         public async Task<NotificationFilterResult> GetFilterForAdmin(NotificationFilterParam param)
         {
-            return await _mediator.Send(new GetFilterNotificationForAdminQuery(param));
+            return await _mediator.Send(new GetFilterNotificationForAdminQuery(new NotificationFilterParam
+            {
+                PageId = param.PageId,
+                Take = param.Take,
+                Description = param.Description,
+                Title = param.Title,
+            }));
         }
 
         public async Task<NotificationFilterResultForUser> GetFilterForCurrentUser(NotificationFilterParamForUser param)

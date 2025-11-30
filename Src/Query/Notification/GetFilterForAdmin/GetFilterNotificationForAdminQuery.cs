@@ -25,10 +25,14 @@ namespace Query.Notification.GetFilterForAdmin
 
         public async Task<NotificationFilterResult> Handle(GetFilterNotificationForAdminQuery request, CancellationToken cancellationToken)
         {
-            var @param = request.FilterParams;
+            var @param = request.FilterParams ?? new NotificationFilterParam
+            {
+                PageId = 1,
+                Take = 8
+            };
             var result = _context.Notifications.OrderByDescending(i => i.CreationDate).AsQueryable();
 
-           
+
             if (param.Description != null)
             {
                 //var user = _context.Orders.FirstOrDefault();
@@ -45,7 +49,7 @@ namespace Query.Notification.GetFilterForAdmin
             var model = new NotificationFilterResult()
             {
                 Data = await result.Skip(skip).Take(@param.Take)
-                    .Select(notification => notification.Map()).ToListAsync(cancellationToken),
+                    .Select(notification => notification.Map(_context)).ToListAsync(cancellationToken),
                 FilterParams = @param
             };
 

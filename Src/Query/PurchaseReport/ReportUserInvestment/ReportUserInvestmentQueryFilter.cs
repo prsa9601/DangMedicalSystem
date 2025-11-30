@@ -63,7 +63,7 @@ namespace Query.PurchaseReport.ReportUserInvestment
             var model = new PurchaseReportUserInvestmentFilterResult()
             {
                 Data = await (await result.Skip(skip).Take(@param.Take)
-                    .Select(purchase => purchase).ToListAsync(cancellationToken)).MapUserReport(_context),
+                    .Select(purchase => purchase).ToListAsync(cancellationToken)).MapUsersReport(_context),
                 FilterParams = @param
             };
 
