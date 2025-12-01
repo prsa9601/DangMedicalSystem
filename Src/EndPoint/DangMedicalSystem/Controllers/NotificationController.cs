@@ -5,6 +5,7 @@ using Application.Notification.Commands.Edit;
 using Common.AspNetCore;
 using Domain.UserAgg;
 using Facade.Notification;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Query.Notification.DTOs;
@@ -41,7 +42,7 @@ namespace DangMedicalSystem.Api.Controllers
             return CommandResult(await _facade.Edit(command));
         }
 
-        [HttpPost("DeleteNotification")]
+        [HttpDelete("DeleteNotification")]
         public async Task<ApiResult> DeleteNotification(Guid id)
         {
             return CommandResult(await _facade.Delete(id));
@@ -53,6 +54,7 @@ namespace DangMedicalSystem.Api.Controllers
             return QueryResult(await _facade.GetFilterForAdmin(param));
         }
 
+        [Authorize]
         [HttpGet("GetFilterForCurrentUser")]
         public async Task<ApiResult<NotificationFilterResultForUser>> GetFilterForCurrentUser([FromQuery] NotificationFilterParam param)
         {

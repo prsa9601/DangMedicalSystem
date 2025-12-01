@@ -10,6 +10,7 @@
     <Folder Include="Auth\User\DTOs\" />
     <Folder Include="Product\GetBySlugForAdmin\" />
     <Folder Include="Product\User\DTOs\" />
+    <Folder Include="PurchaseReport\GetUserInvestmentForCurrentUser\" />
     <Folder Include="Session\DTOs\" />
   </ItemGroup>
 

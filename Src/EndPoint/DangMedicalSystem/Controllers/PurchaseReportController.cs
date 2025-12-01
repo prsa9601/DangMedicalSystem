@@ -31,6 +31,24 @@ namespace DangMedicalSystem.Api.Controllers
         {
             return QueryResult(await _facade.GetFilterPurchaseReportForAdmin(param, cancellationToken));
         }
+
+        [Authorize]
+        [HttpGet("GetPurchaseUserReportFilterForCurrentUser")]
+        public async Task<ApiResult<PurchaseReportUserInvestmentFilterResult>> GetFilterUserReportForCurrentUser([FromQuery] 
+        UserPurchaseReportForCurrentUserFilterParam param)
+        {
+            return QueryResult(await _facade.GetFilterPurchaseReportForCurrentUser(new UserPurchaseReportFilterParam
+            {
+                StartDate = param.StartDate,
+                EndDate = param.EndDate,
+                PageId = param.PageId,
+                PhoneNumber = param.PhoneNumber,
+                ProductId = param.ProductId,
+                PurchaseReportFilter = param.PurchaseReportFilter,
+                Take = param.Take,
+                UserId = User.GetUserId(),
+            }));
+        }
       
         [HttpGet("GetById")]
         public async Task<ApiResult<UserPurchaseReportDto?>> GetById(Guid UserId)

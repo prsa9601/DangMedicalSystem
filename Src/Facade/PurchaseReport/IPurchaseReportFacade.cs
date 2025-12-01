@@ -10,6 +10,7 @@ namespace Facade.PurchaseReport
     {
         Task<PurchaseReportFilterResult> GetFilterForAdmin(PurchaseReportFilterParam param, CancellationToken cancellationToken);
         Task<PurchaseReportUserInvestmentFilterResult> GetFilterPurchaseReportForAdmin(UserPurchaseReportFilterParam param, CancellationToken cancellationToken);
+        Task<PurchaseReportUserInvestmentFilterResult> GetFilterPurchaseReportForCurrentUser(UserPurchaseReportFilterParam param);
         Task<UserPurchaseReportDto?> GetById(Guid UserId);
     }
     internal class PurchaseReportFacade : IPurchaseReportFacade
@@ -37,6 +38,11 @@ namespace Facade.PurchaseReport
         public async Task<PurchaseReportUserInvestmentFilterResult> GetFilterPurchaseReportForAdmin(UserPurchaseReportFilterParam param, CancellationToken cancellationToken)
         {
             return await _mediator.Send(new ReportUserInvestmentQueryFilter(param), cancellationToken);
+        }
+     
+        public async Task<PurchaseReportUserInvestmentFilterResult> GetFilterPurchaseReportForCurrentUser(UserPurchaseReportFilterParam param)
+        {
+            return await _mediator.Send(new ReportUserInvestmentQueryFilter(param));
         }
     }
 }
