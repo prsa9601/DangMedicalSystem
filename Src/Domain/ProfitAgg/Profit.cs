@@ -12,6 +12,7 @@ namespace Domain.ProfitAgg
         {
             if (service.CanCreate(userId, productId, orderId))
                 throw new Exception("امکان انجام این عملیات وجود ندارد.");
+            
             UserId = userId;
             ProductId = productId;
             Status = status;
@@ -44,4 +45,6 @@ namespace Domain.ProfitAgg
         UnSuccessful = 1,
         Success = 2,
     }
+   
+
 }

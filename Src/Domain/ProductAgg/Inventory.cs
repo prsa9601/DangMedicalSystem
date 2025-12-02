@@ -30,6 +30,8 @@ namespace Domain.ProductAgg
 
         public Inventory(string totalPrice, int dong, string profit)
         {
+            Common.Domain.DomainValidation.DecimalValidation.DecimalGuard(totalPrice);
+            Common.Domain.DomainValidation.DecimalValidation.DecimalGuard(profit);
             //DongPurchase = 0;
             TotalPrice = totalPrice;
             Dong = dong;
@@ -48,6 +50,8 @@ namespace Domain.ProductAgg
 
         public void EditInventory(string totalPrice, int dong, string profit)
         {
+            Common.Domain.DomainValidation.DecimalValidation.DecimalGuard(totalPrice);
+            Common.Domain.DomainValidation.DecimalValidation.DecimalGuard(profit);
             TotalPrice = totalPrice;
             Dong = dong;
             Profit = profit;
@@ -57,5 +61,7 @@ namespace Domain.ProductAgg
         {
             ProfitableTime = paymentTime;
         }
+
+      
     }
 }

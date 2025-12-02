@@ -35,6 +35,18 @@ namespace Application.PurchaseReport.Events.OrderIsFinally
                 return;
 
 
+            var product = await _productRepository.GetByFilterAsync(i => i.Id.Equals(order.OrderItems.ProductId));
+            if (product == null)
+                return;
+            var purchase = await _purchaseReportRepository.GetByFilterAsync
+                (i => i.OrderId.Equals(notification.OrderId) && i.UserId.Equals(order.UserId));
+
+            if (purchase != null)
+            {
+
+                throw new Exception("درخواست غیر مجاز");
+            }
+
             //List<Domain.PurchaseReportAgg.PurchaseReport> purchaseReports = new();
             //foreach (var item in order.OrderItems)
             //{
@@ -53,9 +65,7 @@ namespace Application.PurchaseReport.Events.OrderIsFinally
             //        ));
 
             //}
-            var product = await _productRepository.GetByFilterAsync(i => i.Id.Equals(order.OrderItems.ProductId));
-            if (product == null)
-                return;
+
             string profit = null;
             if (decimal.TryParse(product.Inventory.Profit, out var inventoryProfit))
             {

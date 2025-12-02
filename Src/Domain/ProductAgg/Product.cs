@@ -96,5 +96,6 @@ namespace Domain.ProductAgg
             if (string.IsNullOrEmpty(seoData.MetaTitle))
                 throw new Exception("Meta Title Can Not Be Null");
         }
+
     }
 }

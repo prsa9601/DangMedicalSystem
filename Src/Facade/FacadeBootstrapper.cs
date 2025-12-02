@@ -5,6 +5,7 @@ using Facade.Product;
 using Facade.Profit;
 using Facade.PurchaseReport;
 using Facade.Session;
+using Facade.SitEntities;
 using Facade.Stock;
 using Facade.User;
 using Microsoft.Extensions.DependencyInjection;
@@ -29,6 +30,8 @@ namespace Facade
             services.AddScoped<INotificationFacade, NotificationFacade>();
 
             services.AddScoped<IUserSessionFacade, UserSessionFacade>();
+
+            services.AddScoped<ISiteEntityFacade, SiteEntityFacade>();
 
             services.AddMapping();
 

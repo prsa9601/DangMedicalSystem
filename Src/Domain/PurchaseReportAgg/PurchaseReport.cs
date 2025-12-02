@@ -26,6 +26,11 @@ namespace Domain.PurchaseReportAgg
             string totalDang, string totalProfit, string purchasePrice, int purchaseDang, 
             string profit, string profitPerDang, string purchasePricePerDang, int purchaseDangPerDang)
         {
+            Common.Domain.DomainValidation.DecimalValidation.DecimalGuard(purchasePrice);
+            Common.Domain.DomainValidation.DecimalValidation.DecimalGuard(totalProfit);
+            Common.Domain.DomainValidation.DecimalValidation.DecimalGuard(totalPrice);
+            Common.Domain.DomainValidation.DecimalValidation.DecimalGuard(profit);
+            Common.Domain.DomainValidation.DecimalValidation.DecimalGuard(profitPerDang);
             OrderId = orderId;
             UserId = userId;
             ProductId = productId;

@@ -12,6 +12,15 @@ namespace Application.Order.Services
             _repository = repository;
         }
 
+        public async Task<bool> CanPurchase(Guid productId)
+        {
+            var order = await _repository.GetListByFilterAsync(order =>
+             order.OrderItems
+           .ProductId.Equals(productId) && order.status == Domain.OrderAgg.Enum.OrderStatus.paid);
+
+            return order.Sum(i => i.OrderItems.DongAmount) >= 6 ? false : true;
+        }
+
         public async Task<int> CheckNumberOfDongAvailable(Guid productId)
         {
             var order = await _repository.GetListByFilterAsync(order =>

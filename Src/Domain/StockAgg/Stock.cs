@@ -1,4 +1,5 @@
 ﻿using Common.Domain;
+using Domain.ProfitAgg;
 
 namespace Domain.StockAgg
 {
@@ -7,6 +8,7 @@ namespace Domain.StockAgg
     {
         public Stock(Guid productId, Guid userId, Guid purchaseId, string amountPaid, DateTime nextPaymentDate, int paymentNumber)
         {
+            Common.Domain.DomainValidation.DecimalValidation.DecimalGuard(amountPaid);
             ProductId = productId;
             UserId = userId;
             PurchaseId = purchaseId;

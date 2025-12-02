@@ -107,6 +107,7 @@ builder.Services.AddOpenApi();
 //builder.Services.AddAuthorizationBuilder()
 //    .SetFallbackPolicy(requireAuthPolicy);
 
+builder.Services.AddMemoryCache();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

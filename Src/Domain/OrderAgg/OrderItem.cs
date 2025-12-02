@@ -27,6 +27,7 @@ namespace Domain.OrderAgg
 
         public OrderItem(Guid productId, string pricePerDong, int dongAmount, Guid inventoryId)
         {
+            Common.Domain.DomainValidation.DecimalValidation.DecimalGuard(pricePerDong);
             ProductId = productId;
             PricePerDong = pricePerDong;
             DongAmount = dongAmount;
@@ -35,6 +36,8 @@ namespace Domain.OrderAgg
 
         public void EditOrderItem(Guid productId, string pricePerDong, int dongAmount, Guid inventoryId)
         {
+            Common.Domain.DomainValidation.DecimalValidation.DecimalGuard(pricePerDong);
+
             ProductId = productId;
             PricePerDong = pricePerDong;
             DongAmount = dongAmount;
@@ -57,5 +60,6 @@ namespace Domain.OrderAgg
             DongAmount = DongAmount < dongAmount ? DongAmount = 0 : DongAmount - dongAmount;
         }
 
+      
     }
 }
