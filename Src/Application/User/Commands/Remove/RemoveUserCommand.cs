@@ -18,13 +18,15 @@ namespace Application.User.Commands.Remove
 
         public async Task<OperationResult<string>> Handle(RemoveUserCommand request, CancellationToken cancellationToken)
         {
-            var user = await _repository.GetTracking(request.UserId);
-            if (user is null)
-                return OperationResult<string>.NotFound();
+            return OperationResult<string>.Error("امکان حذف کاربران وجود ندارد.");
+            
+            //var user = await _repository.GetTracking(request.UserId);
+            //if (user is null)
+            //    return OperationResult<string>.NotFound();
 
-            var result = await _repository.DeleteAsync(user);
-            await _repository.SaveChangeAsync();
-            return OperationResult<string>.Success($"{user.FirstName} {user.LastName}");
+            //var result = await _repository.DeleteAsync(user);
+            //await _repository.SaveChangeAsync();
+            //return OperationResult<string>.Success($"{user.FirstName} {user.LastName}");
         }
     }
 }

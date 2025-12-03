@@ -3,6 +3,7 @@ using Application.Product.Commands.Edit;
 using Application.Product.Commands.Remove;
 using Common.Application;
 using MediatR;
+using Microsoft.Extensions.Caching.Memory;
 using Query.Product.Dtos.FilterDto;
 using Query.Product.DTOs;
 using Query.Product.DTOs.FilterDto;
@@ -10,6 +11,7 @@ using Query.Product.GetById;
 using Query.Product.GetBySlug;
 using Query.Product.GetFilter;
 using Query.Product.GetFilterForIndexPage;
+using Query.SiteEntity.DTOs;
 
 namespace Facade.Product
 {
@@ -26,11 +28,13 @@ namespace Facade.Product
     }
     public class ProductFacade : IProductFacade
     {
+        private readonly IMemoryCache _cache;
         private readonly IMediator _mediator;
 
-        public ProductFacade(IMediator mediator)
+        public ProductFacade(IMediator mediator, IMemoryCache cache)
         {
             _mediator = mediator;
+            _cache = cache;
         }
 
         public async Task<OperationResult> CreateProduct(CreateProductCommand command)
@@ -40,6 +44,10 @@ namespace Facade.Product
 
         public async Task<OperationResult> EditProduct(EditProductCommand command)
         {
+            if (_cache.TryGetValue("MainPageContent", out MainPageDto? cachedResult))
+            {
+                _cache.Remove("MainPageContent");
+            }
             return await _mediator.Send(command);
         }
 

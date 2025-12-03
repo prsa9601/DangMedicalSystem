@@ -3,5 +3,6 @@
     public interface IProductDomainService
     {
         bool SlugIsExist(string slug);
+        bool CanDelete(Guid id);
     }
 }

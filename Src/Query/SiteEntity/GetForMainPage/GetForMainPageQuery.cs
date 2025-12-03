@@ -21,10 +21,16 @@ namespace Query.SiteEntity.GetForMainPage
 
         public async Task<MainPageDto?> Handle(GetForMainPageQuery request, CancellationToken cancellationToken)
         {
-            var products = await _context.Products.Where(i => i.SeoData.IndexPage == true).ToListAsync();
+            var products = await _context.Products.Where(i => i.SeoData.IndexPage == true
+            && i.Status != Domain.ProductAgg.Enum.ProductStatus.NotActive).ToListAsync();
             if (products == null) return null;
 
-       
+            var investmentCount = _context.Orders
+                 .Where(i => i.status == Domain.OrderAgg.Enum.OrderStatus.paid)
+                 .Select(i => i.UserId)   // فقط شناسه کاربرها
+                 .Distinct()              // حذف کاربران تکراری
+                 .Count();                // شمارش تعداد یکتا
+
             var orders = _context.Orders.Where(i => products
             .Select(i => i.Id)
             .Contains(i.OrderItems.ProductId));
@@ -46,6 +52,7 @@ namespace Query.SiteEntity.GetForMainPage
                         Description = product.Description,
                         seoData = product.SeoData,
                         CreationDate = product.CreationDate,
+                        Status = product.Status,
                         Id = product.Id,
                         Inventory = product.Inventory.MapInventory(),
                         Title = product.Title,
@@ -55,6 +62,7 @@ namespace Query.SiteEntity.GetForMainPage
 
             return new MainPageDto
             {
+                InvestmentNmber = investmentCount,
                 product = result.OrderByDescending(i =>
                   i.Inventory.Profit).Take(3).ToList()
             };

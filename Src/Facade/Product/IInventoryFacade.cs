@@ -3,6 +3,8 @@ using Application.Product.Commands.EditInventory;
 using Application.Product.Commands.SetProfitableTime;
 using Common.Application;
 using MediatR;
+using Microsoft.Extensions.Caching.Memory;
+using Query.SiteEntity.DTOs;
 
 namespace Facade.Product
 {
@@ -14,11 +16,13 @@ namespace Facade.Product
     }
     public class InventoryFacade : IInventoryFacade
     {
+        private readonly IMemoryCache _cache;
         private readonly IMediator _mediator;
 
-        public InventoryFacade(IMediator mediator)
+        public InventoryFacade(IMediator mediator, IMemoryCache cache)
         {
             _mediator = mediator;
+            _cache = cache;
         }
 
         public async Task<OperationResult> Create(AddInventoryCommand command)
@@ -28,6 +32,10 @@ namespace Facade.Product
 
         public async Task<OperationResult> Edit(EditInventoryCommand command)
         {
+            if (_cache.TryGetValue("MainPageContent", out MainPageDto? cachedResult))
+            {
+                _cache.Remove("MainPageContent");
+            }
             return await _mediator.Send(command);
         }
 

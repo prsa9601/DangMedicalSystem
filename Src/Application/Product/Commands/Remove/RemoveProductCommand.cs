@@ -24,6 +24,11 @@ namespace Application.Product.Commands.Remove
             var product = await _repository.GetTracking(request.productId);
             if (product == null) return OperationResult.NotFound("محصولی یافت نشد.");
 
+            if (!_service.CanDelete(product.Id))
+            {
+                return OperationResult.Error("امکان حذف این محصول وجود ندارد.");
+            }
+
             bool result = await _repository.DeleteAsync(product);
 
             if (!result) return OperationResult.Error("مشکل سمت سرور رخ داده است لطفا دقایقی دیگر تلاش کنید.");

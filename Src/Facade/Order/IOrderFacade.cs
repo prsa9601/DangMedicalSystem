@@ -4,10 +4,12 @@ using Application.Order.IsFinally;
 using Application.Order.SetOrderItem;
 using Common.Application;
 using MediatR;
+using Microsoft.Extensions.Caching.Memory;
 using Query.Order.DTOs;
 using Query.Order.GetById;
 using Query.Order.GetFilter;
 using Query.Order.GetForReport;
+using Query.SiteEntity.DTOs;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Facade.Order
@@ -26,11 +28,13 @@ namespace Facade.Order
     }
     internal class OrderFacade : IOrderFacade
     {
+        private readonly IMemoryCache _cache;
         private readonly IMediator _mediator;
 
-        public OrderFacade(IMediator mediator)
+        public OrderFacade(IMediator mediator, IMemoryCache cache)
         {
             _mediator = mediator;
+            _cache = cache;
         }
 
         public async Task<OperationResult> Create(CreateOrderCommand command, CancellationToken cancellationToken)
@@ -60,6 +64,10 @@ namespace Facade.Order
 
         public async Task<OperationResult> IsFinally(OrderIsFinallyCommand command, CancellationToken cancellationToken)
         {
+            if (_cache.TryGetValue("MainPageContent", out MainPageDto? cachedResult))
+            {
+                _cache.Remove("MainPageContent");
+            }
             return await _mediator.Send(command, cancellationToken);
         }
 
