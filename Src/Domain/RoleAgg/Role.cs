@@ -6,6 +6,6 @@ namespace Domain.RoleAgg
     public class Role : AggregateRoot
     {
         public string Title { get; set; }
-        public List<RolePermission> RolePermissions { get; set; }
+        public List<RolePermission> RolePermissions { get; set; } = new();
     }
 }

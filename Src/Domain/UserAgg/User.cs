@@ -56,7 +56,7 @@ namespace Domain.UserAgg
         {
             var userRole = new UserRole(roleId);
             userRole.UserId = Id;
-            UserRole = UserRole;
+            UserRole = userRole;
         }
 
         public void SetUserBlock(DateTime blockToDate, string description)

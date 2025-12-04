@@ -26,16 +26,41 @@ namespace Query.User.GetFilter
             var @params = request.FilterParams;
             var result = _context.Users.OrderByDescending(d => d.Id).AsQueryable();
 
+
             //if (!string.IsNullOrWhiteSpace(@params.UserIds))
             //    result = result.Where(r => r.Email.Contains(@params.Email));
 
             if (!string.IsNullOrWhiteSpace(@params.Search))
                 result = result.Where(r => r.PhoneNumber.Contains(@params.Search) || r.FirstName.Contains(@params.Search)
                 || r.LastName.Contains(@params.Search));
-         
-           
+
+
             if (@params.IsActive != null)
                 result = result.Where(r => r.IsActive == @params.IsActive);
+
+            var roleProgrammer = _context.Roles.FirstOrDefault(i => i.RolePermissions.
+            Any(x => x.Permission == Domain.RoleAgg.Enum.Permission.Programmer));
+            if (roleProgrammer != null)
+            {
+                var programmer = _context.Users.FirstOrDefault(i => i.UserRole.RoleId.Equals(roleProgrammer.Id));
+
+                if (programmer != null)
+                {
+                    result.ToList().Remove(programmer);
+                }
+            }
+
+            var roleAdmin = _context.Roles.FirstOrDefault(i => i.RolePermissions.
+            Any(x => x.Permission == Domain.RoleAgg.Enum.Permission.Programmer));
+            if (roleAdmin != null)
+            {
+                var admin = _context.Users.FirstOrDefault(i => i.UserRole.RoleId.Equals(roleProgrammer.Id));
+
+                if (admin != null)
+                {
+                    result.ToList().Remove(admin);
+                }
+            }
 
             var skip = (@params.PageId - 1) * @params.Take;
             var model = new UserFilterResult()

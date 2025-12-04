@@ -4,6 +4,7 @@ using Facade.Order;
 using Facade.Product;
 using Facade.Profit;
 using Facade.PurchaseReport;
+using Facade.Role;
 using Facade.Session;
 using Facade.SitEntities;
 using Facade.Stock;
@@ -28,6 +29,7 @@ namespace Facade
             services.AddScoped<IStockFacade, StockFacade>();
             services.AddScoped<IProfitFacade, ProfitFacade>();
             services.AddScoped<INotificationFacade, NotificationFacade>();
+            services.AddScoped<IRoleFacade, RoleFacade>();
 
             services.AddScoped<IUserSessionFacade, UserSessionFacade>();
 

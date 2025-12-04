@@ -2,6 +2,7 @@
 using Application.Product.Commands.Edit;
 using Application.Product.Commands.Remove;
 using Common.AspNetCore;
+using DangMedicalSystem.Api.Infrastructure;
 using Facade.Product;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,6 +22,7 @@ namespace DangMedicalSystem.Api.Controllers
             _facade = facade;
         }
 
+        [PermissionChecker(Domain.RoleAgg.Enum.Permission.Programmer)]
         [HttpPost("CreateProduct")]
         public async Task<ApiResult> CreateProduct([FromForm] CreateProductCommand command)
         {

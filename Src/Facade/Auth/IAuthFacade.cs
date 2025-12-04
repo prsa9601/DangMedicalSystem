@@ -1,5 +1,6 @@
 ﻿using Application.Auth.Commands.GenerateAndSendOtpCode;
 using Application.Auth.Commands.Login;
+using Application.Auth.Commands.Logout;
 using Application.Auth.Commands.Register;
 using Application.Auth.Commands.VerificationOtpCode;
 using Common.Application;
@@ -11,6 +12,7 @@ namespace Facade.Auth
     {
         Task<OperationResult<Dictionary<string, string>>> GenerateAndSendOtpCode(GenerateAndSendOtpCodeCommand command); 
         Task<OperationResult> RegisterUser(RegisterUserCommand command); 
+        Task<OperationResult> Logout(LogoutUserCommand command); 
         Task<OperationResult<LoginCommandResult>> LoginUser(UserLoginCommand command); 
         Task<OperationResult<bool>> VerificationOtpCode(VerificationOtpCodeCommand command); 
     }
@@ -29,6 +31,11 @@ namespace Facade.Auth
         }
 
         public async Task<OperationResult<LoginCommandResult>> LoginUser(UserLoginCommand command)
+        {
+            return await _mediator.Send(command);
+        }
+
+        public async Task<OperationResult> Logout(LogoutUserCommand command)
         {
             return await _mediator.Send(command);
         }

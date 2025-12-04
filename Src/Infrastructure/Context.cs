@@ -67,6 +67,9 @@ namespace Infrastructure
             //modelBuilder.ApplyConfiguration(new ProductConfiguration());
             //modelBuilder.ApplyConfiguration(new UserConfiguration());
             base.OnModelCreating(modelBuilder);
+
+
+         
         }
 
         private async Task DispatchDomainEventsAsync()

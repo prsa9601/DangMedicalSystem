@@ -48,7 +48,7 @@ namespace Query.User.Map
         public static UserRoleDto UserRoleMapToUserRoleDto(this UserRole? userRole, Context context)
         {
             if (userRole == null) return null;
-            var role = context.Roles.FirstOrDefault(role => role.Id.Equals(userRole.RoleId));
+            var role = context.Roles.AsTracking().FirstOrDefault(role => role.Id.Equals(userRole.RoleId));
             var permission = role!.RolePermissions;
             var userRoleDto = new UserRoleDto
             {
@@ -57,6 +57,7 @@ namespace Query.User.Map
                 RoleId = userRole.RoleId,
                 RoleName = role.Title,
                 UserId = userRole.UserId,
+                Permissions = role.RolePermissions.Select(i=> i.Permission).ToList() ?? null,
             };
 
             userRoleDto.Permissions.AddRange(permission.Select(i => i.Permission));

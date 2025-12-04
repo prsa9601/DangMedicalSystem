@@ -1,10 +1,12 @@
 ﻿using Application.Auth.Commands.GenerateAndSendOtpCode;
 using Application.Auth.Commands.Login;
+using Application.Auth.Commands.Logout;
 using Application.Auth.Commands.Register;
 using Application.Auth.Commands.VerificationOtpCode;
 using Common.Application;
 using Common.AspNetCore;
 using Facade.Auth;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DangMedicalSystem.Api.Controllers
@@ -45,6 +47,16 @@ namespace DangMedicalSystem.Api.Controllers
         public async Task<ApiResult<bool>> VerificationOtpCode(VerificationOtpCodeCommand command)
         {
             return CommandResult(await _facade.VerificationOtpCode(command))!;
+        }
+
+        [Authorize]
+        [HttpDelete("Logout")]
+        public async Task<ApiResult> Logout()
+        {
+            return CommandResult(await _facade.Logout(new LogoutUserCommand
+            {
+                UserId = User.GetUserId(),
+            }))!;
         }
     }
 }
