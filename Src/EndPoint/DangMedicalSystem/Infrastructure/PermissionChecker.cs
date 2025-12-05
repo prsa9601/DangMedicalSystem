@@ -16,7 +16,7 @@ namespace DangMedicalSystem.Api.Infrastructure
     {
         private IRoleFacade _roleFacade;
         private IUserFacade _userFacade;
-
+        
         public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {
             _roleFacade = context.HttpContext.RequestServices.GetRequiredService<IRoleFacade>();
@@ -35,6 +35,7 @@ namespace DangMedicalSystem.Api.Infrastructure
                 context.Result = new UnauthorizedObjectResult("Unauthorized");
             }
         }
+       
         private async Task<bool> UserHasPermission(AuthorizationFilterContext context)
         {
             var user = await _userFacade.GetById(context.HttpContext.User.GetUserId());

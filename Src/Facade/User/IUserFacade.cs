@@ -1,4 +1,5 @@
-﻿using Application.Auth.Shared.Utilities;
+﻿using Application.Auth.Commands.GetSession;
+using Application.Auth.Shared.Utilities;
 using Application.User.BankAccount.Add;
 using Application.User.BankAccount.ChangeVisability;
 using Application.User.Commands.ChangeAccountStatus;
@@ -38,6 +39,7 @@ namespace Facade.User
         Task<OperationResult> ChangePassword(ChangePasswordCommand command);
         Task<OperationResult> ChangeActivityAccount(ChangeActivityUserAccountCommand command);
         Task<OperationResult> SetUserDocumentStatus(ChangeUserDocumentStatusCommand command);
+        Task<OperationResult<bool>> GetSession(GetSessionCommand command);
 
 
         Task<UserDto?> GetById(Guid userId);
@@ -123,6 +125,11 @@ namespace Facade.User
         public async Task<UserDto?> GetById(Guid userId)
         {
             return await _mediator.Send(new GetUserByIdQuery(userId));
+        }
+
+        public async Task<OperationResult<bool>> GetSession(GetSessionCommand command)
+        {
+            return await _mediator.Send(command);
         }
 
         public async Task<OperationResult<string>> RemoveUser(RemoveUserCommand command)

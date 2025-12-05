@@ -5,6 +5,7 @@ using Application.Auth.Commands.Register;
 using Application.Auth.Commands.VerificationOtpCode;
 using Common.Application;
 using Common.AspNetCore;
+using DangMedicalSystem.Api.Infrastructure;
 using Facade.Auth;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -51,10 +52,11 @@ namespace DangMedicalSystem.Api.Controllers
 
         [Authorize]
         [HttpDelete("Logout")]
-        public async Task<ApiResult> Logout()
+        public async Task<ApiResult> Logout(string refreshToken)
         {
             return CommandResult(await _facade.Logout(new LogoutUserCommand
             {
+                RefreshToken = refreshToken,
                 UserId = User.GetUserId(),
             }))!;
         }

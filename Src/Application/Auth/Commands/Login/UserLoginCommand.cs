@@ -64,7 +64,7 @@ namespace Application.Auth.Commands.Login
                     refreshToken = jwtRefreshService.GenerateToken(
                                            user.Id, user.PhoneNumber, new List<string> { "Guest" } ?? null);
 
-                    user.SetUserSession(refreshToken, request.ipAddress, DateTime.Now.AddDays(14));
+                    user.SetUserSession(Sha256Hasher.Hash(refreshToken), request.ipAddress, DateTime.Now.AddDays(14));
                 }
 
                 string authToken = jwtAuthService.GenerateToken(
@@ -93,7 +93,7 @@ namespace Application.Auth.Commands.Login
                     refreshToken = jwtRefreshService.GenerateToken(
                         user.Id, user.PhoneNumber, new List<string> { role.Title } ?? null);
 
-                    user.SetUserSession(refreshToken, request.ipAddress, DateTime.Now.AddDays(14));
+                    user.SetUserSession(Sha256Hasher.Hash(refreshToken), request.ipAddress, DateTime.Now.AddDays(14));
                 }
 
                 string authToken = jwtAuthService.GenerateToken(

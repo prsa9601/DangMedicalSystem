@@ -1,4 +1,5 @@
 ﻿using Common.AspNetCore;
+using DangMedicalSystem.Api.Infrastructure;
 using Facade.SitEntities;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -8,6 +9,7 @@ namespace DangMedicalSystem.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [SessionChecker]
     public class SiteEntityController : ApiController
     {
         private readonly ISiteEntityFacade _facade;

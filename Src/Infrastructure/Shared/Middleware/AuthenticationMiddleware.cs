@@ -3,6 +3,7 @@ using Application.Shared.Abstractions.Jwt.Interfaces;
 using Domain.UserAgg;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.JsonWebTokens;
 using System.Security.Claims;
@@ -78,6 +79,7 @@ namespace Infrastructure.Shared.Middleware
                             return;
                         }
                     }
+                    
                     await _next(context);
                     return;
                 }

@@ -201,6 +201,13 @@ namespace Domain.UserAgg
 
         #endregion
 
+        public void RemoveSession(UserSession userSession)
+        {
+            UserSessions.Remove(userSession);
+        }
+
+
+
         private void NationalCodeGuard(string nationalCode)
         {
             if (!IranianNationalIdChecker.IsValid(nationalCode))
