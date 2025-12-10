@@ -43,6 +43,12 @@ namespace Application.Auth.Commands.Login
             var user = await _repository.GetUserByFilter(i => i.PhoneNumber == request.phoneNumber);
             if (user == null) return OperationResult<LoginCommandResult>.NotFound("کاربری با این مشخصات یافت نشد.", null);
 
+            var sessions = user.UserSessions.Where(i => i.ExpireDate > DateTime.Now && i.JwtRefreshToken.Length > 15);
+            if (sessions.Count() >= 3)
+            {
+                return OperationResult<LoginCommandResult>.Error("امکان ورود با 3 دستگاه همزمان وجود ندارد.");
+            }
+
             if (CheckSessionForOtpCode(user, request.ipAddress) == false)
             {
                 return OperationResult<LoginCommandResult>.Error("قبل از ورود باید شماره تماستون رو فعال کنید.");
