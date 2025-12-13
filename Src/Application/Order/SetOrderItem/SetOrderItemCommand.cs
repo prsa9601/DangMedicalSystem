@@ -28,9 +28,9 @@ namespace Application.Order.SetOrderItem
             var order = await _repository.GetByFilterAsync(i => i.Id.Equals(request.orderId)
             && i.UserId.Equals(request.userId));
 
-            var product = await _productRepository.GetTracking(request.productId);
-
             if (order == null) return OperationResult.NotFound();
+
+            var product = await _productRepository.GetTracking(request.productId);
 
             if (product == null) return OperationResult.NotFound();
 

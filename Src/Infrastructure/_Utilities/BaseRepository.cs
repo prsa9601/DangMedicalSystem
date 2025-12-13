@@ -22,7 +22,6 @@ public class BaseRepository<TEntity> : IBaseRepository<TEntity> where TEntity : 
     }
 
 
-
     public async Task<List<TEntity>?> GetListByFilterAsync(Expression<Func<TEntity, bool>> expression)
     {
         return await Context.Set<TEntity>().Where(expression).AsTracking().ToListAsync();

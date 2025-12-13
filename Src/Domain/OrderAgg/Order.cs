@@ -11,7 +11,7 @@ namespace Domain.OrderAgg
         public DateTime DateOfPurchase { get; set; }
         public Guid UserId { get; set; }
         public OrderStatus status { get; set; }
-        public OrderItem OrderItems { get; set; }
+        public OrderItem? OrderItems { get; set; }
         //public List<OrderItem> OrderItems { get; set; }
 
         public Order(Guid userId)

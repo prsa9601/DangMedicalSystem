@@ -32,6 +32,7 @@ namespace Infrastructure
         public DbSet<Product> Products { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<User> Users => Set<User>();
+        public DbSet<Domain.Contract.ContractAgg> Contracts => Set<Domain.Contract.ContractAgg>();
 
         public override async Task<int> SaveChangesAsync(CancellationToken cancellationToken = default)
         {
