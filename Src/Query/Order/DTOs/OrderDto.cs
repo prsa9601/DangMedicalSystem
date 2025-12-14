@@ -17,7 +17,7 @@ namespace Query.Order.DTOs
         //قیمت هر دانگ
         public string PricePerDong { get; set; }
         //مقدار خواسته شده
-        public int DongAmount { get; set; }
+        public decimal DongAmount { get; set; }
         public Guid InventoryId { get; set; }
 
         public decimal TotalPrice

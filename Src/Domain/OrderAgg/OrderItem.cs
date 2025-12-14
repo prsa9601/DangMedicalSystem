@@ -10,7 +10,7 @@ namespace Domain.OrderAgg
         //قیمت هر دانگ
         public string PricePerDong { get; private set; }
         //مقدار خواسته شده
-        public int DongAmount { get; private set; }
+        public decimal DongAmount { get; private set; }
         public Guid InventoryId { get; private set; }
 
         public decimal TotalPrice
@@ -25,7 +25,7 @@ namespace Domain.OrderAgg
             }
         }
 
-        public OrderItem(Guid productId, string pricePerDong, int dongAmount, Guid inventoryId)
+        public OrderItem(Guid productId, string pricePerDong, decimal dongAmount, Guid inventoryId)
         {
             Common.Domain.DomainValidation.DecimalValidation.DecimalGuard(pricePerDong);
             ProductId = productId;
@@ -46,7 +46,7 @@ namespace Domain.OrderAgg
 
         public async Task IncreaseDongAmount(int dongAmount, IOrderDomainService service)
         {
-            int numberOfDongAvailable = await service.CheckNumberOfDongAvailable(ProductId);
+            decimal numberOfDongAvailable = await service.CheckNumberOfDongAvailable(ProductId);
             if (numberOfDongAvailable == 0)
                 return;
 

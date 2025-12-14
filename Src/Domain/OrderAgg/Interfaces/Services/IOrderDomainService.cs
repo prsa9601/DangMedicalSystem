@@ -2,7 +2,7 @@
 {
     public interface IOrderDomainService
     {
-        Task<int> CheckNumberOfDongAvailable(Guid productId);
+        Task<decimal> CheckNumberOfDongAvailable(Guid productId);
         Task<bool> CanPurchase(Guid productId);
     }
 }

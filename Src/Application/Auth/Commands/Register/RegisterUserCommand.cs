@@ -2,6 +2,7 @@
 using Common.Application;
 using Common.Application.SecurityUtil;
 using Domain.UserAgg;
+using Domain.UserAgg.Events;
 using Domain.UserAgg.Interfaces.Builder;
 using Domain.UserAgg.Interfaces.Repository;
 
@@ -58,6 +59,9 @@ namespace Application.Auth.Commands.Register
             
             user.ChangeActivity(true);
             //await _repository.AddAsync(user!);
+
+            user.AddDomainEvent(new CreateOrderEvent() { UserId = user.Id});
+
             _repository.SaveChange();
 
             return OperationResult.Success("ثبت نام با موفقیت انجام شد.");

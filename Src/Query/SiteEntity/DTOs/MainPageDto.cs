@@ -8,7 +8,7 @@ namespace Query.SiteEntity.DTOs
 {
     public class MainPageDto
     {
-        public int InvestmentNmber { get; set; }
+        public decimal InvestmentNmber { get; set; }
         public List<ProductMainPageQuery> product { get; set; } = new();
     }
     public class ProductMainPageQuery:BaseDto
@@ -18,6 +18,6 @@ namespace Query.SiteEntity.DTOs
         public SeoData seoData { get; set; }
         public InventoryDto Inventory { get; set; }
         public ProductStatus Status { get; set; }
-        public int DangRemains { get; set; }
+        public decimal DangRemains { get; set; }
     }
 }

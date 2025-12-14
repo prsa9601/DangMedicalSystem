@@ -4,6 +4,7 @@ using Domain.OrderAgg.Interfaces.Repository;
 using Domain.OrderAgg.Interfaces.Services;
 using Domain.ProductAgg.Interfaces.Repository;
 using Domain.ProfitAgg.Repository;
+using Domain.UserAgg.Events;
 using Domain.UserAgg.Interfaces.Repository;
 
 namespace Application.Order.IsFinally
@@ -73,6 +74,10 @@ namespace Application.Order.IsFinally
             order.IsPaid();
             order.AddDomainEvent(new OrderEvent(order.Id));
 
+            user.AddDomainEvent(new CreateOrderEvent()
+            {
+                UserId = user.Id,
+            });
             await _orderRepository.SaveChangeAsync();
             return OperationResult.Success();
         }

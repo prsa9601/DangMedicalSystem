@@ -54,11 +54,11 @@ namespace Domain.ProductAgg
             Status = productStatus;
         }
 
-        public void SetInventory(string totalPrice, int dong, string profit)
+        public void SetInventory(string totalPrice, decimal dong, string profit)
         {
             Inventory = new Inventory(totalPrice, dong, profit);
         }
-        public void EditInventory(string totalPrice, int dong, string profit)
+        public void EditInventory(string totalPrice, decimal dong, string profit)
         {
             if (Inventory is null)
                 Inventory = new Inventory(totalPrice, dong, profit);

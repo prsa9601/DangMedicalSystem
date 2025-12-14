@@ -21,7 +21,7 @@ namespace Application.Order.Services
             return order.Sum(i => i.OrderItems.DongAmount) >= 6 ? false : true;
         }
 
-        public async Task<int> CheckNumberOfDongAvailable(Guid productId)
+        public async Task<decimal> CheckNumberOfDongAvailable(Guid productId)
         {
             var order = await _repository.GetListByFilterAsync(order =>
             order.OrderItems
@@ -31,7 +31,7 @@ namespace Application.Order.Services
             //order.OrderItems.Any(item =>
             //item.ProductId.Equals(productId)) && order.status == Domain.OrderAgg.Enum.OrderStatus.paid);
 
-            int dongCount = 0;
+            decimal dongCount = 0;
             //dongCount += order.Sum(o => o.OrderItems.Sum(i => i.DongAmount));
             dongCount += order.Sum(o => o.OrderItems.DongAmount);
             return 6 - dongCount;

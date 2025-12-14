@@ -37,7 +37,8 @@ namespace DangMedicalSystem.Api.Controllers
                 userId = User.GetUserId(),
             }, cancellationToken));
         }
-        
+
+        [Authorize]
         [HttpPatch("SetOrderItem")]
         public async Task<ApiResult> SetOrderItem(SetOrderItemCommandViewModel command, CancellationToken cancellationToken)
         {
@@ -45,7 +46,7 @@ namespace DangMedicalSystem.Api.Controllers
             {
                 userId = User.GetUserId(),
                 dongAmount = command.dongAmount,
-                orderId = command.orderId,
+                //orderId = command.orderId,
                 productId = command.productId,
             }, cancellationToken));
         }
@@ -55,6 +56,13 @@ namespace DangMedicalSystem.Api.Controllers
         {
             return QueryResult(await _facade.GetById(orderId, cancellationToken));
         }
+        
+        
+        //[HttpGet("GetCurrentUser")]
+        //public async Task<ApiResult<OrderDto?>> GetCurrentUser()
+        //{
+        //    return QueryResult(await _facade.get(orderId, cancellationToken));
+        //}
         
         [HttpGet("GetOrdersByFilter")]
         public async Task<ApiResult<OrderFilterResult>> GetFilter([FromQuery] OrderFilterParam param, CancellationToken cancellationToken)

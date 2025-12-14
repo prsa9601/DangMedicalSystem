@@ -21,7 +21,7 @@ namespace Domain.OrderAgg
             UserId = userId;
         }
 
-        public void SetOrderItem(Guid productId, string pricePerDong, int dongAmount, Guid inventoryId)
+        public void SetOrderItem(Guid productId, string pricePerDong, decimal dongAmount, Guid inventoryId)
         {
             var orderItem = new OrderItem(productId, pricePerDong, dongAmount, inventoryId);
             orderItem.OrderId = Id;

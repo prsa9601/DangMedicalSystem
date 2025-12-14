@@ -1,4 +1,5 @@
 ﻿using Facade.Auth;
+using Facade.Contract;
 using Facade.Notification;
 using Facade.Order;
 using Facade.Product;
@@ -7,6 +8,7 @@ using Facade.PurchaseReport;
 using Facade.Role;
 using Facade.Session;
 using Facade.SitEntities;
+using Facade.SiteSetting;
 using Facade.Stock;
 using Facade.User;
 using Microsoft.Extensions.DependencyInjection;
@@ -30,6 +32,8 @@ namespace Facade
             services.AddScoped<IProfitFacade, ProfitFacade>();
             services.AddScoped<INotificationFacade, NotificationFacade>();
             services.AddScoped<IRoleFacade, RoleFacade>();
+            services.AddScoped<ISiteSettingFacade, SiteSettingFacade>();
+            services.AddScoped<IContractFacade, ContractFacade>();
 
             services.AddScoped<IUserSessionFacade, UserSessionFacade>();
 

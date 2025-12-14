@@ -2,9 +2,9 @@
 {
     public class SetOrderItemCommandViewModel
     {
-        public Guid orderId { get; set; }
+        //public Guid orderId { get; set; }
         public Guid productId { get; set; }
-        public int dongAmount { get; set; }
+        public decimal dongAmount { get; set; }
     }
     public class OrderIsFinallyViewModel
     {

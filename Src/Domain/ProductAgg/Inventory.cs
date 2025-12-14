@@ -7,7 +7,7 @@ namespace Domain.ProductAgg
     {
         public Guid ProductId { get; internal set; }
         public string TotalPrice { get; private set; }
-        public int Dong { get; private set; }
+        public decimal Dong { get; private set; }
         //سود هر دانگ
         //public int DongPurchase { get; set; }
 
@@ -28,7 +28,7 @@ namespace Domain.ProductAgg
             //private set;
         }
 
-        public Inventory(string totalPrice, int dong, string profit)
+        public Inventory(string totalPrice, decimal dong, string profit)
         {
             Common.Domain.DomainValidation.DecimalValidation.DecimalGuard(totalPrice);
             Common.Domain.DomainValidation.DecimalValidation.DecimalGuard(profit);
@@ -48,7 +48,7 @@ namespace Domain.ProductAgg
         //    DongPurchase -= dong;
         //}
 
-        public void EditInventory(string totalPrice, int dong, string profit)
+        public void EditInventory(string totalPrice, decimal dong, string profit)
         {
             Common.Domain.DomainValidation.DecimalValidation.DecimalGuard(totalPrice);
             Common.Domain.DomainValidation.DecimalValidation.DecimalGuard(profit);

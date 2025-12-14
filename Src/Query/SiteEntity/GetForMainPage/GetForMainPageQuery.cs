@@ -41,7 +41,7 @@ namespace Query.SiteEntity.GetForMainPage
                 var product = products.Skip(i).FirstOrDefault();
                 var order = orders.Where(i => i.OrderItems.ProductId
                                 .Equals(product.Id)).ToList();
-                int totalPurchaseDang = order
+                decimal totalPurchaseDang = order
                     .Sum(i => i.OrderItems.DongAmount);
 
                 if (totalPurchaseDang < 6)

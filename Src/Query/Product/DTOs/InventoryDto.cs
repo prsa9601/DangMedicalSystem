@@ -7,7 +7,7 @@ namespace Query.Product.DTOs
     {
         public Guid ProductId { get; set; }
         public string TotalPrice { get; set; }
-        public int Dong { get; set; }
+        public decimal Dong { get; set; }
         //سود هر دانگ
         public string Profit { get; set; }
         public PaymentTime ProfitableTime { get; set; }

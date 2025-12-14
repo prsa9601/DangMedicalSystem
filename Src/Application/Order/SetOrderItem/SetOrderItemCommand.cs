@@ -7,10 +7,10 @@ namespace Application.Order.SetOrderItem
 {
     public class SetOrderItemCommand : IBaseCommand
     {
-        public Guid orderId { get; set; }
+        //public Guid orderId { get; set; }
         public Guid userId { get; set; }
         public Guid productId { get; set; }
-        public int dongAmount { get; set; }
+        public decimal dongAmount { get; set; }
     }
     internal sealed class SetOrderItemCommandHandler : IBaseCommandHandler<SetOrderItemCommand>
     {
@@ -25,8 +25,8 @@ namespace Application.Order.SetOrderItem
 
         public async Task<OperationResult> Handle(SetOrderItemCommand request, CancellationToken cancellationToken)
         {
-            var order = await _repository.GetByFilterAsync(i => i.Id.Equals(request.orderId)
-            && i.UserId.Equals(request.userId));
+            var order = await _repository.GetByFilterAsync(i => /*i.Id.Equals(request.orderId)*/
+             i.UserId.Equals(request.userId)&&i.status==Domain.OrderAgg.Enum.OrderStatus.AwaitingPayment);
 
             if (order == null) return OperationResult.NotFound();
 

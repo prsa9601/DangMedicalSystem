@@ -7,7 +7,7 @@ namespace Application.Product.Commands.AddInventory
     public class AddInventoryCommand : IBaseCommand
     {
         public string totalPrice { get; set; }
-        public int dong { get; set; }
+        public decimal dong { get; set; }
         public string profit { get; set; }
         public Guid productId { get; set; }
         public PaymentTime? paymentTime { get; set; }

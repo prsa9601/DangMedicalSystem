@@ -14,17 +14,17 @@ namespace Domain.PurchaseReportAgg
         public string TotalProfit { get; set; }
         //اطلاعات خریداری شده
         public string PurchasePrice { get; set; }
-        public int PurchaseDang { get; set; }
+        public decimal PurchaseDang { get; set; }
         public string Profit { get; set; }
         //اطلاعات اون موقع بر اساس یک دانگ
         public string ProfitPerDang { get; set; }
         public string PurchasePricePerDang { get; set; }
-        public int PurchaseDangPerDang { get; set; }
+        public decimal PurchaseDangPerDang { get; set; }
 
 
         public PurchaseReport(Guid userId, Guid orderId, Guid productId, string totalPrice,
-            string totalDang, string totalProfit, string purchasePrice, int purchaseDang, 
-            string profit, string profitPerDang, string purchasePricePerDang, int purchaseDangPerDang)
+            string totalDang, string totalProfit, string purchasePrice, decimal purchaseDang, 
+            string profit, string profitPerDang, string purchasePricePerDang, decimal purchaseDangPerDang)
         {
             Common.Domain.DomainValidation.DecimalValidation.DecimalGuard(purchasePrice);
             Common.Domain.DomainValidation.DecimalValidation.DecimalGuard(totalProfit);
