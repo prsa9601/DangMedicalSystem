@@ -70,7 +70,7 @@ namespace Query.PurchaseReport
             , Context context)
         {
 
-            if (model == null)
+            if (model == null || model.Count == 0)
                 return null;
 
             var userAgg = await context.Users.FirstOrDefaultAsync(user => user.Id.Equals

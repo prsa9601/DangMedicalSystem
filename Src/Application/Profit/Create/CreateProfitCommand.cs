@@ -17,7 +17,9 @@ namespace Application.Profit.Create
         public Guid ProductId { get; set; }
         public Guid OrderId { get; set; }
         public ProfitStatus Status { get; set; }
-        public IFormFile Image { get; set; }
+        public DateTime ForWhateTime { get; set; }
+        public int ForWhatePeriod { get; set; }
+        public IFormFile? Image { get; set; }
     }
     internal class CreateProfitCommandHandler : IBaseCommandHandler<CreateProfitCommand>
     {
@@ -90,10 +92,12 @@ namespace Application.Profit.Create
                     _ => DateTime.Now.AddMonths(1),
                 };
             }
-
+            
+            //nextPayment, profits.Where(i => i.Status == ProfitStatus.Success).Count() + 1
+            
             var newProfit = new Domain.ProfitAgg.Profit(request.UserId, request.ProductId,
                 request.Status, dongAmount * decimal.Parse(product.Inventory.Profit),
-                request.OrderId, _service, nextPayment, profits.Where(i => i.Status == ProfitStatus.Success).Count() + 1);
+                request.OrderId, _service, request.ForWhateTime, request.ForWhatePeriod);
 
             if (request.Image != null)
             {

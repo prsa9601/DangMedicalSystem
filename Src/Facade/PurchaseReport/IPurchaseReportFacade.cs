@@ -1,17 +1,21 @@
 ﻿using MediatR;
 using Query.PurchaseReport.DTOs;
 using Query.PurchaseReport.GetById;
+using Query.PurchaseReport.GetProfit;
+using Query.PurchaseReport.GetProfitFilter;
 using Query.PurchaseReport.ReportForAdmin;
 using Query.PurchaseReport.ReportUserInvestment;
 
 namespace Facade.PurchaseReport
 {
-    public interface IPurchaseReportFacade 
+    public interface IPurchaseReportFacade
     {
         Task<PurchaseReportFilterResult> GetFilterForAdmin(PurchaseReportFilterParam param, CancellationToken cancellationToken);
         Task<PurchaseReportUserInvestmentFilterResult> GetFilterPurchaseReportForAdmin(UserPurchaseReportFilterParam param, CancellationToken cancellationToken);
         Task<PurchaseReportUserInvestmentFilterResult> GetFilterPurchaseReportForCurrentUser(UserPurchaseReportFilterParam param);
         Task<UserPurchaseReportDto?> GetById(Guid UserId);
+        Task<UserProfitPurchaseReportDto> GetProfit(Guid UserId);
+        Task<UserProfitPurchaseReportDtoFilterResult> GetProfitFilter(UserProfitPurchaseReportDtoFilterParam param);
     }
     internal class PurchaseReportFacade : IPurchaseReportFacade
     {
@@ -39,10 +43,23 @@ namespace Facade.PurchaseReport
         {
             return await _mediator.Send(new ReportUserInvestmentQueryFilter(param), cancellationToken);
         }
-     
+
         public async Task<PurchaseReportUserInvestmentFilterResult> GetFilterPurchaseReportForCurrentUser(UserPurchaseReportFilterParam param)
         {
             return await _mediator.Send(new ReportUserInvestmentQueryFilter(param));
+        }
+
+        public async Task<UserProfitPurchaseReportDto> GetProfit(Guid UserId)
+        {
+            return await _mediator.Send(new GetProfitForCurrentUserQuery()
+            {
+                userId = UserId
+            });
+        }
+
+        public async Task<UserProfitPurchaseReportDtoFilterResult> GetProfitFilter(UserProfitPurchaseReportDtoFilterParam param)
+        {
+            return await _mediator.Send(new GetProfitFilterQuery(param));
         }
     }
 }

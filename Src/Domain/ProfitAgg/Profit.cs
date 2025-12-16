@@ -37,7 +37,7 @@ namespace Domain.ProfitAgg
         public int ForWhatPeriod { get; set; }
         public ProfitStatus Status { get; set; }
         public decimal AmountPaid { get; set; }
-        public string ImageName { get; set; }
+        public string? ImageName { get; set; }
     }
     public enum ProfitStatus
     {

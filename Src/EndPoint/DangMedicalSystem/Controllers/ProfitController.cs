@@ -17,16 +17,19 @@ namespace DangMedicalSystem.Api.Controllers
             _facade = facade;
         }
 
-        [HttpPost("Create")]
-        public async Task<ApiResult> Create(CreateProfitViewModel command)
+        [HttpPost("CreateProfit")]
+        public async Task<ApiResult> CreateProfit([FromForm] CreateProfitCommand command)
+        //(CreateProfitViewModel command)
         {
             return CommandResult(await _facade.Create(new CreateProfitCommand
             {
-                UserId = User.GetUserId(),
+                UserId = command.UserId,
                 Image = command.Image,
                 OrderId = command.OrderId,
                 ProductId = command.ProductId,
                 Status = command.Status,
+                ForWhatePeriod = command.ForWhatePeriod,
+                ForWhateTime = command.ForWhateTime,
             }));
         }
     }

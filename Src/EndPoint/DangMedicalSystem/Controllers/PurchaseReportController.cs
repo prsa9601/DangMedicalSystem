@@ -57,6 +57,27 @@ namespace DangMedicalSystem.Api.Controllers
         }
 
         [Authorize]
+        [HttpGet("GetProfit")]
+        public async Task<ApiResult<UserProfitPurchaseReportDto>> GetProfit()
+        {
+            return QueryResult(await _facade.GetProfit(User.GetUserId()));
+        }
+    
+        [Authorize]
+        [HttpGet("GetProfitById")]
+        public async Task<ApiResult<UserProfitPurchaseReportDto>> GetProfitById(Guid id)
+        {
+            return QueryResult(await _facade.GetProfit(id));
+        }
+    
+        [Authorize]
+        [HttpGet("GetProfitFilter")]
+        public async Task<ApiResult<UserProfitPurchaseReportDtoFilterResult>> GetProfitFilter([FromQuery] UserProfitPurchaseReportDtoFilterParam param)
+        {
+            return QueryResult(await _facade.GetProfitFilter(param));
+        }
+
+        [Authorize]
         [HttpGet("GetForCurrentUser")]
         public async Task<ApiResult<UserPurchaseReportDto?>> GetForCurrentUser()
         {

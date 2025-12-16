@@ -8,6 +8,7 @@ namespace Infrastructure.Persistent.Ef.Profit.Configuration
         public void Configure(EntityTypeBuilder<Domain.ProfitAgg.Profit> builder)
         {
             builder.ToTable("Profits", "profit");
+            builder.Property(i => i.ImageName).IsRequired(false);
         }
     }
 }
