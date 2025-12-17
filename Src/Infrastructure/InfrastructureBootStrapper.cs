@@ -1,6 +1,6 @@
 ﻿using Application;
 using Application.Auth.Shared.Abstractions.Interfaces;
-using Domain.Contract.Repository;
+using Domain.Contact.Repository;
 using Domain.NotificationAgg.Interfaces.Repository;
 using Domain.OrderAgg.Interfaces.Repository;
 using Domain.ProductAgg.Interfaces.Repository;
@@ -11,7 +11,7 @@ using Domain.StockAgg.Interfaces.Repository;
 using Domain.UserAgg;
 using Domain.UserAgg.Interfaces.Repository;
 using Infrastructure.Mapping.Service;
-using Infrastructure.Persistent.Ef.Contract.Repository;
+using Infrastructure.Persistent.Ef.Contact.Repository;
 using Infrastructure.Persistent.Ef.Notification.Repository;
 using Infrastructure.Persistent.Ef.Order.Repository;
 using Infrastructure.Persistent.Ef.Product.Repository;
@@ -42,7 +42,7 @@ namespace Infrastructure
             services.AddScoped<IProfitRepository, ProfitRepository>();
             services.AddScoped<IProductRepository, ProductRepository>();
             services.AddScoped<IStockRepository, StockRepository>();
-            services.AddScoped<IContractRepository, ContractRepository>();
+            services.AddScoped<IContactRepository, ContactRepository>();
 
             services.AddTransient<System.Random>();
             services.AddScoped<IOtpService, OtpService>();

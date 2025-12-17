@@ -1,35 +1,35 @@
 ﻿using Common.Query;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
-using Query.Contract.DTOs;
+using Query.Contact.DTOs;
 using Query.Order.DTOs;
 
-namespace Query.Contract.GetFilter
+namespace Query.Contact.GetFilter
 {
-    public class GetContractByFilter : QueryFilter<ContractFilterResult, ContractFilterParam>
+    public class GetContactByFilter : QueryFilter<ContactFilterResult, ContactFilterParam>
     {
-        public GetContractByFilter(ContractFilterParam filterParams) : base(filterParams)
+        public GetContactByFilter(ContactFilterParam filterParams) : base(filterParams)
         {
         }
     }
-    internal class GetContractByFilterHandler : IQueryHandler<GetContractByFilter, ContractFilterResult>
+    internal class GetContactByFilterHandler : IQueryHandler<GetContactByFilter, ContactFilterResult>
     {
         private readonly Context _context;
 
-        public GetContractByFilterHandler(Context context)
+        public GetContactByFilterHandler(Context context)
         {
             _context = context;
         }
 
-        public async Task<ContractFilterResult> Handle(GetContractByFilter request, CancellationToken cancellationToken)
+        public async Task<ContactFilterResult> Handle(GetContactByFilter request, CancellationToken cancellationToken)
         {
             var @param = request.FilterParams;
-            var result = _context.Contracts.OrderByDescending(i => i.CreationDate).AsQueryable();
+            var result = _context.Contacts.OrderByDescending(i => i.CreationDate).AsQueryable();
 
 
             if (!string.IsNullOrWhiteSpace(param.FullName))
             {
-                result = result.Where(i => i.FullName.Contains(param.FullName, StringComparison.OrdinalIgnoreCase));
+                result = result.Where(i => i.FullName.ToLower().Contains(param.FullName.ToLower()));
             }
             if (!string.IsNullOrWhiteSpace(param.PhoneNumber))
             {
@@ -46,7 +46,7 @@ namespace Query.Contract.GetFilter
 
 
             var skip = (@param.PageId - 1) * @param.Take;
-            var model = new ContractFilterResult()
+            var model = new ContactFilterResult()
             {
                 Data = await result.Skip(skip).Take(@param.Take)
                     .Select(order => order.Map()).ToListAsync(cancellationToken),

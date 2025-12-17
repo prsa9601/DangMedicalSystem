@@ -1,5 +1,5 @@
 ﻿using Facade.Auth;
-using Facade.Contract;
+using Facade.Contact;
 using Facade.Notification;
 using Facade.Order;
 using Facade.Product;
@@ -33,7 +33,7 @@ namespace Facade
             services.AddScoped<INotificationFacade, NotificationFacade>();
             services.AddScoped<IRoleFacade, RoleFacade>();
             services.AddScoped<ISiteSettingFacade, SiteSettingFacade>();
-            services.AddScoped<IContractFacade, ContractFacade>();
+            services.AddScoped<IContactFacade, ContactFacade>();
 
             services.AddScoped<IUserSessionFacade, UserSessionFacade>();
 

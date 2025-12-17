@@ -1,12 +1,12 @@
-﻿using Query.Contract.DTOs;
+﻿using Query.Contact.DTOs;
 
-namespace Query.Contract
+namespace Query.Contact
 {
     public static class ContractMapper
     {
-        public static ContractDto? Map(this Domain.Contract.ContractAgg contract)
+        public static ContactDto? Map(this Domain.Contact.ContactAgg contract)
         {
-            return new ContractDto
+            return new ContactDto
             {
                 Id = contract.Id,
                 CreationDate = contract.CreationDate,

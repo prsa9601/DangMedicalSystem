@@ -1,7 +1,6 @@
 ﻿using Common.Query;
 using Infrastructure;
 using Microsoft.EntityFrameworkCore;
-using Query.Contract.DTOs;
 using Query.PurchaseReport.DTOs;
 
 namespace Query.PurchaseReport.GetProfitFilter

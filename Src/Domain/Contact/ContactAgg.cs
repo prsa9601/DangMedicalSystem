@@ -1,17 +1,17 @@
 ﻿using Common.Domain;
 
-namespace Domain.Contract
+namespace Domain.Contact
 {
-    public class ContractAgg : AggregateRoot
+    public class ContactAgg : AggregateRoot
     {
-        public ContractAgg(string phoneNumber, string email, string fullName, string title, string description)
+        public ContactAgg(string phoneNumber, string email, string fullName, string title, string description)
         {
             PhoneNumber = phoneNumber;
             Email = email;
             FullName = fullName;
             Title = title;
             Description = description;
-            Status = ContractStatus.New;
+            Status = Domain.Contact.ContactStatus.New;
         }
         public void Edit(string phoneNumber, string email, string fullName, string title, string description)
         {
@@ -23,7 +23,7 @@ namespace Domain.Contract
         }
         public void IsAnswered()
         {
-            Status = ContractStatus.Answered;
+            Status = Domain.Contact.ContactStatus.Answered;
         }
 
         public string PhoneNumber { get; set; }
@@ -31,6 +31,6 @@ namespace Domain.Contract
         public string FullName { get; set; }
         public string Title { get; set; }
         public string Description { get; set; }
-        public ContractStatus Status { get; set; }
+        public Domain.Contact.ContactStatus Status { get; set; }
     }
 }
