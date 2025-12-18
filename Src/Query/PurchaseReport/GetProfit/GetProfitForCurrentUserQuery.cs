@@ -181,7 +181,7 @@ namespace Query.PurchaseReport.GetProfit
                         PeriodNumber = period,
                         OrderId = order.Id,
                         ProductId = product.Id,
-                        ExpectedAmount = (decimal.Parse(order.OrderItems.Product.InventoryDto.Profit) * order.OrderItems.DongAmount) / 6,
+                        ExpectedAmount = (decimal.Parse(order.OrderItems.Product.InventoryDto.Profit) * order.OrderItems.DongAmount),
                         ProductName = order.OrderItems.Product.Title,
                     });
                 }
@@ -193,7 +193,7 @@ namespace Query.PurchaseReport.GetProfit
                         PeriodNumber = period,
                         OrderId = order.Id,
                         ProductId = product.Id,
-                        ExpectedAmount = (decimal.Parse(order.OrderItems.Product.InventoryDto.Profit) * order.OrderItems.DongAmount) / 6,
+                        ExpectedAmount = (decimal.Parse(order.OrderItems.Product.InventoryDto.Profit) * order.OrderItems.DongAmount),
                         ProductName = order.OrderItems.Product.Title,
                     });
                 }

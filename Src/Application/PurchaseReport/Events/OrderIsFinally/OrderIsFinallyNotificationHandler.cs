@@ -66,6 +66,8 @@ namespace Application.PurchaseReport.Events.OrderIsFinally
 
             //}
 
+            order.DateOfPurchase = DateTime.Now;
+
             string profit = null;
             if (decimal.TryParse(product.Inventory.Profit, out var inventoryProfit))
             {

@@ -3,13 +3,16 @@ using Application.Order.EditOrder;
 using Application.Order.IsFinally;
 using Application.Order.SetOrderItem;
 using Common.Application;
+using Domain.OrderAgg;
 using MediatR;
 using Microsoft.Extensions.Caching.Memory;
 using Query.Order.DTOs;
 using Query.Order.GetById;
+using Query.Order.GetCurrent;
 using Query.Order.GetFilter;
 using Query.Order.GetForReport;
 using Query.SiteEntity.DTOs;
+using System.Threading;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Facade.Order
@@ -23,6 +26,7 @@ namespace Facade.Order
 
 
         Task<OrderDto?> GetById(Guid orderId, CancellationToken cancellationToken);
+        Task<OrderDto?> GetCurrentUser(Guid userId);
         Task<OrderFilterResult> GetFilter(OrderFilterParam param, CancellationToken cancellationToken);
         Task<OrderFilterResult> GetForReport(OrderFilterParam param, CancellationToken cancellationToken);
     }
@@ -50,6 +54,11 @@ namespace Facade.Order
         public async Task<OrderDto?> GetById(Guid orderId, CancellationToken cancellationToken)
         {
             return await _mediator.Send(new GetOrderById(orderId), cancellationToken);
+        }
+
+        public async Task<OrderDto?> GetCurrentUser(Guid userId)
+        {
+            return await _mediator.Send(new GetCurrentOrderQuery(userId));
         }
 
         public async Task<OrderFilterResult> GetFilter(OrderFilterParam param, CancellationToken cancellationToken)

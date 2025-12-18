@@ -27,7 +27,8 @@ namespace DangMedicalSystem.Api.Controllers
         {
             return CommandResult(await _facade.Create(new CreateOrderCommand { userId = User.GetUserId() }, cancellationToken));
         }
-        
+
+        [Authorize]
         [HttpPost("IsFinally")]
         public async Task<ApiResult> IsFinally(OrderIsFinallyViewModel command, CancellationToken cancellationToken)
         {
@@ -56,14 +57,14 @@ namespace DangMedicalSystem.Api.Controllers
         {
             return QueryResult(await _facade.GetById(orderId, cancellationToken));
         }
-        
-        
-        //[HttpGet("GetCurrentUser")]
-        //public async Task<ApiResult<OrderDto?>> GetCurrentUser()
-        //{
-        //    return QueryResult(await _facade.get(orderId, cancellationToken));
-        //}
-        
+
+        [Authorize]
+        [HttpGet("GetCurrentUser")]
+        public async Task<ApiResult<OrderDto?>> GetCurrentUser()
+        {
+            return QueryResult(await _facade.GetCurrentUser(User.GetUserId()));
+        }
+
         [HttpGet("GetOrdersByFilter")]
         public async Task<ApiResult<OrderFilterResult>> GetFilter([FromQuery] OrderFilterParam param, CancellationToken cancellationToken)
         {

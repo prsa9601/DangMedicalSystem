@@ -23,7 +23,7 @@ namespace Query.Product.GetFilterForIndexPage
         public async Task<ProductFilterForIndexPageResult> Handle(GetFilterForIndexPageQuery request, CancellationToken cancellationToken)
         {
             var @param = request.FilterParams;
-            var result = _context.Products.Where(i => i.SeoData.IndexPage == true).OrderByDescending(i => i.CreationDate).AsQueryable();
+            var result = _context.Products.Where(i => i.SeoData.IndexPage == true && i.Inventory != null).OrderByDescending(i => i.CreationDate).AsQueryable();
 
             if (result == null) return null;
             if (!string.IsNullOrWhiteSpace(@param.Title))

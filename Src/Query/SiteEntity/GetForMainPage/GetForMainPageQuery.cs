@@ -22,7 +22,7 @@ namespace Query.SiteEntity.GetForMainPage
         public async Task<MainPageDto?> Handle(GetForMainPageQuery request, CancellationToken cancellationToken)
         {
             var products = await _context.Products.Where(i => i.SeoData.IndexPage == true
-            && i.Status != Domain.ProductAgg.Enum.ProductStatus.NotActive).ToListAsync();
+            && i.Status != Domain.ProductAgg.Enum.ProductStatus.NotActive && i.Inventory != null).ToListAsync();
             if (products == null) return null;
 
             var investmentCount = _context.Orders
