@@ -26,12 +26,12 @@ namespace Query.Order.GetFilter
             var @param = request.FilterParams;
             var result = _context.Orders.OrderByDescending(i => i.CreationDate).AsQueryable();
 
-            if (param.StartDate != DateTime.MinValue && param.StartDate != DateTime.MaxValue)
+            if (param.StartDate != DateTime.MinValue && param.StartDate != DateTime.MaxValue && param.StartDate != null)
             {
                 result = result.Where(order => order.CreationDate >= param.StartDate);
             }
 
-            if (param.EndDate != DateTime.MinValue && param.EndDate != DateTime.MaxValue)
+            if (param.EndDate != DateTime.MinValue && param.EndDate != DateTime.MaxValue && param.EndDate != null)
             {
                 result = result.Where(order => order.CreationDate <= param.EndDate);
             }
