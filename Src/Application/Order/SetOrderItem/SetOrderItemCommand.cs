@@ -25,8 +25,14 @@ namespace Application.Order.SetOrderItem
 
         public async Task<OperationResult> Handle(SetOrderItemCommand request, CancellationToken cancellationToken)
         {
+            if (request.dongAmount * 10 % 5 != 0)
+            {
+                return OperationResult.Error("درخواست نامغتبر است");
+            }
+
+
             var order = await _repository.GetByFilterAsync(i => /*i.Id.Equals(request.orderId)*/
-             i.UserId.Equals(request.userId)&&i.status==Domain.OrderAgg.Enum.OrderStatus.AwaitingPayment);
+             i.UserId.Equals(request.userId) && i.status == Domain.OrderAgg.Enum.OrderStatus.AwaitingPayment);
 
             if (order == null) return OperationResult.NotFound();
 

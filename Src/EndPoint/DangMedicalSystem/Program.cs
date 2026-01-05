@@ -135,9 +135,9 @@ if (app.Environment.IsDevelopment())
 
 
 app.UseHttpsRedirection();
+app.UseCors();
 app.UseStaticFiles();
 
-app.UseCors("DangMedicalSystem.Api");
 
 app.UseMiddleware<AuthenticationMiddleware>();
 //app.UseMiddleware<JwtAuthenticationMiddleware>();
@@ -184,10 +184,35 @@ using (var scope = app.Services.CreateScope())
         string pass = Sha256Hasher.Hash("@ParsaAdmin");
         user.SetPassword(pass);
         user.SetUserRole(role.Id);
+        user.SetAsActive();
         context.Users.Add(user);
+      
+      
+        var role2 = new Role();
+        role2.Title = "Admin";
+        role2.RolePermissions.AddRange(new List<RolePermission>
+        {
+            new RolePermission { Permission = Domain.RoleAgg.Enum.Permission.Admin, RoleId = role2.Id },
+            new RolePermission { Permission = Domain.RoleAgg.Enum.Permission.Guest, RoleId = role2.Id },
+            new RolePermission { Permission = Domain.RoleAgg.Enum.Permission.User, RoleId = role2.Id }
+        });
+
+        context.Roles.Add(role2);
+
+        var user2 = new User();
+
+        user2.SetPhoneNumber("09361848305");
+        user2.SetLastName("سیاح");
+        user2.SetFirstName("مسعود");
+        string pass2 = Sha256Hasher.Hash("$%Massoodd");
+        user2.SetPassword(pass2);
+        user2.SetUserRole(role2.Id);
+        user2.SetAsActive();
+        context.Users.Add(user2);
         context.SaveChanges();
     }
 }
+
 
 app.Run();
 
