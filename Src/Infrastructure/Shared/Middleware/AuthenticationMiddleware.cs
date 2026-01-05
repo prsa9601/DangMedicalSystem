@@ -30,56 +30,129 @@ namespace Infrastructure.Shared.Middleware
                 if (authorizeAttribute == null)
                 {
 
-                    if (!context.Request.Headers.TryGetValue("AuthToken", out var _))
+                    if (!context.Request.Headers.TryGetValue("AuthToken", out var token))
                     {
-                        var refreshTokenHeader = context.Request.Headers["RefreshToken"].ToString();
-                        var refreshTokenCookie = context.Request.Cookies["RefreshToken"]?.ToString();
-
-                        var refreshToken = (!string.IsNullOrEmpty(refreshTokenHeader) ? refreshTokenHeader : refreshTokenCookie)?.Replace("Bearer ", "");
-                        var jwtServiceAuthRefreshToken = _jwtFactory.CreateSetting(TokenType.AuthRefreshToken);
-                        var jwtServiceAuthToken = _jwtFactory.CreateSetting(TokenType.AuthToken);
-
-
-                        try
+                        if (context.Request.Headers.TryGetValue("AuthToken", out var _))
                         {
-                            var refreshTokenValidate = jwtServiceAuthRefreshToken.ValidateToken(refreshToken);
-                            Guid.TryParse(refreshTokenValidate.FindFirst(ClaimTypes.NameIdentifier)?.Value, out var id);
+                            var refreshTokenHeader = context.Request.Headers["RefreshToken"].ToString();
+                            var refreshTokenCookie = context.Request.Cookies["RefreshToken"]?.ToString();
 
-                            if (refreshTokenValidate.FindFirst
-                                (JwtRegisteredClaimNames.PhoneNumberVerified)?.Value == null)
+                            var refreshToken = (!string.IsNullOrEmpty(refreshTokenHeader) ? refreshTokenHeader : refreshTokenCookie)?.Replace("Bearer ", "");
+                            var jwtServiceAuthRefreshToken = _jwtFactory.CreateSetting(TokenType.AuthRefreshToken);
+                            var jwtServiceAuthToken = _jwtFactory.CreateSetting(TokenType.AuthToken);
+
+
+                            try
                             {
-                                context.Response.StatusCode = 401;
-                                await context.Response.WriteAsync("PhoneNumber is Not Exist In Token");
+                                var refreshTokenValidate = jwtServiceAuthRefreshToken.ValidateToken(refreshToken);
+                                Guid.TryParse(refreshTokenValidate.FindFirst(ClaimTypes.NameIdentifier)?.Value, out var id);
+
+                                if (refreshTokenValidate.FindFirst
+                                    (JwtRegisteredClaimNames.PhoneNumberVerified)?.Value == null)
+                                {
+                                    context.Response.StatusCode = 401;
+                                    await context.Response.WriteAsync("PhoneNumber is Not Exist In Token");
+                                    return;
+                                }
+                                var authToken = jwtServiceAuthToken.GenerateToken(
+                                       id,
+                                       refreshTokenValidate.FindFirst(JwtRegisteredClaimNames.PhoneNumberVerified)!.Value!,
+                                       refreshTokenValidate.FindAll(ClaimTypes.Role)?.Select(r => r.Value).ToList());
+
+                                context.Response.Cookies.Append("auth-Token",
+                                       authToken,
+                                       new CookieOptions
+                                       {
+                                           HttpOnly = true,
+                                           Secure = true,
+                                           SameSite = SameSiteMode.Strict,
+                                           Expires = DateTime.UtcNow.AddMinutes(30),
+                                           Path = "/",
+                                       });
+
+                                context.Response.Headers["X-Auth-Token"] = authToken;
+                                //context.Request.Headers["Authorization"] = $"Bearer {authToken}";
+                                context.Response.Headers["Authorization"] = $"Bearer {authToken}";
+
+                            }
+                            catch
+                            {
+                                await _next(context);
                                 return;
                             }
-                            var authToken = jwtServiceAuthToken.GenerateToken(
-                                   id,
-                                   refreshTokenValidate.FindFirst(JwtRegisteredClaimNames.PhoneNumberVerified)!.Value!,
-                                   refreshTokenValidate.FindAll(ClaimTypes.Role)?.Select(r => r.Value).ToList());
+                        }
+                        else
+                        {
+                            try
+                            {
+                                var refreshTokenHeader = context.Request.Headers["RefreshToken"].ToString();
+                                var jwtServiceAuthRefreshToken = _jwtFactory.CreateSetting(TokenType.AuthRefreshToken);
 
-                            context.Response.Cookies.Append("auth-Token",
-                                   authToken,
-                                   new CookieOptions
-                                   {
-                                       HttpOnly = true,
-                                       Secure = true,
-                                       SameSite = SameSiteMode.Strict,
-                                       Expires = DateTime.UtcNow.AddMinutes(30),
-                                       Path = "/",
-                                   });
+                                var refreshTokenValidate = jwtServiceAuthRefreshToken.ValidateToken(refreshTokenHeader);
 
-                            context.Response.Headers["X-Auth-Token"] = authToken;
-                            //context.Request.Headers["Authorization"] = $"Bearer {authToken}";
-                            context.Response.Headers["Authorization"] = $"Bearer {authToken}";
+                                Guid.TryParse(refreshTokenValidate.FindFirst(ClaimTypes.NameIdentifier)?.Value, out var id);
+
+                                if (refreshTokenValidate.FindFirst
+                                    (JwtRegisteredClaimNames.PhoneNumberVerified)?.Value == null)
+                                {
+                                    context.Response.StatusCode = 401;
+                                    await context.Response.WriteAsync("PhoneNumber is Not Exist In Token");
+                                    return;
+                                }
+
+                                var jwtServiceAuthToken = _jwtFactory.CreateSetting(TokenType.AuthToken);
+
+                                string authToken = jwtServiceAuthToken.GenerateToken(id,
+                                       refreshTokenValidate.FindFirst(JwtRegisteredClaimNames.PhoneNumberVerified)!.Value!,
+                                       refreshTokenValidate.FindAll(ClaimTypes.Role)?.Select(r => r.Value).ToList());
+
+
+
+
+                                context.Response.Headers["X-Auth-Token"] = authToken;
+                                //context.Request.Headers["Authorization"] = $"Bearer {authToken}";
+                                context.Response.Headers["Authorization"] = $"Bearer {authToken}";
+
+
+                                //var authTokenHeader = context.Request.Headers["AuthToken"].ToString();
+                                //if (!string.IsNullOrEmpty(authTokenHeader))
+                                //{
+                                //    var jwtServiceAuthToken = _jwtFactory.CreateSetting(TokenType.AuthToken);
+                                //    jwtServiceAuthToken.ValidateToken(authTokenHeader);
+
+                                //}
+                                await _next(context);
+                                return;
+                            }
+                            catch
+                            {
+                                await _next(context);
+                                return;
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        try
+                        {
+                            var jwtServiceAuthToken = _jwtFactory.CreateSetting(TokenType.AuthToken);
+
+                            jwtServiceAuthToken.ValidateToken(token.ToString().Replace("Bearer ", ""));
+                            context.Request.Headers["Authorization"] = $"{token}";
+
+                            context.Response.Headers["X-Auth-Token"] = token.ToString().Replace("Bearer ", "");
 
                         }
-                        catch
+                        catch (Exception ex)
                         {
-                            await _next(context);
+                            context.Response.StatusCode = 401;
+                            await context.Response.WriteAsync("You Need To Login");
                             return;
                         }
+
                     }
-                    
+
                     await _next(context);
                     return;
                 }

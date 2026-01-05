@@ -21,7 +21,7 @@ namespace Application.Auth.Commands.GetSession
         public async Task<OperationResult<bool>> Handle(GetSessionCommand request, CancellationToken cancellationToken)
         {
             var user = await _repository.GetByFilterAsync(i => i.UserSessions.
-            Any(x => x.JwtRefreshToken.Equals(Sha256Hasher.Hash(request.RefreshToken))));
+            Any(x => x.JwtRefreshToken.Equals(Sha256Hasher.Hash(request.RefreshToken.Replace("Bearer ","")))));
 
             if (user == null) return OperationResult<bool>.Error(false);
 

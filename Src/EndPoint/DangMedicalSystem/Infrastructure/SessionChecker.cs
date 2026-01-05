@@ -16,11 +16,11 @@ namespace DangMedicalSystem.Api.Infrastructure
         public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {
             _userFacade = context.HttpContext.RequestServices.GetRequiredService<IUserFacade>();
-
+            var res = await UserHasSession(context);
             if (context.HttpContext.User.Identity.IsAuthenticated != null
                 && context.HttpContext.User.Identity.IsAuthenticated)
             {
-                if (await UserHasSession(context) == false)
+                if (res == false)
                 {
                     //context.HttpContext.Request.Headers["RefreshToken"] = StringValues.Empty;
                     context.HttpContext.Response.Headers.Append("RefreshToken", "Logout");
@@ -28,7 +28,7 @@ namespace DangMedicalSystem.Api.Infrastructure
             }
             else
             {
-                if (await UserHasSession(context) == false)
+                if (res == false)
                 {
                     //context.HttpContext.Request.Headers["RefreshToken"] = StringValues.Empty;
                     context.HttpContext.Response.Headers["RefreshToken"] = "Logout";
@@ -39,11 +39,16 @@ namespace DangMedicalSystem.Api.Infrastructure
         private async Task<bool> UserHasSession(AuthorizationFilterContext context)
         {
             var refreshToken = context.HttpContext.Request.Headers["RefreshToken"].ToString();
+            var authToken = context.HttpContext.Request.Headers["AuthToken"].ToString();
             var res = await _userFacade.GetSession(new GetSessionCommand
             {
                 RefreshToken = refreshToken,
             });
-            return res.Data;
+            var res2 = await _userFacade.GetSession(new GetSessionCommand
+            {
+                RefreshToken = authToken,
+            });
+            return res.Data == false ? res2.Data : res.Data;
         }
     }
 }

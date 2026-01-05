@@ -3,6 +3,7 @@ using Application.Utilities;
 using Common.Application.SecurityUtil;
 using Common.AspNetCore;
 using Common.AspNetCore.Middlewares;
+using Domain.OrderAgg;
 using Domain.RoleAgg;
 using Domain.RoleAgg.Enum;
 using Domain.UserAgg;
@@ -165,6 +166,7 @@ using (var scope = app.Services.CreateScope())
     {
         // تعریف Role
         var role = new Role();
+
         role.Title = "SuperAdmin";
         role.RolePermissions.AddRange(new List<RolePermission>
         {
@@ -186,10 +188,11 @@ using (var scope = app.Services.CreateScope())
         user.SetUserRole(role.Id);
         user.SetAsActive();
         context.Users.Add(user);
-      
-      
+        var order = new Order(user.Id);
+
+        context.Orders.Add(order);
         var role2 = new Role();
-        role2.Title = "Admin";
+        role2.Title = "SuperAdmin";
         role2.RolePermissions.AddRange(new List<RolePermission>
         {
             new RolePermission { Permission = Domain.RoleAgg.Enum.Permission.Admin, RoleId = role2.Id },
@@ -208,6 +211,9 @@ using (var scope = app.Services.CreateScope())
         user2.SetPassword(pass2);
         user2.SetUserRole(role2.Id);
         user2.SetAsActive();
+        var order2 = new Order(user.Id);
+
+        context.Orders.Add(order2);
         context.Users.Add(user2);
         context.SaveChanges();
     }

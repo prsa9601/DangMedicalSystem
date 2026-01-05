@@ -112,7 +112,23 @@ namespace DangMedicalSystem.Api.Controllers
         [HttpGet("GetCurrentUser")]
         public async Task<ApiResult<UserDto?>> GetCurrentUser()
         {
-            return QueryResult(await _facade.GetById(User.GetUserId()));
+            if (!User.Identity.IsAuthenticated)
+            {
+                var res = QueryResult<UserDto?>(new UserDto()); // یا false بسته به منطق برنامه
+                res.IsSuccess = false;
+                res.MetaData.Message = ".کاربر لاگین نکرده";
+                res.MetaData.AppStatusCode = AppStatusCode.UnAuthorize;
+            }
+
+            var userId = User.GetUserId();
+            if (userId == Guid.Empty)
+            {
+                var res = QueryResult<UserDto?>(new UserDto()); // یا false بسته به منطق برنامه
+                res.IsSuccess = false;
+                res.MetaData.Message = "ارور سمت سرور";
+                res.MetaData.AppStatusCode = AppStatusCode.NotFound;
+            }
+            return QueryResult(await _facade.GetById(userId));
         }
     
         [HttpGet("GetUserByFilter")]

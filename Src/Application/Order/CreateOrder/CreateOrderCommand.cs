@@ -26,10 +26,17 @@ namespace Application.Order.CreateOrder
             if (user == null)
                 return OperationResult.NotFound();
 
+            var userOrder = await _orderRepository.GetByFilterAsync
+                (i => i.UserId.Equals(request.userId) && i.status != Domain.OrderAgg.Enum.OrderStatus.paid);
+            if (userOrder != null)
+            {
+                return OperationResult.Success();
+
+            }
             var order = new Domain.OrderAgg.Order(request.userId);
             await _orderRepository.AddAsync(order);
             await _orderRepository.SaveChangeAsync();
-            return OperationResult.Success();   
+            return OperationResult.Success();
         }
     }
 }

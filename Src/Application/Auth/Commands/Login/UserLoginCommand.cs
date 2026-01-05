@@ -64,6 +64,9 @@ namespace Application.Auth.Commands.Login
                 var jwtRefreshService = _jwtServiceFactory.CreateSetting(TokenType.AuthRefreshToken);
                 var jwtAuthService = _jwtServiceFactory.CreateSetting(TokenType.AuthToken);
                 string refreshToken = null;
+                string authToken = jwtAuthService.GenerateToken(
+                        user.Id, user.PhoneNumber, new List<string> { "Guest" } ?? null);
+
                 if (request.rememberMe == true)
                 {
 
@@ -72,11 +75,10 @@ namespace Application.Auth.Commands.Login
 
                     user.SetUserSession(Sha256Hasher.Hash(refreshToken), request.ipAddress, DateTime.Now.AddDays(14));
                 }
-
-                string authToken = jwtAuthService.GenerateToken(
-                    user.Id, user.PhoneNumber, new List<string> { "Guest" } ?? null);
-
-
+                else
+                {
+                    user.SetUserSession(Sha256Hasher.Hash(authToken), request.ipAddress, DateTime.Now.AddMinutes(30));
+                }
 
                 await _repository.SaveChangeAsync();
 
@@ -93,6 +95,10 @@ namespace Application.Auth.Commands.Login
                 var jwtRefreshService = _jwtServiceFactory.CreateSetting(TokenType.AuthRefreshToken);
                 var jwtAuthService = _jwtServiceFactory.CreateSetting(TokenType.AuthToken);
                 string refreshToken = null;
+                
+                string authToken = jwtAuthService.GenerateToken(
+                        user.Id, user.PhoneNumber, new List<string> { role.Title } ?? null);
+
                 if (request.rememberMe == true)
                 {
 
@@ -101,16 +107,15 @@ namespace Application.Auth.Commands.Login
 
                     user.SetUserSession(Sha256Hasher.Hash(refreshToken), request.ipAddress, DateTime.Now.AddDays(14));
                 }
-
-                string authToken = jwtAuthService.GenerateToken(
-                    user.Id, user.PhoneNumber, new List<string> { role.Title } ?? null);
-
-
+                else
+                {
+                    user.SetUserSession(Sha256Hasher.Hash(authToken), request.ipAddress, DateTime.Now.AddMinutes(30));
+                }
 
 
                 await _repository.SaveChangeAsync();
 
-              
+
                 return OperationResult<LoginCommandResult>.Success(new LoginCommandResult
                 {
                     RefreshToken = refreshToken ?? string.Empty,

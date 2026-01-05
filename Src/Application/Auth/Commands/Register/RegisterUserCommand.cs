@@ -1,6 +1,7 @@
 ﻿using Application.Auth.Shared.Utilities;
 using Common.Application;
 using Common.Application.SecurityUtil;
+using Domain.OrderAgg.Interfaces.Repository;
 using Domain.UserAgg;
 using Domain.UserAgg.Events;
 using Domain.UserAgg.Interfaces.Builder;
@@ -28,12 +29,14 @@ namespace Application.Auth.Commands.Register
     public sealed class RegisterUserCommandHandler : IBaseCommandHandler<RegisterUserCommand>
     {
         private readonly IUserRepository _repository;
+        private readonly IOrderRepository _orderRepository;
         private readonly IUserBuilder _builder;
 
-        public RegisterUserCommandHandler(IUserRepository repository, IUserBuilder builder)
+        public RegisterUserCommandHandler(IUserRepository repository, IUserBuilder builder, IOrderRepository orderRepository)
         {
             _repository = repository;
             _builder = builder;
+            _orderRepository = orderRepository;
         }
 
         public async Task<OperationResult> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
@@ -61,6 +64,9 @@ namespace Application.Auth.Commands.Register
             //await _repository.AddAsync(user!);
 
             user.AddDomainEvent(new CreateOrderEvent() { UserId = user.Id});
+
+            var order = new Domain.OrderAgg.Order(user.Id);
+            await _orderRepository.AddAsync(order);
 
             _repository.SaveChange();
 
